@@ -27,6 +27,7 @@ package com.team2.lb.security;
             .authorizeRequests()
             .antMatchers(
                     "/",
+                    "/test",
                     "/member/goSign",
                     "/image/**",
                     "/css/**",
