@@ -19,30 +19,32 @@
 2. 실시간 채팅(소켓) (진우 )
 3. 주요 화면 UI
 
+### 주요 UI
+
 메인페이지(이 달의 독서왕, 조회수가 높은 )
+![메인페이지](https://github.com/jinu12/LB/assets/73889507/961ea653-ecd9-40f8-8012-ef4ed5af5883)
 
-https://lh7-us.googleusercontent.com/Pvth8AMwHM6sNGYyyXkjjj4yfKPp4Ct50L5KwgJW9Z0QP6KC-cz3B8nOavf3Oy5Hclydaqt5RF7kAEmRxEGo2Oje5Yg92HCb1FAfEoHNl6fBtx4HM774H5OifFn_Xvn25HcJhSYED0xf
-
-https://lh7-us.googleusercontent.com/niNLPGsYUVob3FALG3xOzUizJj1pGq_8C7pXqywI6adNxlEACfM8DtYzKbgku-isSFweGZE5mH-phbL9Es-zH5v4eg_0Vq3QuF7OvCSKV2sC_hQ_Xuge3bmVBM8P0WZFrB_Y5jjPDJEj
-
-https://lh7-us.googleusercontent.com/6BTaYwc2SzwzhWv8Qk9ag92t3fW1MNQFHmjJe1wcz6K9hTuB0iP0UgiDneAXUyLy5h5DKBymAEbaZdeczNp63J6orADStcsXot_3fXSkYBCVQTOhp6ItUosmrrpdzijnhX8TZHHjVQn0
+마이 페이지
+![마이페이지](https://github.com/jinu12/LB/assets/73889507/5083e327-70f2-463e-b81f-3588df1c744b)
+![마이페이지](https://github.com/jinu12/LB/assets/73889507/c2400cc4-f10e-4191-9cbc-f94b15d6f8a2)
 
 거래평가 페이지
+![거래페이지](https://github.com/jinu12/LB/assets/73889507/3c9a58bd-6dcb-4907-a73c-95f8eee67fa9)
 
-https://lh7-us.googleusercontent.com/QqoyM2zJojruXv8DvI4YxCBgOOGuUOCVq1qCH7SdllBTFTLkuDB6sY3fg9698tw4L6of5CXeCyw4vEnfj544Rwxdpw02VX5tf_XxQHGGSc5L79wAesCpf-7dHlVwkk2hH9H672-OquFk
+## 개발 환경 및 사용 기술
 
-1. 개발 환경 및 사용 기술
-    1. 개발 환경
+## 개발 환경
 
 자바 스프링부트, 오라클, git,
 
-1. 사용 기술
-    
-    jquery, ajax, kakao api, naver api
-    
-2. Database Diagram 설명
+### 사용 기술
+
+jquery, ajax, kakao api, naver api
+
+## Database Diagram 설명
+
 - Grade(등급)
-- 점수마다 정해지는 등급이 있는 테이블
+    - 점수마다 정해지는 등급이 있는 테이블
 - Message(쪽지)
     - 쪽지 기능을 넣은 테이블
 - User(유저)
@@ -63,6 +65,12 @@ https://lh7-us.googleusercontent.com/QqoyM2zJojruXv8DvI4YxCBgOOGuUOCVq1qCH7SdllB
 ### 역할 분담 (1인 프로젝트 시 불필요)(각 조원별로 맡은 역할 또는 구현할 기능)
 
 결제시스템, 유저 관리,  판매(교환)관련, 쪽지 관리, 기부, 별점기능+신고, 독서 리뷰,
+
+김진우 : 로그인 기능, 회원가입 기능, 내 주변 중고도서,
+
+정다연 : 쪽지 주고받기, 거래 평가, 독서 리뷰 페이지, 고객센터 페이지
+
+홍성준 : 판매 페이지 게시판, 교환 페이지 게시판,
 
 김진우 : 로그인 기능, 회원가입 기능, 내 주변 중고도서,
 
