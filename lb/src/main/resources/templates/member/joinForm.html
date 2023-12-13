@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>회원가입</title>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+window.onload = function(){
+    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
+        //카카오 지도 발생
+        new daum.Postcode({
+            oncomplete: function(data) { //선택시 입력값 세팅
+                document.getElementById("address_kakao").value = data.address; // 주소 넣기
+                document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
+            }
+        }).open();
+    });
+}
+</script>
+</head>
+<body>
+
+	<h1>회원가입</h1>
+
+	<form th:action="@{/member/join}" method="post" >
+		<table>
+			<tr>
+				<th>아이디</th>
+				<td>
+					<input type="text" name="id" id="id"
+					placeholder="아이디">
+					<input type="button" value="ID중복검사" onclick="idCheck();">
+				</td>
+			</tr>
+			<tr>
+				<th>비밀번호</th>
+				<td>
+					<input type="password" name="pw" id="pw"
+					placeholder="비밀번호"><br>
+					<input type="password" id="pw2"
+					placeholder="비밀번호 재입력">
+				</td>
+			</tr>
+			<tr>
+				<th>이름</th>
+				<td>
+					<input type="text" name="name" id="name"
+					placeholder="이름">
+				</td>
+			</tr>
+			<tr>
+				<th>이메일</th>
+				<td>
+					<input type="email" name="email" placeholder="이메일">
+				</td>
+			</tr>
+			<tr>
+				<th>전화번호</th>
+				<td>
+					<input type="text" name="phone" placeholder="전화번호">
+				</td>
+			</tr>
+			<tr>
+				<th>주소</th>
+				<td>
+					<input type="text" id="address_kakao" name="address" placeholder="주소"
+					readonly="readonly">
+				</td>
+			</tr>
+			<tr>
+	            <th>상세 주소</th>
+	            <td><input type="text" name="address_detail"></td>
+        	</tr>
+        
+			<tr>
+				<td colspan="2">
+					<input type="submit" value="가입">
+				</td>
+			</tr>
+		</table>
+	</form>
+
+</body>
+</html>
