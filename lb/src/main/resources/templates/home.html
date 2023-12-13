@@ -6,5 +6,12 @@
 </head>
 <body>
 	<h1>Welcome Home</h1>
+	<ul>
+		<li sec:authorize="not isAuthenticated()"><a th:href="@{/member/join}" th:text="회원가입"></a></li>
+		<li sec:authorize="not isAuthenticated()"><a th:href="@{/member/loginForm}" th:text="로그인"></a></li>
+		<li sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}" th:text="로그아웃"></a></li>
+		<li sec:authorize="isAuthenticated()"><a th:href="@{/member/update}" th:text="회원정보수정"></a></li>
+	</ul>
+
 </body>	
 </html>
