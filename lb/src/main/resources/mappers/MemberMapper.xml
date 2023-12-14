@@ -10,12 +10,45 @@
 		insert into MEMBER
 			(
 				uno, id, pw, name, email, phone, address, address_detail
+				<if test="originalfile != null and savedfile != null">
+				, originalfile
+				, savedfile
+			</if>
 			)
 		values
 			(
 				member_seq.nextval, #{id}, #{pw}, #{name}, #{email}, #{phone}, #{address}, #{address_detail}
+				<if test="originalfile != null and savedfile != null">
+				, #{originalfile}
+				, #{savedfile}
+			</if>
 			)
-		
 	</insert>
+	
+	<select id="selectUser" parameterType="String" resultType="Member">
+		select * from member where id like #{userId}
+	</select>
+	
+	<update id="updateUser" parameterType="Member">
+		update 
+			member
+		set
+			name = #{name}
+			, email = #{email}
+			, phone = #{phone}
+			, address = #{address}
+			, address_detail = #{address_detail}
+			<if test="pw != null or pw != ''">
+			, pw = #{pw}
+			</if>
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete member
+		where
+			id = #{id}
+	</delete>
 	
 </mapper>

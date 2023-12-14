@@ -25,4 +25,29 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 
+	@Override
+	public Member selectUser(String userId) {
+		Member member = dao.selectUser(userId);
+		return member;
+	}
+
+	@Override
+	public int updateUser(Member member) {
+		// updateForm.html에서 비밀번호를 변경한 경우에 암호화
+		if(member.getPw() != null || !member.getPw().equals("")) {
+			String encodedPw = passwordEncoder.encode(member.getPw());
+			member.setPw(encodedPw);
+		}
+		
+		int result = dao.updateUser(member);
+		
+		return result;
+	}
+
+	@Override
+	public void deleteMember(String username) {
+		dao.deleteMember(username);
+	}
+	
+
 }
