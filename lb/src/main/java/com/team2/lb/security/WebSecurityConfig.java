@@ -26,14 +26,24 @@ package com.team2.lb.security;
             http.csrf().disable()
             .authorizeRequests()
             .antMatchers(
-                    "/",
+            		"/",
+            		"/join",
+            		"/about",
+            		"/service",
+            		"/package",
+            		"/destination",
+            		"/hometest",
+            		"/serachBook",
+            		"/service",
+                    "/test2",
                     "/test",
                     "/member/join",
                     "/member/idCheck",
                     "/member/goSign",
-                    "/image/**",
+                    "/img/**",
                     "/css/**",
                     "/error",
+                    "/lib/**",
                     "/js/**").permitAll()
             .anyRequest().authenticated()
             .and()
