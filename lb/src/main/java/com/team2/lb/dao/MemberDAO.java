@@ -9,4 +9,10 @@ public interface MemberDAO {
 
 	void joinMember(Member member);
 
+	Member selectUser(String userId);
+
+	int updateUser(Member member);
+
+	void deleteMember(String username);
+
 }
