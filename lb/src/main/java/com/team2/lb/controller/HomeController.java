@@ -16,8 +16,58 @@ public class HomeController {
 		return "home";
 	}
 	
+	@GetMapping("hometest")
+	public String hometest() {
+		return "jinu/home";
+	}
+	
+	@GetMapping("layout")
+	public String layout() {
+		return "jinu/layout";
+	}
+	
 	@GetMapping("test")
 	public String test() {
 		return "jinu/test";
+	}
+	
+	@GetMapping("test2")
+	public String test2() {
+		return "jinu/index";
+	}
+	
+	@GetMapping("about")
+	public String about() {
+		return "jinu/about";
+	}
+	
+	@GetMapping("service")
+	public String service() {
+		return "jinu/service";
+	}
+	
+	@GetMapping("package")
+	public String packages() {
+		return "jinu/package";
+	}
+	
+	@GetMapping("destination")
+	public String destination() {
+		return "jinu/package";
+	}
+	
+	@GetMapping("testimonial")
+	public String testimontial() {
+		return "jinu/testimonial";
+	}
+	
+	@GetMapping("team")
+	public String contact() {
+		return "jinu/team";
+	}
+	
+	@GetMapping("booking")
+	public String booking() {
+		return "jinu/booking";
 	}
 }
