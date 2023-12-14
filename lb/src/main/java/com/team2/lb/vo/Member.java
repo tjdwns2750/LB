@@ -21,7 +21,7 @@ public class Member implements UserDetails{
     private String address_detail;
     private String phone;
     private String email;
-    private String originfile;
+    private String originalfile;
     private String savedfile;
     private boolean enabled;
     private String rolename;
