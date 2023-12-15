@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원정보수정</title>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 	window.onload = function(){
 	    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
@@ -15,13 +16,54 @@
 	        }).open();
 	    });
 	}
+	
+	function uploadAndPreview() {
+            var fileInput = document.getElementById('fileInput');
+            var preview = document.getElementById('preview');
+
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+
+                // 파일을 서버에 업로드
+                uploadFile(file);
+            } else {
+                preview.src = "#";
+            }
+        }
+
+
+function uploadFile(file) {
+            var formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('File uploaded:', data.imageUrl);
+                // 여기에서 서버에서 전달한 이미지 URL을 사용하여 추가적인 작업을 수행할 수 있습니다.
+            })
+            .catch(error => {
+                console.error('Error uploading file:', error);
+            });
+        }
+        
 </script>
 </head>
 <body>
 
 	<h1>회원정보수정</h1>
 
-	<form th:action="@{/member/update}" method="post">
+	<form th:action="@{/member/update}" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<th>아이디</th>
@@ -70,7 +112,13 @@
 	            <th>상세 주소</th>
 	            <td><input type="text" name="address_detail" th:value="${member.address_detail}"></td>
         	</tr>
-        
+		        <th>프로필 사진</th> 
+				<td>
+					<input type="file" name="upload" id="fileInput" onchange="uploadAndPreview()" accept="image/*">
+					<br>
+    				<img id="preview" th:src="@{'/image/' + ${member.savedfile}}" alt="Preview" style="max-width: 200px; max-height: 300px;">
+				</td>
+			</tr>
 			<tr>
 				<td colspan="2">
 					<input type="submit" value="수정">

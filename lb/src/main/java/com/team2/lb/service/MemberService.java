@@ -15,4 +15,6 @@ public interface MemberService {
 
 	void deleteMember(String username);
 
+	boolean searchId(String searchId);
+
 }
