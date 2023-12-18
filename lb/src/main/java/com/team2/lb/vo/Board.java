@@ -14,10 +14,11 @@ public class Board {
 	private String title;
 	private String content;
 	private int hits;
+	private String address;
 	private String categori;
 	private String orininfile;
 	private String savedfile;
 	private int recommend;
-	private String createdDay;
+	private String created_day;
 
 }
