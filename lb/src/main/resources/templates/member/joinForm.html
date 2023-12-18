@@ -6,6 +6,7 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 	window.onload = function(){
+		setExternalImage();
 	    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
 	        //카카오 지도 발생
 	        new daum.Postcode({
@@ -61,9 +62,7 @@ function uploadAndPreview() {
             var preview = document.getElementById('preview');
             preview.src = imageUrl;
         }
-        window.onload = function() {
-            setExternalImage();
-        };
+
 </script>
 </head>
 <body>
