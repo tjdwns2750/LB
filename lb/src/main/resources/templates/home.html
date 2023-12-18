@@ -4,6 +4,12 @@
 <head>
 	<meta charset="utf-8">
 	<title>연결책</title>
+	<script th:inline="javascript">
+		var boardList = /*[[${boardListJson}]]*/ '[]';
+		// boardList를 JavaScript에서 사용할 수 있도록 파싱
+		boardList = JSON.parse(boardList);
+		console.log('Board List from server:', boardList);
+	</script>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 	<meta content="" name="keywords">
@@ -36,6 +42,8 @@
 </head>
 
 <body>
+	<input sec:authorize="isAuthenticated()" id="getAddress" type="hidden" th:value="${member.address}">
+	<input sec:authorize="isAuthenticated()" id="getImage" type="hidden" th:value="${member.originalfile}">
 	<!-- Spinner Start -->
 	<div id="spinner"
 		class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -89,9 +97,11 @@
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<div class="navbar-nav ms-auto py-0">
 					<a th:href="@{/}" class="nav-item nav-link active">연결책</a>
-					<a sec:authorize="not isAuthenticated()" th:href="@{/member/loginForm}" class="nav-item nav-link">로그인</a>
+					<a sec:authorize="not isAuthenticated()" th:href="@{/member/loginForm}"
+						class="nav-item nav-link">로그인</a>
 					<a sec:authorize="isAuthenticated()" th:href="@{/member/logout}" class="nav-item nav-link">로그아웃</a>
-					<a sec:authorize="isAuthenticated()" th:href="@{/member/update}" class="nav-item nav-link">회원 정보 수정</a>
+					<a sec:authorize="isAuthenticated()" th:href="@{/member/update}" class="nav-item nav-link">회원 정보
+						수정</a>
 					<a sec:authorize="isAuthenticated()" th:href="@{/member/delete}" class="nav-item nav-link">회원삭제</a>
 					<a th:href="@{/about}" class="nav-item nav-link">안내</a>
 					<a th:href="@{/service}" class="nav-item nav-link">게시판 예정</a>
@@ -140,14 +150,13 @@
 			<div class="row g-5">
 				<div class="position-relative h-100">
 					<div id="map" style="width:100%;height:700px;"></div>
-				</div>x`
+				</div>
 			</div>
 		</div>
 	</div>
 	<!-- About End -->
 
 	<script th:src="@{/js/map.js}"></script>
-
 
 	<!-- Service Start -->
 	<div class="container-xxl py-5">
