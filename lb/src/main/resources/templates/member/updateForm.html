@@ -57,6 +57,13 @@ function uploadFile(file) {
             });
         }
         
+        // Example of setting the image source with an external URL
+        function setExternalImage() {
+            var imageUrl = 'https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=w240-h480-rw'; // Replace with the actual URL of your external image
+            var preview = document.getElementById('preview');
+            preview.src = imageUrl;
+        }
+        
 </script>
 </head>
 <body>
