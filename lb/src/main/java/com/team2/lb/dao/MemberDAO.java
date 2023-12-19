@@ -15,4 +15,6 @@ public interface MemberDAO {
 
 	void deleteMember(String username);
 
+	Member searchId(String searchId);
+
 }

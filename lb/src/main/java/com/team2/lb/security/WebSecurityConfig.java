@@ -42,6 +42,7 @@ package com.team2.lb.security;
                     "/member/goSign",
                     "/img/**",
                     "/css/**",
+                    "/image/**",
                     "/error",
                     "/lib/**",
                     "/js/**").permitAll()

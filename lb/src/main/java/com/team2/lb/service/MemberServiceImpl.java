@@ -48,6 +48,13 @@ public class MemberServiceImpl implements MemberService {
 	public void deleteMember(String username) {
 		dao.deleteMember(username);
 	}
+
+	@Override
+	public boolean searchId(String searchId) {
+		Member member = dao.searchId(searchId);
+		
+		return member == null ? true : false ;
+	}
 	
 
 }
