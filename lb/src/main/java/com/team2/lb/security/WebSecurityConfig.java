@@ -26,20 +26,33 @@ package com.team2.lb.security;
             http.csrf().disable()
             .authorizeRequests()
             .antMatchers(
-                    "/",
+            		"/",
+            		"/join",
+            		"/about",
+            		"/service",
+            		"/package",
+            		"/destination",
+            		"/hometest",
+            		"/serachBook",
+            		"/service",
+                    "/test2",
                     "/test",
+                    "/member/join",
+                    "/member/idCheck",
                     "/member/goSign",
-                    "/image/**",
+                    "/img/**",
                     "/css/**",
+                    "/image/**",
                     "/error",
+                    "/lib/**",
                     "/js/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()					
             .loginPage("/member/loginForm")	
             .loginProcessingUrl("/member/login").permitAll()
-            .usernameParameter("memberid")
-            .passwordParameter("memberpw")
+            .usernameParameter("id")
+            .passwordParameter("pw")
             .and()
             .logout()
             .logoutUrl("/member/logout")
@@ -59,14 +72,14 @@ package com.team2.lb.security;
             .dataSource(dataSource)
             // 인증 (로그인)
             .usersByUsernameQuery(
-                    "select memberid username, memberpw password, enabled " +
-                    "from bbs_member " +
-                    "where memberid = ?")
+                    "select id username, pw password, enabled " +
+                    "from member " +
+                    "where id = ?")
             // 권한
             .authoritiesByUsernameQuery(
-                    "select memberid username, rolename role_name " +
-                    "from bbs_member " +
-                    "where memberid = ?");
+                    "select id username, rolename role_name " +
+                    "from member " +
+                    "where id = ?");
         }
 
         // 단방향 비밀번호 암호화
