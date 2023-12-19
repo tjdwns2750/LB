@@ -14,6 +14,7 @@
 	
 	
 	window.onload = function(){
+		setExternalImage();
 	    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
 	        //카카오 지도 발생
 	        new daum.Postcode({
@@ -70,7 +71,7 @@ function uploadAndPreview() {
             var preview = document.getElementById('preview');
             preview.src = imageUrl;
         }
-        
+
 </script>
 </head>
 <body>
