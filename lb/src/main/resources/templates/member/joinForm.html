@@ -5,6 +5,14 @@
 <title>회원가입</title>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
+	
+	function idCheck() {
+		// url경로, 이름, 속성
+		//let win = window.open('idCheck', 'idwin', 'top=200, left=500, width=500, height=400');
+		window.open('idCheck', '_blank', 'top=200, left=500, width=500, height=400');
+	}
+	
+	
 	window.onload = function(){
 		setExternalImage();
 	    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
@@ -16,6 +24,7 @@
 	            }
 	        }).open();
 	    });
+	    setExternalImage();
 	}
 
 function uploadAndPreview() {
@@ -74,8 +83,8 @@ function uploadAndPreview() {
 			<tr>
 				<th>아이디</th>
 				<td>
-					<input type="text" name="id" id="id"
-					placeholder="아이디">
+					<input type="text" name="id" id="id" readonly="readonly"
+					placeholder="아이디" onclick="idCheck();">
 					<input type="button" value="ID중복검사" onclick="idCheck();">
 				</td>
 			</tr>
@@ -112,6 +121,7 @@ function uploadAndPreview() {
 				<td>
 					<input type="text" id="address_kakao" name="address" placeholder="주소"
 					readonly="readonly">
+					<input type="button" value="주소 검색" id="address_kakao">
 				</td>
 			</tr>
 			<tr>
@@ -123,7 +133,7 @@ function uploadAndPreview() {
 				<td>
 					<input type="file" name="upload" id="fileInput" onchange="uploadAndPreview()" accept="image/*">
 					 <br>
-    				<img id="preview" src="static/image/졸린 망곰이.jpg" alt="Preview" style="max-width: 200px; max-height: 300px;">
+    				<img id="preview" src="#" alt="Preview" style="max-width: 200px; max-height: 300px;">
 				</td>
 			</tr>
 			<tr>

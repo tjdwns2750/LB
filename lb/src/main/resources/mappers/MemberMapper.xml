@@ -41,6 +41,10 @@
 			<if test="pw != null or pw != ''">
 			, pw = #{pw}
 			</if>
+			<if test="originalfile != null and savedfile != null">
+			, originalfile = #{originalfile}
+			, savedfile = #{savedfile}
+			</if>
 		where
 			id = #{id}
 	</update>
@@ -50,5 +54,14 @@
 		where
 			id = #{id}
 	</delete>
+	
+	<select id="searchId" parameterType="String" resultType="Member">
+		select 
+			* 
+		from 
+			member
+		where 
+			id like #{searchId}
+	</select>
 	
 </mapper>

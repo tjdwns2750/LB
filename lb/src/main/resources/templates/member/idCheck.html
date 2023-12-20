@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ID중복검사</title>
+<script>
+	function useId(searchId) {
+		opener.document.querySelector('#id').value = searchId;
+		this.close();
+	}
+</script>
+</head>
+<body>
+
+	<h1>ID중복검사</h1>
+
+	<form th:action="@{/member/idCheck}" method="post">
+		<label for="searchId">검색할ID</label>
+		<input type="text" name="searchId" id="searchId">
+		<input type="submit" value="검색">
+	</form>
+
+	<div>
+		<p th:text="${result}"></p>
+		<th:block th:if="${searchId != null}">
+			<input type="button" value="사용하기" th:sid="${searchId}"
+			th:onclick="useId(this.getAttribute('sid'))">
+		</th:block>
+	</div>
+
+</body>
+</html> 

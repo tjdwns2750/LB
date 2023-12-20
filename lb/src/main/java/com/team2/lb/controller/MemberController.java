@@ -32,7 +32,27 @@ public class MemberController {
 	public String joinForm() {
 		return "member/joinForm";
 	}
-
+	
+	@GetMapping("idCheck")
+	public String idCheckForm() {
+		return "member/idCheck";
+	}
+	
+	@PostMapping("idCheck")
+	public String idCheck(String searchId, Model model) {
+		//DB로부터 가져온다
+		boolean result = service.searchId(searchId);
+		
+		if(result) {
+			model.addAttribute("searchId", searchId);
+			model.addAttribute("result", "사용할 수 있는 ID입니다.");
+		} else {
+			model.addAttribute("result", "이미 사용중인 ID입니다.");			
+		}
+		
+		return "member/idCheck";
+	}
+	
 	@PostMapping("join")
 	public String join(Member member, MultipartFile upload) {
 		log.debug("join_param: {}", member);
@@ -45,6 +65,8 @@ public class MemberController {
 		service.joinMember(member);
 		return "redirect:/";
 	}
+	
+	
 	
 	@GetMapping("loginForm")
 	public String loginForm() {
@@ -65,9 +87,16 @@ public class MemberController {
 	
 	@PostMapping("update")
 	public String update(@AuthenticationPrincipal UserDetails user
-			, Member member) {
-		
+			, Member member, MultipartFile upload) {
 		member.setId(user.getUsername());
+		
+		if(!upload.isEmpty()) {
+			String savedfile = FileService.saveFile(upload, uploadPath);
+			member.setOriginalfile(upload.getOriginalFilename());
+			member.setSavedfile(savedfile);
+			FileService.deleteFile(uploadPath+"/"+member.getSavedfile());
+		}
+	
 		
 		int result = service.updateUser(member);
 		log.debug("update 결과: {}", result);
