@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team2.lb.dao.ChatDAO">
+
+	<insert id="createChatRoom" parameterType="String">
+		insert into ChatRoom(
+		roomId,
+		roomName
+		)
+		values (
+		CHATROOM_SEQ.nextval,
+		CHATNAME_SEQ.nextval
+		)
+	</insert>
+
+	<select id="findAllRooms" resultType="ChatRoom">
+		select * from ChatRoom
+	</select>
+
+	<select id="findRoomById" parameterType="String"
+		resultType="ChatRoom">
+		select * from ChatRoom where roomId = #{roomId}
+	</select>
+	
+	<select id="findByMessage" parameterType="String" resultType="ChatMessage">
+		select * 
+		from Chat_Messages 
+		where roomId = #{roomId}
+		order by created_day asc
+	</select>
+
+	<insert id="saveMessage" parameterType="ChatMessage">
+		INSERT INTO CHAT_MESSAGES (roomId, writer, message)
+		VALUES (#{roomId}, #{writer}, #{message})
+	</insert>
+
+
+</mapper>
