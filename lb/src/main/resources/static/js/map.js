@@ -135,12 +135,16 @@ function addMarkerToMap(latlng, board) {
 
 	var infoWindow = new naver.maps.InfoWindow({
 		content: '<div style="padding:10px;min-width:200px;line-height:150%;">' +
+			'<h3>' + '판매' +'</h3>' +
+			'<h3>' + board.name + '</h3>' +
 			'<a id="boardtitle" style="font-size:20px" href="./board/read/(bno=' + board.bno + ')">' + '제목 :' + board.title + '</a>' +
-			'<p id="boardcontent">' + '내용 :' + board.content + '</p>' +
+			'<img id="bookBoardImg" src="' + board.thumbnail + '">' +
+			'<p id="boardcontent">' + '내용 : ' + board.content + '</p>' +
+			'<p id="boardprice">' + '가격 : ' + board.price + '</p>' +
 			'<p id="boardaddress">' + '거래 주소 :' + board.address + '</p>' +
 			'<p id createdDay>' + '작성일 :' + board.created_day + '</p>' +
 
-			+ '</div>'
+			'</div>'
 	});
 
 	naver.maps.Event.addListener(marker, 'click', function() {
