@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team2.lb.service.BoardService;
+import com.team2.lb.service.BookBoardService;
 import com.team2.lb.service.MemberService;
 import com.team2.lb.vo.Board;
 import com.team2.lb.vo.BookBoard;
@@ -27,7 +28,7 @@ public class HomeController {
 	MemberService service;
 
 	@Autowired
-	BoardService boardservice;
+	BookBoardService bookboardservice;
 
 	// 메인 페이지
 	@GetMapping("/")
@@ -51,7 +52,7 @@ public class HomeController {
 		log.error("member : {}", member.getAddress());
 		}
 		// 계시판 전체 조회
-		ArrayList<BookBoard> boardList = boardservice.showBoardList();
+		ArrayList<BookBoard> boardList = bookboardservice.showBoardList();
 		log.info("boardlist {}", boardList);
 
 		// 지도에 계시판을 출력하기 위해 json형식으로 파싱
