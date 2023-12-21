@@ -26,6 +26,7 @@ public class BoardController {
 	@Autowired
 	BoardService service;
 	
+	
 	@GetMapping("boardList")
 	public String boardList(Model model
 			, String type
@@ -73,7 +74,51 @@ public class BoardController {
 		return "board/readForm";
 			
 	}
-	
 
+	@GetMapping("update")
+	public String update(
+			int bno
+			, @AuthenticationPrincipal UserDetails user
+			, Model model) {
+		
+		Board board = service.readBoard(bno);
+		if (!board.getId().equals(user.getUsername())) {
+			return "redirect:/board/boardList";
+		}
+		model.addAttribute("board", board);
+		
+		return "/board/updateForm";
+	}
 	
+	@PostMapping("update")
+	public String update(
+			Board board
+			, @AuthenticationPrincipal UserDetails user) {
+		
+		log.debug("수정할 글정보 : {}", board);
+		
+		
+		//작성자 아이디 추가
+		board.setId(user.getUsername());
+
+		
+		int result = service.updateBoard(board);
+	
+		return "redirect:/board/read?bno=" + board.getBno();
+	}
+	
+	@GetMapping("delete")
+	public String delete(int bno
+			, @AuthenticationPrincipal UserDetails user) {
+		
+		Board board = service.readBoard(bno);
+		
+		if(board.getId().equals(user.getUsername())) {
+			//삭제처리
+			int result = service.deleteBoard(board);
+
+			}
+		
+		return "redirect:/board/boardList";
+	}
 }

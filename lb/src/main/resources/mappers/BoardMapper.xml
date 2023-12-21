@@ -82,4 +82,24 @@
 			bno = #{bno}
 	</update>
 	
+	<!-- 글 수정 -->
+	<update id="updateBoard" parameterType="Board">
+		update
+			board
+		set
+			title = #{title}
+			, content = #{content}
+		where
+			bno = #{bno}
+			and id = #{id}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="Board">
+		delete 
+			board 
+		where 
+			id like #{id}
+			and bno = #{bno}
+	</delete>
+	
 </mapper>
