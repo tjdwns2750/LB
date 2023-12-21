@@ -4,35 +4,52 @@
 
 <mapper namespace="com.team2.lb.dao.ChatDAO">
 
-	<insert id="createChatRoom" parameterType="String">
+	<select id="selectChatRoom" parameterType="ChatRoom"
+		resultType="int">
+		select count(*)
+		from ChatRoom
+		where id like #{id} and buno
+		like #{buno} and bbno like #{bbno}
+	</select>
+
+	<insert id="createChatRoom" parameterType="ChatRoom">
 		insert into ChatRoom(
 		roomId,
-		roomName
+		id,
+		buno,
+		bbno
 		)
 		values (
 		CHATROOM_SEQ.nextval,
-		CHATNAME_SEQ.nextval
+		#{id},
+		#{buno},
+		#{bbno}
 		)
 	</insert>
 
-	<select id="findAllRooms" resultType="ChatRoom">
+	<select id="findAllRooms" resultType="ChatRoom"
+		parameterType="ChatRoom">
 		select * from ChatRoom
+		where id like #{id} and buno like #{buno} and bbno = #{bbno}
 	</select>
 
-	<select id="findRoomById" parameterType="String"
+	<select id="findRoomById" parameterType="int"
 		resultType="ChatRoom">
 		select * from ChatRoom where roomId = #{roomId}
 	</select>
-	
-	<select id="findByMessage" parameterType="String" resultType="ChatMessage">
-		select * 
-		from Chat_Messages 
+
+	<select id="findByMessage" parameterType="int"
+		resultType="ChatMessage">
+		select *
+		from Chat_Messages
 		where roomId = #{roomId}
-		order by created_day asc
+		order by
+		created_day asc
 	</select>
 
 	<insert id="saveMessage" parameterType="ChatMessage">
-		INSERT INTO CHAT_MESSAGES (roomId, writer, message)
+		INSERT INTO CHAT_MESSAGES
+		(roomId, writer, message)
 		VALUES (#{roomId}, #{writer}, #{message})
 	</insert>
 

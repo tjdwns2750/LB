@@ -15,10 +15,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRoom {
-	private String roomId; // 채팅방 아이디
-	// private String uno; // 사용자
-	// private String buno; // 블로그 사용자
-	// private String created_day; // 생성일
-	private String roomName;
+	private int roomId; // 채팅방 아이디
+	private String id; // 사용자 아이디
+	private String buno; // 블로그 사용자
+	private String bbno; // 블로그 번호
+	private String created_day; // 생성일
+	// private String roomName;
 	
 }

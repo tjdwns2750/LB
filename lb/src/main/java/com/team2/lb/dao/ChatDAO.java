@@ -11,14 +11,16 @@ import com.team2.lb.vo.ChatRoom;
 @Mapper
 public interface ChatDAO {
 
-	ChatRoom findRoomById(String roomId);
+	ChatRoom findRoomById(ChatRoom chatRoom);
 
-	ChatRoom createChatRoom(String name);
+	void createChatRoom(ChatRoom chatRoom);
 
 	List<ChatRoom> findAllRooms();
 
 	void saveMessage(ChatMessage message);
 
-	ArrayList<ChatMessage> findByMessage(String roomId);
+	ArrayList<ChatMessage> findByMessage(int roomId);
+
+	int selectChatRoom(ChatRoom chatRoom);
 
 }
