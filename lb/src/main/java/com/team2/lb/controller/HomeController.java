@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team2.lb.service.BoardService;
 import com.team2.lb.service.MemberService;
 import com.team2.lb.vo.Board;
+import com.team2.lb.vo.BookBoard;
 import com.team2.lb.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class HomeController {
 		log.error("member : {}", member.getAddress());
 		}
 		// 계시판 전체 조회
-		ArrayList<Board> boardList = boardservice.showBoardList();
+		ArrayList<BookBoard> boardList = boardservice.showBoardList();
 		log.info("boardlist {}", boardList);
 
 		// 지도에 계시판을 출력하기 위해 json형식으로 파싱
