@@ -208,7 +208,7 @@ function searchAddressToCoordinate(address) {
 			item = response.v2.addresses[0],
 			point = new naver.maps.Point(item.x, item.y);
 
-		/*
+		
 		if (item.roadAddress) {
 			htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
 		}
@@ -220,7 +220,7 @@ function searchAddressToCoordinate(address) {
 		if (item.englishAddress) {
 			htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
 		}
-		*/
+		
 
 		infoWindow.setContent([
 			'<div style="padding:10px;min-width:200px;line-height:150%;">',
@@ -242,7 +242,7 @@ function onSuccessGeolocation(position) {
 		position.coords.longitude);
 
 	map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
-	map.setZoom(30); // 지도의 줌 레벨을 변경합니다.
+	map.setZoom(17); // 지도의 줌 레벨을 변경합니다.
 
 	infowindow.setContent('<div style="padding:20px;">' + 'geolocation.getCurrentPosition() 위치' + '</div>');
 
