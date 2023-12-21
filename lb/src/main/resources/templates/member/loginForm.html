@@ -7,9 +7,11 @@
 </head>
 <body>
 
-	<h2>로그인</h2>
+
 	<section class="content">
-		<img th:src="@{/image/img1.png}" alt="로그인이미지" width="500" height="1000">
+		<div>
+		<img th:src="@{/image/cupbook.jpg}" alt="로그인이미지" 
+		style='position: relative; width: 1000px; height: 100%;  overflow: hidden; will-change: transform;'></div>
 		<div class="login-container">
 			<form th:action="@{/member/login}" method="post">
 		ID: <input type="text" name="id">		<br>

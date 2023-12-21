@@ -11,4 +11,10 @@ public interface BoardService {
 
 	ArrayList<Board> showBoardList();
 
+	int writeBoard(Board board);
+
+	ArrayList<Board> selectList(String type, String searchWord);
+
+	Board readBoard(int bno);
+
 }
