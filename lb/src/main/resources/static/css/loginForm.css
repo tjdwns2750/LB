@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+img1 {
+    max-width: 50%; /* 이미지가 너무 커지지 않도록 최대 너비 설정 */
+}
+
+form {
+    margin-left: 20px; /* 이미지와 폼 간격 조절 */
+}
