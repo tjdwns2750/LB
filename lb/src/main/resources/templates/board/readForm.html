@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Read Form</title>
+
+<style>
+	table td, th {
+		text-align: center;
+	}
+</style>
+<script>
+	function deleteFunc(bno){
+		if(confirm('삭제하시겠습니까?')){
+			location.href = 'delete?bno=' + bno;
+		}
+	}
+	
+
+</script>
+</head>
+<body>
+<header>
+		<h1>글 읽기</h1>
+	</header>
+
+	<table>
+		<tr>
+			<th>글번호</th>
+			<td style="width: 80px;" th:text="${board.bno}"></td>
+			<th>조회수</th>
+			<td style="width: 50px;" th:text="${board.hits}"></td>
+			<th>작성일</th>
+			<td style="width: 150px;" th:text="${board.created_day}"></td>
+		</tr>
+		<tr>
+			<th>제목</th>
+			<td colspan="3" th:text="${board.title}"></td>
+			<th>작성자</th>
+			<td th:text="${board.id}"></td>
+		</tr>
+		<tr>
+			<th colspan="6">내용</th>
+		</tr>
+		<tr>
+			<td colspan="6" style="height: 250px;">
+				<pre th:utext="${board.content}"></pre>
+			</td>
+		</tr>
+		
+		<div th:if="${#authentication.name == board.id}" style="text-align: center;">
+		<a th:href="@{/board/update(boardnum=${board.bno})}">수정</a>
+		<a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a>
+		</div>
+	</table>
+	
+
+</body>
+</html>
