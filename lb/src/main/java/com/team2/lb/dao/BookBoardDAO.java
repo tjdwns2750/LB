@@ -13,4 +13,10 @@ public interface BookBoardDAO {
 
 	ArrayList<BookBoard> showBoardList();
 
+	BookBoard readBoard(int boardnum);
+
+	int deleteBoard(int boardnum);
+	
+	
+
 }

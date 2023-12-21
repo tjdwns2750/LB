@@ -25,6 +25,19 @@ public class BookBoardServiceImpl implements BookBoardService {
 		ArrayList<BookBoard> boardList = dao.showBoardList();
 		return boardList;
 	}
+
+	@Override
+	public BookBoard readBoard(int boardnum) {
+		BookBoard bookBoard = dao.readBoard(boardnum);
+		return bookBoard;
+	}
+
+	@Override
+	public int deleteBoard(int boardnum) {
+		int result = dao.deleteBoard(boardnum);
+		return result;
+	}
+	
 	
 	
 

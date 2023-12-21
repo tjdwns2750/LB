@@ -10,4 +10,8 @@ public interface BookBoardService {
 
 	ArrayList<BookBoard> showBoardList();
 
+	BookBoard readBoard(int boardnum);
+
+	int deleteBoard(int boardnum);
+
 }

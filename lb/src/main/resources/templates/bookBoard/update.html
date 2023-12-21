@@ -233,12 +233,12 @@
 			</tr>
 			<tr>
 				<th>판매글 제목</th>
-				<td><input type="text" name="title" placeholder="제목을 입력해주세요."></td>
+				<td><input type="text" name="title" placeholder="제목을 입력해주세요." th:value="${board.title}"></td>
 			</tr>
 			<tr>
 				<th>책 등록</th>
 				<td>
-					<input type="text" id="bookName" placeholder="책 제목이나 ISBN을 입력해주세요.">
+					<input type="text" id="bookName"  placeholder="책 제목이나 ISBN을 입력해주세요.">
 					<button type="button" id="searchBook" class="btn btn-primary" data-bs-toggle="modal"
 						data-bs-target="#exampleModal">
 						책 검색
@@ -249,7 +249,7 @@
 			<tr>
 				<th>선택된 책</th>
 				<td>
-					<div id="selectedBookThumbnail">
+					<div id="selectedBookThumbnail" th:text="${board.bookTitle}">
 						<img src="">
 					</div>
 					<p id="selectedBook" name="selectedBook"></p>
