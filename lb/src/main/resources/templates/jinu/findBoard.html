@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
+		
+		<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+			<div class="container py-5">
+				<div class="row justify-content-center py-5">
+					<div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+						<h1 class="display-3 text-white mb-3 animated slideInDown">주변 도서를 교환하거나 판매!!</h1>
+						<p class="fs-4 text-white mb-4 animated slideInDown">책 또는 지역을 검색해보세요</p>
+						<div class="position-relative w-75 mx-auto animated slideInDown">
+							<input id="address" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5"
+								type="text" placeholder="Eg: Thailand">
+							<button id="submit" type="button"
+								class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2"
+								style="margin-top: 7px;">Search</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<!-- About Start -->
+		<div class="container-xxl py-5">
+			<div class="container">
+				<div class="row g-5">
+					<div class="position-relative h-100">
+						<div id="map" style="width:100%;height:700px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- About End -->
+
+		<script th:src="@{/js/map.js}"></script>
+
+	</th:block>
+</th:block>
+
+</html>
