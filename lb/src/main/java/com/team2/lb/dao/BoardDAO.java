@@ -22,4 +22,8 @@ public interface BoardDAO {
 
 	Board readBoard(int bno);
 
+	int updateBoard(Board board);
+
+	int deleteBoard(Board board);
+
 }

@@ -49,7 +49,7 @@
 		</tr>
 		
 		<div th:if="${#authentication.name == board.id}" style="text-align: center;">
-		<a th:href="@{/board/update(boardnum=${board.bno})}">수정</a>
+		<a th:href="@{/board/update(bno=${board.bno})}">수정</a>
 		<a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a>
 		</div>
 	</table>

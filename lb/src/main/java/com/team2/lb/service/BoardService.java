@@ -17,4 +17,8 @@ public interface BoardService {
 
 	Board readBoard(int bno);
 
+	int updateBoard(Board board);
+
+	int deleteBoard(Board board);
+
 }
