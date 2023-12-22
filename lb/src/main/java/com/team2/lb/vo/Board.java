@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 public class Board {
 	
 	private int bno;
-	private int uno;
+	private String id;
 	private String title;
 	private String content;
 	private int hits;
 	private String address;
-	private String categori;
-	private String orininfile;
+	private String category;
+	private String originalfile;
 	private String savedfile;
 	private int recommend;
 	private String created_day;

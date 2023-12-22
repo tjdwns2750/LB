@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team2.lb.dao.BookBoardDAO">
+<insert id="registSell" parameterType="BookBoard">
+
+insert into BookBoard
+		(
+		bbno
+		, id
+		, address
+		, title
+		, content
+		<if test="originalfile != null and savedfile != null">
+			, originalfile
+			, savedfile
+		</if>
+		, isbn
+		, thumbnail
+		, bookTitle
+		, author
+		, publisher
+		, price
+		, amount
+		
+		) values (
+		bookBoard_seq.nextval
+		, #{id}
+		, #{address}
+		, #{title}
+		, #{content}
+		<if test="originalfile != null and savedfile != null">
+			, #{originalfile}
+			, #{savedfile}
+		</if>
+		, #{isbn}
+		, #{thumbnail}
+		, #{bookTitle}
+		, #{author}
+		, #{publisher}
+		, #{price}
+		, #{amount}
+		)
+</insert>
+<select id="showBoardList" resultType="BookBoard">
+	select * from BookBoard
+</select>
+<select id="readBoard" parameterType="int" resultType="BookBoard">
+	select *
+	from BookBoard
+	where bbno = #{bbno}
+</select>
+<delete id="deleteBoard" parameterType="int">
+	delete from BookBoard
+	where
+	bbno like #{bbno}
+
+</delete>
+
+</mapper>

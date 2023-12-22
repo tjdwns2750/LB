@@ -8,14 +8,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookBoard {
-	private int bno;
+	private int bbno;
+	private String id;
+	private String address;
 	private String title;
+	private String content;
+	private int hits;
+	private String category;
+	private String originalfile;
+	private String savedfile;
+	private int recommend;
+	private String created_day;
+	private String isbn;
+	private String thumbnail;	
+	private String bookTitle;
 	private String author;
 	private String publisher;
-	private String inputDate;
-	private String tbCntUrl;
-	private String bookSummaryUrl;
-	private String page;
-	private String title_url;
-	private String isbn;
+	private int price;
+	private int amount;
 }
