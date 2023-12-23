@@ -1,38 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
-	<th:block th:fragment="content">
+<script th:src="@{/js/jquery-3.6.0.js}"></script>
+<!--<script th:inline="javascript" th:src="@{/js/basic.js}"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js"></script>
+<!--<script th:src="@{/js/bootstrap.bundle.min.js}"></script>-->
 
-		<div class="container">
-			<div class="col-6">
-				<h1>[[${room.roomName}]]</h1>
-			</div>
-			<div id="beforeArea" class="col" th:each="chatMessage : ${chatMessage}" style="margin-bottom: 10px;">
-				<!--
-				<div th:if="${chatMessage.writer eq #authentication.principal.username}" class='col-6'
-					style="margin-bottom: 50px;">
-					<b class='alert alert-secondary' th:text="${chatMessage.writer + ' : ' + chatMessage.message}"></b>
-				</div>
-				<div th:unless="${chatMessage.writer eq #authentication.principal.username}" class='col-6'
-					style="margin-bottom: 50px;">
-					<b class='alert alert-warning' th:text="${chatMessage.writer + ' : ' + chatMessage.message}"></b>
-				</div>
-				-->
-			</div>
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	
+	<link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
+	<div th:fragment="content">
 
-			<div id="msgArea" class="col"></div>
-			<div class="col-6">
-				<div class="input-group mb-3">
-					<input type="text" id="msg" class="form-control">
-					<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+		<div class="container-fluid bg-primary py-5 mb-5 hero-header"></div>
+
+		<div class="d-flex" id="wrapper">
+
+			<!-- Sidebar -->
+			<div class="bg-light border-right" id="sidebar-wrapper">
+				<div class="sidebar-heading">My Community </div>
+				<div class="list-group list-group-flush" id="list"></div>
+			</div>
+			<!-- /#sidebar-wrapper -->
+
+			<div class="container-fluid">
+				<div class="container">
+					<div class="col-6">
+						<h1>채팅하기</h1>
+					</div>
+					<div id="beforeArea" class="col" th:each="chatMessage : ${chatMessage}"
+						style="margin-bottom: 10px;">
+					</div>
+
+					<div id="msgArea" class="col"></div>
+					<div class="col-6">
+						<div class="input-group mb-3">
+							<input type="text" id="msg" class="form-control">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+							</div>
+						</div>
 					</div>
 				</div>
+				<div class="col-6"></div>
 			</div>
 		</div>
-		<div class="col-6"></div>
-		</div>
+
+
 
 
 		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
@@ -44,14 +57,12 @@
 				var chatMessage = /*[[${chatMessage}]]*/[];
 
 				console.log(chatMessage);
-
-				//var roomName = [[${roomName}]];
-
-				var roomName = /*[[${room.roomName}]]*/ '';
 				var roomId = /*[[${room.roomId}]]*/ '';
+				var buno = /*[[${room.buno}]]*/ '';
 				var username = /*[[${#authentication.principal.username}]]*/ '';
+				var name = /*[[${room.name}]]*/ '';
 
-				console.log(roomName + ", " + roomId + ", " + username);
+				console.log(roomId + ", " + username);
 
 				var sockJs = new SockJS("/lb/stomp/chat");
 				//1. SockJS를 내부에 들고있는 stomp를 내어줌
@@ -76,38 +87,59 @@
 							if (writer === username) {
 								str = "<div class='col-6'>";
 								str += "<div class='alert alert-secondary'>";
-								str += "<b>" + writer + " : " + message + "| 보낸 시간 :" + formattedTime + "</b>";
+								str += "<b>" + writer + " : " + message + "         시간 ->" + formattedTime + "</b>";
 								str += "</div></div>";
 							} else {
 								str = "<div class='col-6'>";
 								str += "<div class='alert alert-warning'>";
-								str += "<b>" + writer + " : " + message + "| 보낸 시간 :" + formattedTime +  "</b>";
+								str += "<b>" + writer + " : " + message + "         시간 ->" + formattedTime + "</b>";
 								str += "</div></div>";
 							}
 
 							$("#beforeArea").append(str);
+
 						});
+
+						var str2 = '';
+
+						var writer = username;
+
+						str2 = "<div class='col-6'>";
+						str2 += "<div class='alert alert-secondary'>";
+						str2 += "<b>" + writer + "님이 채팅방에 참여했습니다." + "</b>";
+						str2 += "</div></div>";
+
+						$("#msgArea").append(str2);
+
 					}
 
 
 					//4. subscribe(path, callback)으로 메세지를 받을 수 있음
 					stomp.subscribe("/sub/chat/room/" + roomId, function (chat, chatmessage) {
 						var content = JSON.parse(chat.body);
+						console.log("이름", name);
+						console.log(content);
+						console.log(content.writer)
 
 						var writer = content.writer;
+						var realwriter = name;
 						var message = content.message; // Define 'message' here
+						let today = new Date();
+
+						var formattedTime = today.getHours() + ':' + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
+
 						var str = '';
 
 						if (writer === username) {
 							str = "<div class='col-6'>";
 							str += "<div class='alert alert-secondary'>";
-							str += "<b>" + writer + " : " + message + "</b>";
+							str += "<b>" + writer + " : " + message + "   시간 -> " + formattedTime + "</b>";
 							str += "</div></div>";
 						}
 						else {
 							str = "<div class='col-6'>";
 							str += "<div class='alert alert-warning'>";
-							str += "<b>" + writer + " : " + message + "</b>";
+							str += "<b>" + writer + " : " + message + "   시간 -> " + formattedTime + "</b>";
 							str += "</div></div>";
 						}
 
@@ -127,7 +159,37 @@
 				});
 			});
 		</script>
-	</th:block>
+		
+					<script th:inline="javascript">
+
+				var roomList = /*[[${roomList}]]*/[];
+
+				console.log("roomList :", roomList);
+
+				var str = '';
+				if (roomList) {
+					roomList.forEach(function (room) {
+						str += '<div>';
+						str += '<form action="../chat/BoardchatRoom" method="post">';
+						str += '<input type="hidden" name="bbno" value=' + room.bbno + '>';
+						str += '<input type="hidden" name="roomId" value=' + room.roomId + '>';
+						str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + room.id + '님과 채팅하기"></input>';
+						str += '</form>';
+						str += '</div>';
+					});
+				}
+
+
+
+				$("#menu-toggle").click(function (e) {
+					e.preventDefault();
+					$("#wrapper").toggleClass("toggled");
+				});
+				$("#list").append(str);
+			</script>
+
+
+</th:block>
 </th:block>
 
 </html>

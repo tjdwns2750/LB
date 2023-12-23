@@ -19,10 +19,13 @@ public interface ChatService {
 
 	void saveMessage(ChatMessage message);
 
-	ArrayList<ChatMessage> findByMessage(int roomId);
+	ArrayList<ChatMessage> findByMessage(ChatRoom chatrooms);
 
 	int selectChatRoom(ChatRoom chatRoom);
 
-	void countMessage();
+	ArrayList<ChatRoom> showChatRoom(int bbno);
+
+	ChatRoom selectByChatRoom(int roomId);
+
 
 }

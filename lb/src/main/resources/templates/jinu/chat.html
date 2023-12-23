@@ -24,7 +24,7 @@
 		<script th:inline="javascript">
 			$(document).ready(function () {
 
-				const username = [[${#authentication.principal.username}]];
+				const username = /*[[${#authentication.principal.username}]]*/ '';
 
 				$("#disconn").on("click", (e) => {
 					disconnect();
