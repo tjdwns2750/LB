@@ -4,6 +4,10 @@
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
 	<th:block th:fragment="content">
 		
+		<input sec:authorize="isAuthenticated()" id="getAddress" type="hidden" th:value="${member.address}">
+		<input sec:authorize="isAuthenticated()" id="getImage" type="hidden" th:value="${member.originalfile}">
+
+
 		<div class="container-fluid bg-primary py-5 mb-5 hero-header">
 			<div class="container py-5">
 				<div class="row justify-content-center py-5">
@@ -18,11 +22,11 @@
 								style="margin-top: 7px;">Search</button>
 						</div>
 					</div>
-				</div>
+				</div>list-group-item list-group-item-action bg-light
 			</div>
 		</div>
 		</div>
-		
+
 		<!-- About Start -->
 		<div class="container-xxl py-5">
 			<div class="container">
@@ -36,6 +40,13 @@
 		<!-- About End -->
 
 		<script th:src="@{/js/map.js}"></script>
+
+		<script th:inline="javascript">
+			var boardList = /*[[${boardListJson}]]*/ '[]';
+			// boardList를 JavaScript에서 사용할 수 있도록 파싱
+			boardList = JSON.parse(boardList);
+			console.log('Board List from server:', boardList);
+		</script>
 
 	</th:block>
 </th:block>
