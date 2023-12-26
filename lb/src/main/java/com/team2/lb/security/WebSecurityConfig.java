@@ -26,9 +26,11 @@ package com.team2.lb.security;
             http.csrf().disable()
             .authorizeRequests()
             .antMatchers(
+            		
             		"/",
             		"/join",
             		"/about",
+            		"/findBoard",
             		"/service",
             		"/package",
             		"/destination",

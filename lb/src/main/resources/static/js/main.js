@@ -18,14 +18,15 @@
 
 
     // Sticky Navbar
+    /*
     $(window).scroll(function () {
-        if ($(this).scrollTop() > 45) {
+        if ($(this).scrollTop() > 0) {
             $('.navbar').addClass('sticky-top shadow-sm');
         } else {
             $('.navbar').removeClass('sticky-top shadow-sm');
         }
     });
-    
+	*/
     
     // Dropdown on mouse hover
     const $dropdown = $(".dropdown");
@@ -54,18 +55,39 @@
         }
     });
     
-    
     // Back to top button
     $(window).scroll(function () {
         if ($(this).scrollTop() > 300) {
-            $('.back-to-top').fadeIn('slow');
+            $('.back-to-top').fadeIn('fast');
         } else {
-            $('.back-to-top').fadeOut('slow');
+            $('.back-to-top').fadeOut('fast');
         }
     });
+    
+    // 맨 위로 올리는 버튼 속도 조절 함수
     $('.back-to-top').click(function () {
-        $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
+        $('html, body').animate({scrollTop: 0}, 100, 'easeInOutExpo');
         return false;
+    });
+    
+    // card 첫번쨰
+    $('#cardFirst').click(function () {
+        location.href= "./findBoard";
+    });
+    
+    // card 두번쨰
+    $('#cardTwo').click(function () {
+        location.href= "./board/boardList";
+    });
+
+	// card 세번째
+    $('#cardThird').click(function () {
+        location.href= "./bookBoard/sellBoard";
+    });
+    
+    // card 네번째
+    $('#cardFour').click(function () {
+        location.href= "./findBoard";
     });
 
 

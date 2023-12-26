@@ -7,19 +7,21 @@
 <!--<script th:src="@{/js/bootstrap.bundle.min.js}"></script>-->
 
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
-	
+
 	<link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
 	<div th:fragment="content">
 
-		<div class="container-fluid bg-primary py-5 mb-5 hero-header"></div>
+		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
 		<div class="d-flex" id="wrapper">
 
 			<!-- Sidebar -->
-			<div class="bg-light border-right" id="sidebar-wrapper">
-				<div class="sidebar-heading">My Community </div>
-				<div class="list-group list-group-flush" id="list"></div>
-			</div>
+			<th:block th:if="${#authentication.principal.username eq room.buno}">
+				<div class="bg-light border-right" id="sidebar-wrapper">
+					<div class="sidebar-heading" style="text-align: center;">채팅목록</div>
+					<div class="list-group list-group-flush" id="list"></div>
+				</div>
+			</th:block>
 			<!-- /#sidebar-wrapper -->
 
 			<div class="container-fluid">
@@ -33,7 +35,7 @@
 
 					<div id="msgArea" class="col"></div>
 					<div class="col-6">
-						<div class="input-group mb-3">
+						<div class="input-group mb-3" id="search">
 							<input type="text" id="msg" class="form-control">
 							<div class="input-group-append">
 								<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
@@ -52,7 +54,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 		<script th:inline="javascript">
 			$(document).ready(function () {
-
 
 				var chatMessage = /*[[${chatMessage}]]*/[];
 
@@ -110,6 +111,8 @@
 						str2 += "</div></div>";
 
 						$("#msgArea").append(str2);
+						
+						document.getElementById("msg").focus();
 
 					}
 
@@ -159,34 +162,34 @@
 				});
 			});
 		</script>
-		
-					<script th:inline="javascript">
 
-				var roomList = /*[[${roomList}]]*/[];
+		<script th:inline="javascript">
 
-				console.log("roomList :", roomList);
+			var roomList = /*[[${roomList}]]*/[];
 
-				var str = '';
-				if (roomList) {
-					roomList.forEach(function (room) {
-						str += '<div>';
-						str += '<form action="../chat/BoardchatRoom" method="post">';
-						str += '<input type="hidden" name="bbno" value=' + room.bbno + '>';
-						str += '<input type="hidden" name="roomId" value=' + room.roomId + '>';
-						str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + room.id + '님과 채팅하기"></input>';
-						str += '</form>';
-						str += '</div>';
-					});
-				}
+			console.log("roomList :", roomList);
 
-
-
-				$("#menu-toggle").click(function (e) {
-					e.preventDefault();
-					$("#wrapper").toggleClass("toggled");
+			var str = '';
+			if (roomList) {
+				roomList.forEach(function (room) {
+					str += '<div>';
+					str += '<form action="../chat/BoardchatRoom" method="post">';
+					str += '<input type="hidden" name="bbno" value=' + room.bbno + '>';
+					str += '<input type="hidden" name="roomId" value=' + room.roomId + '>';
+					str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + room.id + '님과 채팅하기"></input>';
+					str += '</form>';
+					str += '</div>';
 				});
-				$("#list").append(str);
-			</script>
+			}
+
+
+
+			$("#menu-toggle").click(function (e) {
+				e.preventDefault();
+				$("#wrapper").toggleClass("toggled");
+			});
+			$("#list").append(str);
+		</script>
 
 
 </th:block>
