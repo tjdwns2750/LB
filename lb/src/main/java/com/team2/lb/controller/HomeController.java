@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.team2.lb.service.BoardService;
 import com.team2.lb.service.BookBoardService;
 import com.team2.lb.service.MemberService;
-import com.team2.lb.vo.Board;
 import com.team2.lb.vo.BookBoard;
 import com.team2.lb.vo.Member;
 
@@ -66,6 +64,7 @@ public class HomeController {
 		}
 
 		model.addAttribute("boardListJson", boardListJson);
+		log.info("boardListJSON {}", boardListJson);
 		model.addAttribute("boardlist", boardList);
 		return "jinu/findBoard";
 	}

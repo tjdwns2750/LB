@@ -19,8 +19,9 @@
 
 		<!-- Bootstrap core JavaScript -->
 		<script th:src="@{/js/jquery-3.6.0.js}"></script>
+		<!--<script th:inline="javascript" th:src="@{/js/basic.js}"></script>-->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js"></script>
-		<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+		<!--<script th:src="@{/js/bootstrap.bundle.min.js}"></script>-->
 	</head>
 
 	<body>
@@ -30,18 +31,7 @@
 			<!-- Sidebar -->
 			<div class="bg-light border-right" id="sidebar-wrapper">
 				<div class="sidebar-heading">My Community </div>
-				<div class="list-group list-group-flush">
-					<a th:href="@{/index}" class="list-group-item list-group-item-action bg-light">Home</a>
-					<a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-					<a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-					<a th:if="${#authentication.isAuthenticated()}"
-						th:href="@{/member/modify(account=${#authentication.principal.username})}"
-						class="list-group-item list-group-item-action bg-light">Private Info</a>
-					<a th:href="@{/admin/member/manage}" sec:authorize="hasRole('ADMIN')"
-						class="list-group-item list-group-item-action bg-light">Admin</a>
-					<a th:href="@{/chat/rooms}" sec:authorize="isAuthenticated()"
-						class="list-group-item list-group-item-action bg-light">Chat</a>
-				</div>
+				<div class="list-group list-group-flush" id="list"></div>
 			</div>
 			<!-- /#sidebar-wrapper -->
 
@@ -101,6 +91,33 @@
 					e.preventDefault();
 					$("#wrapper").toggleClass("toggled");
 				});
+			</script>
+			<script th:inline="javascript">
+
+				var roomList = /*[[${roomList}]]*/[];
+
+				console.log("roomList :", roomList);
+
+				var str = '';
+				if (roomList) {
+					roomList.forEach(function (room) {
+						str += '<div>';
+						str += '<form action="../chat/BoardchatRoom" method="post">';
+						str += '<input type="hidden" name="bbno" value=' + room.bbno + '>';
+						str += '<input type="hidden" name="roomId" value=' + room.roomId + '>';
+						str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + room.id + '님과 채팅하기"></input>';
+						str += '</form>';
+						str += '</div>';
+					});
+				}
+
+
+
+				$("#menu-toggle").click(function (e) {
+					e.preventDefault();
+					$("#wrapper").toggleClass("toggled");
+				});
+				$("#list").append(str);
 			</script>
 
 	</body>

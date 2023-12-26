@@ -4,111 +4,99 @@
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
 	<th:block th:fragment="content">
 
-		<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+		<style>
+			@media (min-width: 576px) {
+				.hero-header {
+					height: 100vh;
+					/* 100% of the viewport height */
+				}
+				
+				.container-xxl py-5 {
+					height: 100vh;
+					/* 100% of the viewport height */
+				}
+			}
+		</style>
+
+		<div class=" py-5 mb-5 hero-header"
+			style="background-image: url(./img/mainbook.jpg); background-size: cover;display: flex; align-items: center; justify-content: center; text-align: center;">
 			<div class="container py-5">
 				<div class="row justify-content-center py-5">
 					<div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-						<h1 class="display-3 text-white mb-3 animated slideInDown">집에 있는 책을 공유하여 새로운 독서 경험을 만들어 보세요!</h1>
+						<h1 class="display-3 mb-3 animated slideInDown" style="color: black;">책과 책을 연결하다</h1>
+						<h4 class="display-3 mb-3 animated slideInDown" style="color: black;">당신의 책을 만나보세요!</h4>
 						<p class="fs-4 text-white mb-4 animated slideInDown"></p>
 						<div class="position-relative w-75 mx-auto animated slideInDown">
 							<!--
-							<input id="address" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5"
-								type="text" placeholder="Eg: Thailand">
-								-->
-								<!--
-							<button id="submit" type="button"
-								class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2"
-								style="margin-top: 7px;">Search</button>
-								-->
+                    <input id="address" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5"
+                        type="text" placeholder="Eg: Thailand">
+                    -->
+							<!--
+                    <button id="submit" type="button"
+                        class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2"
+                        style="margin-top: 7px;">Search</button>
+                    -->
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 
 		<!-- Service Start -->
-		<div class="container-xxl py-5">
+		<div class="container-xxl py-5" style=" display: flex; align-items: center; justify-content: center; text-align: center;">
 			<div class="container">
 				<div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-					<h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
-					<h1 class="mb-5">Our Services</h1>
+					<h1 class="mb-5">많은 이용자들이 선택하는 </h1>
+					<h1 class="mb-5">독서 공유 서비스</h1>
 				</div>
 				<div class="row g-4">
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+					<div id="cardFirst" class="col-lg-6 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+						<!-- 첫 번째 서비스 카드 -->
 						<div class="service-item rounded pt-3">
 							<div class="p-4">
-								<i class="fa fa-3x fa-globe text-primary mb-4"></i>
-								<h5>WorldWide Tours</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+								<i class="fa fa-3x fa-map text-dark mb-4"></i>
+								<h5>내 주변에서 책 공유하기</h5>
+								<p>내 주변에 있는 책을 판매하거나 교환할 수 있습니다.</p>
 							</div>
 						</div>
+						<!-- ... -->
 					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
+					<div id="cardTwo" class="col-lg-6 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
+						<!-- 두 번째 서비스 카드 -->
 						<div class="service-item rounded pt-3">
 							<div class="p-4">
-								<i class="fa fa-3x fa-hotel text-primary mb-4"></i>
-								<h5>Hotel Reservation</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+								<i class="fa fa-3x fa-book text-dark mb-4"></i>
+								<h5>책 리뷰</h5>
+								<p>도서들의 리뷰를 한 눈에 볼 수 있습니다.</p>
 							</div>
 						</div>
+						<!-- ... -->
 					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
+					<div id="cardThird" class="col-lg-6 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
+						<!-- 세 번째 서비스 카드 -->
 						<div class="service-item rounded pt-3">
 							<div class="p-4">
-								<i class="fa fa-3x fa-user text-primary mb-4"></i>
-								<h5>Travel Guides</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+								<i class="fa fa-3x fa-globe text-dark mb-4"></i>
+								<h5>간단한 판매 등록</h5>
+								<p>ISBN을 등록하게 간단하게 판매 등록을 할 수 있습니다.</p>
 							</div>
 						</div>
+						<!-- ... -->
 					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
+					<div id="cardFour" class="col-lg-6 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
+						<!-- 네 번째 서비스 카드 -->
 						<div class="service-item rounded pt-3">
 							<div class="p-4">
-								<i class="fa fa-3x fa-cog text-primary mb-4"></i>
-								<h5>Event Management</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+								<i class="fa fa-3x fa-comment text-dark mb-4"></i>
+								<h5>메시징 서비스</h5>
+								<p>도서 거래 하는 사람을 위한 채팅 시스템 제공</p>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-						<div class="service-item rounded pt-3">
-							<div class="p-4">
-								<i class="fa fa-3x fa-globe text-primary mb-4"></i>
-								<h5>WorldWide Tours</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-						<div class="service-item rounded pt-3">
-							<div class="p-4">
-								<i class="fa fa-3x fa-hotel text-primary mb-4"></i>
-								<h5>Hotel Reservation</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-						<div class="service-item rounded pt-3">
-							<div class="p-4">
-								<i class="fa fa-3x fa-user text-primary mb-4"></i>
-								<h5>Travel Guides</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-						<div class="service-item rounded pt-3">
-							<div class="p-4">
-								<i class="fa fa-3x fa-cog text-primary mb-4"></i>
-								<h5>Event Management</h5>
-								<p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-							</div>
-						</div>
+						<!-- ... -->
 					</div>
 				</div>
 			</div>
+
 		</div>
 		<!-- Service End -->
 
@@ -162,7 +150,8 @@
 						<a class="position-relative d-block h-100 overflow-hidden" href="">
 							<img class="img-fluid position-absolute w-100 h-100" th:src="@{/img/destination-4.jpg}"
 								alt="" style="object-fit: cover;">
-							<div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">20%
+							<div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">
+								20%
 								OFF
 							</div>
 							<div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">
@@ -205,7 +194,9 @@
 									<small class="fa fa-star text-primary"></small>
 									<small class="fa fa-star text-primary"></small>
 								</div>
-								<p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
+								<p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
+									eos
+								</p>
 								<div class="d-flex justify-content-center mb-2">
 									<a href="#" class="btn btn-sm btn-primary px-3 border-end"
 										style="border-radius: 30px 0 0 30px;">Read More</a>
@@ -237,7 +228,9 @@
 									<small class="fa fa-star text-primary"></small>
 									<small class="fa fa-star text-primary"></small>
 								</div>
-								<p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
+								<p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
+									eos
+								</p>
 								<div class="d-flex justify-content-center mb-2">
 									<a href="#" class="btn btn-sm btn-primary px-3 border-end"
 										style="border-radius: 30px 0 0 30px;">Read More</a>
@@ -269,7 +262,9 @@
 									<small class="fa fa-star text-primary"></small>
 									<small class="fa fa-star text-primary"></small>
 								</div>
-								<p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
+								<p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
+									eos
+								</p>
 								<div class="d-flex justify-content-center mb-2">
 									<a href="#" class="btn btn-sm btn-primary px-3 border-end"
 										style="border-radius: 30px 0 0 30px;">Read More</a>
@@ -293,10 +288,16 @@
 						<div class="col-md-6 text-white">
 							<h6 class="text-white text-uppercase">Booking</h6>
 							<h1 class="text-white mb-4">Online Booking</h1>
-							<p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet
+							<p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
+								diam
+								amet
 								diam et eos. Clita erat ipsum et lorem et sit.</p>
-							<p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet
-								diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna
+							<p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu
+								diam
+								amet
+								diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo
+								justo
+								magna
 								dolore erat amet</p>
 							<a class="btn btn-outline-light py-3 px-5 mt-2" href="">Read More</a>
 						</div>
@@ -344,7 +345,8 @@
 										</div>
 									</div>
 									<div class="col-12">
-										<button class="btn btn-outline-light w-100 py-3" type="submit">Book Now</button>
+										<button class="btn btn-outline-light w-100 py-3" type="submit">Book
+											Now</button>
 									</div>
 								</div>
 							</form>
@@ -373,7 +375,9 @@
 							<h5 class="mt-4">Choose A Destination</h5>
 							<hr class="w-25 mx-auto bg-primary mb-1">
 							<hr class="w-50 mx-auto bg-primary mt-0">
-							<p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat
+							<p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam
+								eos
+								erat
 								ipsum
 								et lorem et sit sed stet lorem sit</p>
 						</div>
@@ -387,7 +391,9 @@
 							<h5 class="mt-4">Pay Online</h5>
 							<hr class="w-25 mx-auto bg-primary mb-1">
 							<hr class="w-50 mx-auto bg-primary mt-0">
-							<p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat
+							<p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam
+								eos
+								erat
 								ipsum
 								et lorem et sit sed stet lorem sit</p>
 						</div>
@@ -401,7 +407,9 @@
 							<h5 class="mt-4">Fly Today</h5>
 							<hr class="w-25 mx-auto bg-primary mb-1">
 							<hr class="w-50 mx-auto bg-primary mt-0">
-							<p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat
+							<p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam
+								eos
+								erat
 								ipsum
 								et lorem et sit sed stet lorem sit</p>
 						</div>
@@ -503,7 +511,9 @@
 							style="width: 80px; height: 80px;">
 						<h5 class="mb-0">John Doe</h5>
 						<p>New York, USA</p>
-						<p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et
+						<p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet
+							diam
+							et
 							eos.
 							Clita erat ipsum et lorem et sit.</p>
 					</div>
@@ -512,7 +522,9 @@
 							style="width: 80px; height: 80px;">
 						<h5 class="mb-0">John Doe</h5>
 						<p>New York, USA</p>
-						<p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
+						<p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam
+							amet
+							diam
 							et
 							eos. Clita erat ipsum et lorem et sit.</p>
 					</div>
@@ -521,7 +533,9 @@
 							style="width: 80px; height: 80px;">
 						<h5 class="mb-0">John Doe</h5>
 						<p>New York, USA</p>
-						<p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
+						<p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam
+							amet
+							diam
 							et
 							eos. Clita erat ipsum et lorem et sit.</p>
 					</div>
@@ -530,7 +544,9 @@
 							style="width: 80px; height: 80px;">
 						<h5 class="mb-0">John Doe</h5>
 						<p>New York, USA</p>
-						<p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam
+						<p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam
+							amet
+							diam
 							et
 							eos. Clita erat ipsum et lorem et sit.</p>
 					</div>
