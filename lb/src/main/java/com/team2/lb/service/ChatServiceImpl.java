@@ -49,8 +49,8 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public ArrayList<ChatMessage> findByMessage(int roomId) {
-		ArrayList<ChatMessage> chatMessage = dao.findByMessage(roomId);
+	public ArrayList<ChatMessage> findByMessage(ChatRoom chatroom) {
+		ArrayList<ChatMessage> chatMessage = dao.findByMessage(chatroom);
 		return chatMessage;
 	}
 
@@ -62,9 +62,16 @@ public class ChatServiceImpl implements ChatService{
 
 
 	@Override
-	public void countMessage() {
-		// TODO Auto-generated method stub
-		
+	public ArrayList<ChatRoom> showChatRoom(int bbno) {
+		ArrayList<ChatRoom> chatRoom = dao.showChatRoom(bbno);
+		return chatRoom;
+	}
+
+
+	@Override
+	public ChatRoom selectByChatRoom(int roomId) {
+		ChatRoom chatRoom = dao.selectByChatRoom(roomId);
+		return chatRoom;
 	}
 
 }

@@ -19,8 +19,12 @@ public interface ChatDAO {
 
 	void saveMessage(ChatMessage message);
 
-	ArrayList<ChatMessage> findByMessage(int roomId);
+	ArrayList<ChatMessage> findByMessage(ChatRoom chatroom);
 
 	int selectChatRoom(ChatRoom chatRoom);
+
+	ArrayList<ChatRoom> showChatRoom(int bbno);
+
+	ChatRoom selectByChatRoom(int roomId);
 
 }

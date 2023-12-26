@@ -39,42 +39,77 @@ public class ChatController {
 	 */
 
 	// 채팅방 목록 조회
-	@GetMapping("/chatRoom")
-	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, String bbno, String id) {
+	@PostMapping("/chatRoom")
+	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, 
+			int bbno, String boardId) {
 		chatRoom.setId(user.getUsername());
-		chatRoom.setBuno(bbno);
-		chatRoom.setBuno(id);
+		chatRoom.setBuno(boardId);
+		chatRoom.setBbno(bbno);
 		log.info("# All Chat Rooms");
-		
+
 		log.info("chatRoom :  {}", chatRoom);
-		
+
 		int chatRoomNum = service.selectChatRoom(chatRoom);
-		
-		if(chatRoomNum == 0) {
-			
-			service.createChatRoom(chatRoom);
-		}
 
-		model.addAttribute("room", service.findRoomById(chatRoom));
-		
-		/*
-		
-		ChatRoom chatrooms = service.findRoomById(chatRoom);
-		
-		int countMsg =  service.countMessage();
-		
-		if(service.countMessage() != null) {
-			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatrooms.getRoomId());
-			
-			model.addAttribute("chatMessage", chatmessage);
-			
+		if (chatRoom.getBuno().equals(user.getUsername())) {
+			ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
+			model.addAttribute("roomList", chatRoomByBoard);
+			log.info("roomList : {}", chatRoomByBoard);
+			model.addAttribute("room", chatRoomByBoard.get(0));
+			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatRoomByBoard.get(0));
+
+			if (chatmessage != null) {
+				model.addAttribute("chatMessage", chatmessage);
+			}
+
 			log.info("로그 확인 {}", chatmessage);
-		}
-		*/
 
+			return "chat/room";
+		} else {
+			if (chatRoomNum == 0) {
+
+				service.createChatRoom(chatRoom);
+			}
+
+			ChatRoom chatrooms = service.findRoomById(chatRoom);
+
+			model.addAttribute("room", chatrooms);
+
+			log.info("chatRoom, {}", chatrooms);
+
+			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatrooms);
+
+			if (chatmessage != null) {
+				model.addAttribute("chatMessage", chatmessage);
+			}
+
+			log.info("로그 확인 {}", chatmessage);
+
+			return "chat/room";
+		}
+	}
+	
+	@PostMapping("/BoardchatRoom")
+	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, 
+			int roomId, int bbno) {
+		
+		ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
+		ChatRoom selectRoom = service.selectByChatRoom(roomId);
+		model.addAttribute("roomList", chatRoomByBoard);
+		log.info("roomList : {}", chatRoomByBoard);
+		model.addAttribute("room", selectRoom);
+		ArrayList<ChatMessage> chatmessage = service.findByMessage(selectRoom);
+
+		if (chatmessage != null) {
+			model.addAttribute("chatMessage", chatmessage);
+		}
+
+		log.info("로그 확인 {}", chatmessage);
+		
 		return "chat/room";
 	}
 
+	/*
 	// 채팅방 개설
 	@PostMapping("/createRoom")
 	public String create(@RequestParam String name) {
@@ -82,8 +117,11 @@ public class ChatController {
 		log.info("# Create Chat Room , name: " + name);
 		return "redirect:/chat/rooms";
 	}
+	*/
 
+	
 	// 채팅방 조회
+	/*
 	@GetMapping("/rooms")
 	public String getRoom(String roomId, Model model) {
 
@@ -99,5 +137,5 @@ public class ChatController {
 
 		return "chat/room";
 	}
-
+	*/
 }

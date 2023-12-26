@@ -13,4 +13,5 @@ public class ChatMessage {
 	private String writer;
 	private String message;
 	private String created_day;
+	private String name;
 }

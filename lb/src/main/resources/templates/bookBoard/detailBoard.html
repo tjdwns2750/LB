@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>상세페이지</title>
+
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 0;
+		}
+
+		header {
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 10px 0;
+		}
+
+		table {
+			width: 80%;
+			margin: 20px auto;
+			border-collapse: collapse;
+			background-color: #fff;
+		}
+
+		table th,
+		table td {
+			padding: 10px;
+			border: 1px solid #ccc;
+		}
+
+		table th {
+			background-color: #f2f2f2;
+		}
+
+		table img {
+			max-width: 150px;
+			max-height: 150px;
+			border: 1px solid #ccc;
+		}
+
+		.action-links {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.action-links a {
+			margin: 0 10px;
+			padding: 5px 10px;
+			text-decoration: none;
+			color: #333;
+			background-color: #e0e0e0;
+			border-radius: 5px;
+			transition: background-color 0.3s ease;
+		}
+
+		.action-links a:hover {
+			background-color: #ccc;
+		}
+	</style>
+	<script>
+
+		function deleteFunc(bbno) {
+			if (confirm('삭제하시겠습니까?')) {
+				location.href = 'delete?boardnum=' + bbno;
+			}
+		}
+
+
+	</script>
+</head>
+
+<body>
+	<header>
+		<h1>판매</h1>
+	</header>
+
+	<table>
+		<tr>
+			<th>글번호</th>
+			<td style="width: 80px;" th:text="${board.bbno}"></td>
+			<th>조회수</th>
+			<td style="width: 50px;" th:text="${board.hits}"></td>
+			<th>작성일</th>
+			<td style="width: 150px;" th:text="${board.created_day}"></td>
+		</tr>
+		<tr>
+			<th>제목</th>
+			<td colspan="3" th:text="${board.title}"></td>
+			<th>작성자</th>
+			<td th:text="${board.id}"></td>
+		</tr>
+		<tr>
+			<th>사진</th>
+			<td>
+				<img th:src="${board.thumbnail}">
+			</td>
+		</tr>
+		<tr>
+			<th colspan="6">내용</th>
+		</tr>
+		<tr>
+			<td colspan="6" style="height: 250px;">
+				<pre th:utext="${board.content}"></pre>
+			</td>
+		</tr>
+		<tr>
+			<th>가격</th>
+			<td th:text="${board.price}"></td>
+		</tr>
+		<tr>
+			<th>수량</th>
+			<td th:text="${board.amount}"></td>
+		</tr>
+		<a th:href="@{/bookBoard/bookBoardList}">목록으로</a>
+		<div th:if="${#authentication.name == board.id}" style="text-align: center;">
+			<a th:href="@{/bookBoard/update(boardnum=${board.bbno})}">수정</a>
+			<a th:href="|javascript:deleteFunc(${board.bbno})|">삭제</a>
+		</div>
+		
+
+	</table>
+
+	<a href="" style="font-weight: bold;">채팅하기</a>
+
+</body>
+
+</html>

@@ -11,4 +11,14 @@ import com.team2.lb.vo.BookBoard;
 public interface BoardService {
 
 
+	int writeBoard(Board board);
+
+	ArrayList<Board> selectList(String type, String searchWord);
+
+	Board readBoard(int bno);
+
+	int updateBoard(Board board);
+
+	int deleteBoard(Board board);
+
 }
