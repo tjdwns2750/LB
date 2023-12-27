@@ -50,6 +50,7 @@ public class ChatController {
 		log.info("chatRoom :  {}", chatRoom);
 
 		int chatRoomNum = service.selectChatRoom(chatRoom);
+		
 
 		if (chatRoom.getBuno().equals(user.getUsername())) {
 			ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
@@ -65,6 +66,8 @@ public class ChatController {
 			log.info("로그 확인 {}", chatmessage);
 
 			return "chat/room";
+			
+		
 		} else {
 			if (chatRoomNum == 0) {
 

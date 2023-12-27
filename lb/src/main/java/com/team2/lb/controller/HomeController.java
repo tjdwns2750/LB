@@ -41,27 +41,7 @@ public class HomeController {
 			log.info(user.getUsername());
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
-			log.error("member : {}", member.getAddress());
-
-			chatRoom.setId(user.getUsername());
-			log.info("# All Chat Rooms");
-
-			log.info("chatRoom :  {}", chatRoom);
-
-			ArrayList<ChatRoom> chatRoomByBoard = chatservice.showChatRoomAll(user.getUsername());
-			model.addAttribute("roomList", chatRoomByBoard);
-			log.info("roomList : {}", chatRoomByBoard);
-			model.addAttribute("room", chatRoomByBoard.get(0));
-			ArrayList<ChatMessage> chatmessage = chatservice.findByMessage(chatRoomByBoard.get(0));
-
-			if (chatmessage != null) {
-				model.addAttribute("chatMessage", chatmessage);
-			}
-
-			log.info("로그 확인 {}", chatmessage);
-
 		}
-
 		return "home";
 
 	}
@@ -143,7 +123,7 @@ public class HomeController {
 	public String booking() {
 		return "jinu/booking";
 	}
-	
+
 	@GetMapping("exam")
 	public String exam() {
 		return "chat/exam";
