@@ -16,7 +16,7 @@
 	
 	
 	window.onload = function(){
-		setExternalImage();
+		//setExternalImage();
 	    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
 	        //카카오 지도 발생
 	        new daum.Postcode({
@@ -26,7 +26,7 @@
 	            }
 	        }).open();
 	    });
-	    setExternalImage();
+	    //setExternalImage();
 	}
 
 function uploadAndPreview() {
@@ -67,11 +67,11 @@ function uploadAndPreview() {
                 console.error('Error uploading file:', error);
             });
         }
-         // Example of setting the image source with an external URL
+          //Example of setting the image source with an external URL
         function setExternalImage() {
-            var imageUrl = 'https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=w240-h480-rw'; // Replace with the actual URL of your external image
-            var preview = document.getElementById('preview');
-            preview.src = imageUrl;
+           var imageUrl = 'https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=w240-h480-rw'; // Replace with the actual URL of your external image
+           var preview = document.getElementById('preview');
+           preview.src = imageUrl;
         }
 
 </script>
@@ -88,7 +88,7 @@ function uploadAndPreview() {
 	<form th:action="@{/member/join}" method="post" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<th>아이디</th>
+				
 				<td>
 					<input type="text" name="id" id="id" readonly="readonly"
 					placeholder="아이디" onclick="idCheck();">
@@ -96,7 +96,7 @@ function uploadAndPreview() {
 				</td>
 			</tr>
 			<tr>
-				<th>비밀번호</th>
+				
 				<td>
 					<input type="password" name="pw" id="pw"
 					placeholder="비밀번호"><br>
@@ -105,42 +105,42 @@ function uploadAndPreview() {
 				</td>
 			</tr>
 			<tr>
-				<th>이름</th>
+		
 				<td>
 					<input type="text" name="name" id="name"
 					placeholder="이름">
 				</td>
 			</tr>
 			<tr>
-				<th>이메일</th>
+		
 				<td>
 					<input type="email" name="email" placeholder="이메일">
 				</td>
 			</tr>
 			<tr>
-				<th>전화번호</th>
+		
 				<td>
 					<input type="text" name="phone" placeholder="전화번호">
 				</td>
 			</tr>
 			<tr>
-				<th>주소</th>
+			
 				<td>
 					<input type="text" id="address_kakao" name="address" placeholder="주소"
 					readonly="readonly">
-					<input type="button" value="주소 검색" id="address_kakao">
+					<!--<input type="button" value="주소 검색" id="address_kakao">-->
 				</td>
 			</tr>
 			<tr>
-	            <th>상세 주소</th>
+	     
 	            <td><input type="text" name="address_detail"></td>
         	</tr>
         	<tr>
-				<th>프로필 사진</th>
+			
 				<td>
 					<input type="file" name="upload" id="fileInput" onchange="uploadAndPreview()" accept="image/*">
 					 <br>
-    				<img id="preview" src="#" alt="Preview" style="max-width: 200px; max-height: 300px;">
+    				<img id="preview" th:src="@{/img/user.png}" alt="Preview" style="max-width: 200px; max-height: 300px;">
 				</td>
 			</tr>
 			<tr>
