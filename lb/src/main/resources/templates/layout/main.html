@@ -86,21 +86,23 @@
 		<div class="container-fluid position-relative p-0">
 			<nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0 sticky-top shadow-sm">
 				<a th:href="@{/}" class="navbar-brand p-0">
-					<h1 class="text-dark m-0"><img th:src="@{/img/mainbook.ico}" alt="Logo"></h1>
+					<h6 class="text-dark m-0"><img th:src="@{/img/mainbook.ico}" alt="Logo" ></h6>
 				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
 					<span class="fa fa-bars"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarCollapse">
-					<div class="navbar-nav ms-auto py-0">
+					<div class="navbar-nav ms-auto py-0" >
 						<!--
 						<a sec:authorize="not isAuthenticated()" th:href="@{/member/loginForm}"
 							class="nav-item nav-link">로그인</a>
 						-->
 						<a sec:authorize="isAuthenticated()" th:href="@{/member/logout}"
 							class="nav-item nav-link">로그아웃</a>
+							<!--
 						<a sec:authorize="isAuthenticated()" th:href="@{/member/delete}"
 							class="nav-item nav-link">회원삭제</a>
+							-->
 						<!--<a th:href="@{/about}" class="nav-item nav-link">안내</a>-->
 						<a th:href="@{/findBoard}" class="nav-item nav-link">내 주변</a>
 						<a sec:authorize="not isAuthenticated()" th:href="@{/member/loginForm}" class="nav-item nav-link">계정관리</a>
@@ -110,10 +112,10 @@
 						<div class="nav-item dropdown">
 							<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">게시판</a>
 							<div class="dropdown-menu m-0">
-								<a th:href="@{/bookBoard/bookBoardList}" class="dropdown-item">판매 게시판</a>
+								<a th:href="@{/bookBoard/bookBoardList}" class="dropdown-item">판매</a>
+								<a th:href="@{/bookBoard/exchange}" class="dropdown-item">교환 예정</a>
 								<a th:href="@{/board/boardList}" class="dropdown-item">게시판 예정</a>
-								<a sec:authorize="isAuthenticated()" th:href="@{/bookBoard/sellBoard}"
-									class="dropdown-item">책 판매</a>
+								
 							</div>
 						</div>
 						
@@ -227,6 +229,25 @@
 		<script th:src="@{/lib/tempusdominus/js/moment-timezone.min.js}"></script>
 		<script th:src="@{/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js}"></script>
 
+		<script th:inline="javascript">
+
+			var roomList = /*[[${roomList}]]*/[];
+
+			console.log("roomList :", roomList);
+
+			var str = '';
+			
+			str += '<div>';
+			'<form action="./chat/chatRoom" method="post">' +
+			'<input type="hidden" name="id" value=' + '>'
+			'<input type="submit" value="채팅하기" class= "btn btn-dark rounded-pill py-2 px-4 "></input>'
+			str += '</form>';
+			str += '</div>';
+				
+
+			$("#navbarCollapse").append(str);
+
+	</script>
 		<!-- Template Javascript -->
 		<script th:src="@{/js/main.js}"></script>
 

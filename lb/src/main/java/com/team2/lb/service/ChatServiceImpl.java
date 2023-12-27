@@ -74,4 +74,11 @@ public class ChatServiceImpl implements ChatService{
 		return chatRoom;
 	}
 
+
+	@Override
+	public ArrayList<ChatRoom> showChatRoomAll(String id) {
+		ArrayList<ChatRoom> chatRoom = dao.showChatRoomAll(id);
+		return chatRoom;
+	}
+
 }
