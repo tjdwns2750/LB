@@ -11,11 +11,50 @@
 			<title>상세페이지</title>
 
 			<script>
+				var name = /*[[${member.name}]]*/ '';
+				var username = /*[[${#authentication.principal.username}]]*/ '';
+
+
+
+
 				function deleteFunc(bbno) {
 					if (confirm('삭제하시겠습니까?')) {
 						location.href = 'delete?boardnum=' + bbno;
 					}
 				}
+
+				// API 개별 테스트 연동 키
+				// 토스페이먼츠에 회원 가입하기 전이라면 아래 키는 문서 테스트 키입니다.
+				// 토스페이먼츠에 회원 가입하고 로그인한 상태라면 아래 키는 내 테스트 키입니다.
+				const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+				const secretKey = 'test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R';
+
+				// ------ 결제창 띄우기 ------
+				tossPayments
+					.requestPayment('카드', {
+						// 결제수단 파라미터 (카드, 계좌이체, 가상계좌, 휴대폰 등)
+						// 결제 정보 파라미터
+						// 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
+						// https://docs.tosspayments.com/reference/js-sdk
+						amount: 100, // 결제 금액
+						orderId: 'Tl8D__OA9p5WT1VTbV8tz', // 주문 ID(주문 ID는 상점에서 직접 만들어주세요.)
+						orderName: '테스트 결제', // 주문명
+						customerName: '김토스', // 구매자 이름
+						successUrl: 'https://docs.tosspayments.com/guides/payment/test-success', // 결제 성공 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+						failUrl: 'https://docs.tosspayments.com/guides/payment/test-fail', // 결제 실패 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+					})
+					// ------결제창을 띄울 수 없는 에러 처리 ------
+					// 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
+					// 결제창에서 발생할 수 있는 에러를 확인하세요.
+					// https://docs.tosspayments.com/reference/error-codes#결제창공통-sdk-에러
+					.catch(function (error) {
+						if (error.code === 'USER_CANCEL') {
+							// 결제 고객이 결제창을 닫았을 때 에러 처리
+						} else if (error.code === 'INVALID_CARD_COMPANY') {
+							// 유효하지 않은 카드 코드에 대한 에러 처리
+						}
+					})
+      // ------결제
 			</script>
 		</head>
 
@@ -65,10 +104,10 @@
 					<div class="action-links mt-3 d-flex">
 						<a th:href="@{/bookBoard/bookBoardList}" class="btn btn-primary me-2">목록으로</a>
 
-						<div th:if="${#authentication.name == board.id}" class="d-flex">
-							<a th:href="@{/bookBoard/update(boardnum=${board.bbno})}"
+						<div class="d-flex">
+							<a th:if="${#authentication.name == board.id}" th:href="@{/bookBoard/update(boardnum=${board.bbno})}"
 								class="btn btn-warning me-2">수정</a>
-							<a href="javascript:deleteFunc(${board.bbno})" class="btn btn-danger me-2">삭제</a>
+							<a th:if="${#authentication.name == board.id}" href="javascript:deleteFunc(${board.bbno})" class="btn btn-danger me-2">삭제</a>
 							<!--
 							<form action="../chat/chatRoom" method="post">
 								<input type="hidden" name="bbno" value='${board.bbno}'>
@@ -76,7 +115,7 @@
 								<input type="submit" value="채팅하기" class="btn btn-info me-2">
 							</form>
 							-->
-							<a href="#" class="btn btn-dark me-2">구매하기</a>
+							<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}" class="btn btn-dark me-2">구매하기</a>
 						</div>
 					</div>
 				</div>
