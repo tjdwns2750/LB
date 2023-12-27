@@ -4,6 +4,14 @@
 
 <mapper namespace="com.team2.lb.dao.ChatDAO">
 
+	<select id="showChatRoomAll" parameterType="String" resultType="ChatRoom">
+		SELECT b.roomId, b.id, b.buno, b.bbno, b.created_day,
+		c.name
+		FROM ChatRoom b
+		INNER JOIN MEMBER c ON c.id =b.id
+		WHERE b.buno = #{id} or b.id = #{id}
+	</select>
+
 	<select id="selectChatRoom" parameterType="ChatRoom"
 		resultType="int">
 		SELECT count(*)

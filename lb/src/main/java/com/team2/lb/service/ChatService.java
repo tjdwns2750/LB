@@ -27,5 +27,7 @@ public interface ChatService {
 
 	ChatRoom selectByChatRoom(int roomId);
 
+	ArrayList<ChatRoom> showChatRoomAll(String id);
+
 
 }

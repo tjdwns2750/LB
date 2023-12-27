@@ -34,9 +34,6 @@ public class StompChatController {
 	    	
 	        template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
 	        
-	     // 예시: 메시지 저장
-	        
-	        service.saveMessage(message);
 	    }
 
 }

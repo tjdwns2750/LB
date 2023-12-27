@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.team2.lb.service.BookBoardService;
+import com.team2.lb.service.ChatService;
 import com.team2.lb.service.MemberService;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.ChatMessage;
+import com.team2.lb.vo.ChatRoom;
 import com.team2.lb.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,26 +31,48 @@ public class HomeController {
 	@Autowired
 	BookBoardService bookboardservice;
 
+	@Autowired
+	ChatService chatservice;
+
 	// 메인 페이지
 	@GetMapping("/")
-	public String home(Model model, @AuthenticationPrincipal UserDetails user) {
+	public String home(Model model, @AuthenticationPrincipal UserDetails user, ChatRoom chatRoom) {
 		if (user != null) {
 			log.info(user.getUsername());
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
 			log.error("member : {}", member.getAddress());
+
+			chatRoom.setId(user.getUsername());
+			log.info("# All Chat Rooms");
+
+			log.info("chatRoom :  {}", chatRoom);
+
+			ArrayList<ChatRoom> chatRoomByBoard = chatservice.showChatRoomAll(user.getUsername());
+			model.addAttribute("roomList", chatRoomByBoard);
+			log.info("roomList : {}", chatRoomByBoard);
+			model.addAttribute("room", chatRoomByBoard.get(0));
+			ArrayList<ChatMessage> chatmessage = chatservice.findByMessage(chatRoomByBoard.get(0));
+
+			if (chatmessage != null) {
+				model.addAttribute("chatMessage", chatmessage);
+			}
+
+			log.info("로그 확인 {}", chatmessage);
+
 		}
 
 		return "home";
+
 	}
 
 	@GetMapping("findBoard")
-	public String hometest(Model model , @AuthenticationPrincipal UserDetails user ) {
+	public String hometest(Model model, @AuthenticationPrincipal UserDetails user) {
 		if (user != null) {
-		log.info(user.getUsername());
-		Member member = service.selectUser(user.getUsername());
-		model.addAttribute("member", member);
-		log.error("member : {}", member.getAddress());
+			log.info(user.getUsername());
+			Member member = service.selectUser(user.getUsername());
+			model.addAttribute("member", member);
+			log.error("member : {}", member.getAddress());
 		}
 		// 계시판 전체 조회
 		ArrayList<BookBoard> boardList = bookboardservice.showBoardList();
@@ -117,5 +142,10 @@ public class HomeController {
 	@GetMapping("booking")
 	public String booking() {
 		return "jinu/booking";
+	}
+	
+	@GetMapping("exam")
+	public String exam() {
+		return "chat/exam";
 	}
 }

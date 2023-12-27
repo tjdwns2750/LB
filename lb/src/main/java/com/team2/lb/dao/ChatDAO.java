@@ -27,4 +27,6 @@ public interface ChatDAO {
 
 	ChatRoom selectByChatRoom(int roomId);
 
+	ArrayList<ChatRoom> showChatRoomAll(String id);
+
 }
