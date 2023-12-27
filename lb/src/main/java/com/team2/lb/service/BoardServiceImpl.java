@@ -14,13 +14,7 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
 	BoardDAO dao;
-
-	@Override
-	public ArrayList<Board> showBoardList() {
-		ArrayList<Board> boardList = dao.showBoardList();
-		return boardList;
-	}
-
+	
 	@Override
 	public int writeBoard(Board board) {
 		int result = dao.writeBoard(board);

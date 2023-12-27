@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 
 import com.team2.lb.vo.Board;
+import com.team2.lb.vo.BookBoard;
 
 @Service
 public interface BoardService {
 
-	ArrayList<Board> showBoardList();
 
 	int writeBoard(Board board);
 

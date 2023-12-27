@@ -4,6 +4,8 @@
     --secondary: #FE8800;
     --light: #F5F5F5;
     --dark: #14141F;
+    --yellow: #F7E600;
+    --beige: #f5f5dc;
 }
 
 .fw-medium {
@@ -171,13 +173,15 @@
 
 
 /*** Hero Header ***/
+/*
 .hero-header {
-    background: linear-gradient(rgba(20, 20, 31, .7), rgba(20, 20, 31, .7)), url(../img/bg-hero.jpg);
+    background: linear-gradient(rgba(20, 20, 31, .7), rgba(20, 20, 31, .7)), url(../img/mainbook.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-}
 
+}
+*/
 .breadcrumb-item + .breadcrumb-item::before {
     color: rgba(255, 255, 255, .5);
 }
