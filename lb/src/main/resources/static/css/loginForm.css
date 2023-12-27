@@ -35,18 +35,19 @@ form {
         }
 
         .image-container {
-            flex: 2; /* 이미지 영역이 전체의 2/3을 차지하도록 설정 */
+            flex: 2.5; /* 이미지 영역이 전체의 2/3을 차지하도록 설정 */
             overflow: hidden;
             position: relative;
         }
 
         .login-container {
-            flex: 1; /* 로그인 폼 영역이 전체의 1/3을 차지하도록 설정 */
-            padding: 20px;
+            flex: 0.5; /* 로그인 폼 영역이 전체의 1/3을 차지하도록 설정 */
+            padding: 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+           
         }
 
         .login-form {
