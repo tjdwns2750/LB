@@ -219,7 +219,7 @@ function searchAddressToCoordinate(address) {
 			item = response.v2.addresses[0],
 			point = new naver.maps.Point(item.x, item.y);
 
-		
+		/*
 		if (item.roadAddress) {
 			htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
 		}
@@ -231,11 +231,11 @@ function searchAddressToCoordinate(address) {
 		if (item.englishAddress) {
 			htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
 		}
-		
+		*/
 
 		infoWindow.setContent([
-			'<div style="padding:10px;min-width:200px;line-height:150%;">',
-			'<h4 style="margin-top:5px;">검색 주소 : ' + address + '</h4><br />',
+			'<div style="padding:10px;min-width:200px;line-height:100%;">',
+			'<h4 style="margin-top:5px;">현재 위치 : ' + address + '</h4><br />',
 			htmlAddresses.join('<br />'),
 			'</div>'
 		].join('\n'));
