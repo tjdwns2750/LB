@@ -5,6 +5,19 @@
 	<th:block th:fragment="content">
 		
 		<style>
+			.sell-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #3498db;
+            text-decoration: none;
+        }
+		</style>
+
+		<!--
+		<style>
 			body {
 				font-family: 'Arial', sans-serif;
 				background-color: #f4f4f4;
@@ -31,6 +44,13 @@
 				margin-top: 20px;
 				box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 			}
+			
+			.package-item img {
+                width: 100%;
+                height: auto;
+                max-width: 100%; /* 이미지의 최대 너비를 100%로 설정 */
+                max-width: 150px; /* 이미지의 최대 너비 설정 */
+            }
 
 			table th,
 			table td {
@@ -38,6 +58,12 @@
 				text-align: left;
 				border-bottom: 1px solid #e0e0e0;
 			}
+			
+			table td img {
+                width: 100%;
+                height: auto;
+                max-width: 150px; /* 이미지의 최대 너비 설정 */
+            }
 
 			table th {
 				background-color: #f8f8f8;
@@ -59,8 +85,69 @@
 				/* 링크에 호버시 더 진한 색상으로 변경 */
 			}
 		</style>
+		-->
 		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
+
+		<!-- Package Start -->
+		<!--
+		<div class="container-xxl py-5">
+			<div class="container">
+				<div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+					<h1 class="mb-5">판매</h1>
+				</div>
+				<div class="row g-4 justify-content-center">
+					<div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="board : ${boardList}">
+						<div class="package-item">
+							<div class="overflow-hidden">
+								<img class="img-fluid" th:src="${board.thumbnail}" alt="">
+							</div>
+							<div class="text-center p-4">
+								<h3 class="mb-0" th:text="${board.price}">원</h3>
+								<h6 th:text="${'작성자 ' + board.id}"> </h6>
+								<p th:text="${board.content}"></p>
+								<div class="d-flex justify-content-center mb-2">
+									<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
+										class="btn btn-sm btn-primary px-3 border-end"
+										style="border-radius: 30px 0 0 30px;">내용 더 보기</a>
+									<a href="#" class="btn btn-sm btn-primary px-3"
+										style="border-radius: 0 30px 30px 0;">구매하기</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="text-center wow fadeInUp" data-wow-delay="0.1s" style="padding: 10%;">
+					<a class="mb-5" th:href="@{/bookBoard/sellBoard}" style="font-size: 20px; font-weight: bold;">판매 등록</a>
+				</div>
+			</div>
+		</div>
+		-->
+		<div class="container-xxl">
+			<div class="row">
+				<div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+					<h1 class="mb-5">판매</h1>
+				</div>
+				<div class="col-lg-4 col-md-6  wow fadeInUp" th:each="board : ${boardList}" data-wow-delay="0.1s">
+					<div class="package-item">
+						<div class="overflow-hidden">
+							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
+						</div>
+						<div class="text-center">
+							<h3 class="mb-0" th:text="${board.price}"></h3>
+							<h6 th:text="${board.id}"></h6>
+							<p th:text="${board.content}"></p>
+							<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}" class="btn btn-primary">내용 더 보기</a>
+							<a href="#" class="btn btn-secondary">구매하기</a>
+						</div>
+					</div>
+				</div>
+				<!-- Add more items as needed -->
+			</div>
+		</div>
 		
+		<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
+		<!-- Package End -->
+		<!--
 		<h1>판매 리스트</h1>
 
 		<table>
@@ -78,7 +165,6 @@
 				<th>조회수</th>
 				<th style="width:150px;">작성일</th>
 			</tr>
-			<!-- controller에서 model로 부터 받아온 데이터를 출력하는 부분 -->
 			<tr th:each="board : ${boardList}">
 				<td th:text="${board.bbno}"></td>
 				<td th:text="${board.id}"></td>
@@ -89,6 +175,7 @@
 				<td th:text="${board.created_day}"></td>
 			</tr>
 		</table>
+		-->
 
 	</th:block>
 </th:block>
