@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessage {
 
-	private String roomId;
+	private int roomId;
 	private String writer;
 	private String message;
 	private String created_day;
+	private String name;
 }

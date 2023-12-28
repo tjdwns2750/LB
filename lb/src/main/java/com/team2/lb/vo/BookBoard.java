@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class BookBoard {
 	private int bbno;
 	private String id;
+	private String name;
 	private String address;
 	private String title;
 	private String content;
