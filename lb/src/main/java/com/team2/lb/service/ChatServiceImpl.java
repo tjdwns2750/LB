@@ -21,24 +21,15 @@ public class ChatServiceImpl implements ChatService{
 	@Autowired
 	ChatDAO dao;
 	
-	
-	private Map<String, ChatRoom> chatRoomMap;
-	
-	@PostConstruct
-    private void init(){
-        chatRoomMap = new LinkedHashMap<>();
-    }
-
 	@Override
-	public void createChatRoom(String name) {
-		ChatRoom room = dao.createChatRoom(name);
-        chatRoomMap.put(room.getRoomId(), room);
+	public void createChatRoom(ChatRoom chatRoom) {
+		dao.createChatRoom(chatRoom);
 	}
 
 	
 	@Override
-	public ChatRoom findRoomById(String roomId) {
-		ChatRoom result = dao.findRoomById(roomId);
+	public ChatRoom findRoomById(ChatRoom chatRoom) {
+		ChatRoom result = dao.findRoomById(chatRoom);
 		return result;
 		//return ChatRoom.get(roomId);
 	}
@@ -58,9 +49,36 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public ArrayList<ChatMessage> findByMessage(String roomId) {
-		ArrayList<ChatMessage> chatMessage = dao.findByMessage(roomId);
+	public ArrayList<ChatMessage> findByMessage(ChatRoom chatroom) {
+		ArrayList<ChatMessage> chatMessage = dao.findByMessage(chatroom);
 		return chatMessage;
+	}
+
+	@Override
+	public int selectChatRoom(ChatRoom chatRoom) {
+		int ChatRoomNum = dao.selectChatRoom(chatRoom);
+		return ChatRoomNum;
+	}
+
+
+	@Override
+	public ArrayList<ChatRoom> showChatRoom(int bbno) {
+		ArrayList<ChatRoom> chatRoom = dao.showChatRoom(bbno);
+		return chatRoom;
+	}
+
+
+	@Override
+	public ChatRoom selectByChatRoom(int roomId) {
+		ChatRoom chatRoom = dao.selectByChatRoom(roomId);
+		return chatRoom;
+	}
+
+
+	@Override
+	public ArrayList<ChatRoom> showChatRoomAll(String id) {
+		ArrayList<ChatRoom> chatRoom = dao.showChatRoomAll(id);
+		return chatRoom;
 	}
 
 }

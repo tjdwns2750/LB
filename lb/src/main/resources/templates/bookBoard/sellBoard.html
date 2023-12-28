@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- 부트스트랩 CSS 파일 포함 -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<title>부트스트랩 모달 창 예제</title>
+	<title>판매등록</title>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script th:src="@{/js/jquery-3.6.0.js}"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.js"
@@ -29,33 +29,35 @@
 			});
 
 			$('#choice').on('click', function () {
-				let selectedBookInfo = $('input[name="selectBook"]:checked').closest('tr').find('td:not(:first-child)');
-				let selectedBookText = "";
-				selectedBookInfo.each(function () {
-					selectedBookText += $(this).text() + " ";
-					console.log(selectedBookText);
-				});
-				// 썸네일과 제목 추출
-				let selectedBookThumbnail = selectedBookInfo.eq(1).find('img').attr('src'); // 썸네일이 두 번째 열에 있다고 가정합니다.
-				let selectedBookTitle = selectedBookInfo.eq(2).text(); // 제목이 네 번째 열에 있다고 가정합니다.
-				// hidden으로 전송할 나머지 정보들 
-				let selectedIsbn = selectedBookInfo.eq(0).text(); // 제목이 네 번째 열에 있다고 가정합니다.
-				let selectedAuthor = selectedBookInfo.eq(3).text(); // 제목이 네 번째 열에 있다고 가정합니다.
-				let selectedPublisher = selectedBookInfo.eq(4).text(); // 제목이 네 번째 열에 있다고 가정합니다.
+            let selectedBookInfo = $('input[name="selectBook"]:checked').closest('tr').find('td:not(:first-child)');
+            let selectedBookText = "";
+            selectedBookInfo.each(function () {
+                selectedBookText += $(this).text() + " ";
+                console.log(selectedBookText);
+            });
+            // 썸네일과 제목 추출
+            let selectedBookThumbnail = selectedBookInfo.eq(1).find('img').attr('src'); // 썸네일이 두 번째 열에 있다고 가정
+            let selectedBookTitle = selectedBookInfo.eq(3).text(); // 제목이 네 번째 열에 있다고 가정
 
-				// 썸네일과 제목 표시
-				$('#selectedBookThumbnail img').attr('src', selectedBookThumbnail);
-				// $('#selectedBookThumbnail').attr('src', selectedBookThumbnail);
-				$('#selectedBook').html(selectedBookTitle);
+            // hidden으로 전송할 나머지 정보들 
+            let selectedIsbn = selectedBookInfo.eq(0).text(); // ISBN이 첫 번째 열에 있다고 가정
+            let selectedAuthor = selectedBookInfo.eq(4).text(); // 저자가 다섯 번째 열에 있다고 가정
+            let selectedPublisher = selectedBookInfo.eq(5).text(); // 출판사가 여섯 번째 열에 있다고 가정
 
-				$('#selectedIsbn').val(selectedIsbn);
-				$('#selectedThumbnail').val(selectedBookThumbnail);
-				$('#selectedTitle').val(selectedBookTitle);
-				$('#selectedAuthor').val(selectedAuthor);
-				$('#selectedPublisher').val(selectedPublisher);
+            // 썸네일과 제목 표시
+            $('#selectedBookThumbnail img').attr('src', selectedBookThumbnail);
+            $('#selectedBook').html(selectedBookTitle);
 
-				$('#exampleModal').modal('hide');
-			});
+            // 나머지 정보 값 설정
+            $('#selectedIsbn').val(selectedIsbn);
+            $('#selectedThumbnail').val(selectedBookThumbnail);
+            $('#selectedTitle').val(selectedBookTitle);
+            $('#selectedAuthor').val(selectedAuthor);
+            $('#selectedPublisher').val(selectedPublisher);
+
+            // 모달 닫기
+            $('#exampleModal').modal('hide');
+        });
 
 			$('#addressSearchBtn').on('click', function () {
 				// Open Daum Postcode API when the button is clicked
@@ -223,7 +225,13 @@
 	</style>
 </head>
 
-<body>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
+		<div class="container-fluid bg-light py-0 mb-5 hero-header"></div>
+
 	<h1>판매 등록</h1>
 
 	<form th:action="@{/bookBoard/registSell}" method="post">
@@ -241,7 +249,7 @@
 				<td>
 					<input type="text" id="bookName" placeholder="책 제목이나 ISBN을 입력해주세요.">
 					<button type="button" id="searchBook" class="btn btn-primary" data-bs-toggle="modal"
-						data-bs-target="#exampleModal">
+						data-bs-target="searchBookAndOpenModal()">
 						책 검색
 					</button>
 
@@ -380,7 +388,8 @@
 		</div>
 	</div>
 
+</th:block>
+</th:block>
 
-</body>
 
 </html>

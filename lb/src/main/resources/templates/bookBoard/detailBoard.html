@@ -1,130 +1,128 @@
 <!DOCTYPE html>
-<html xmlns:th="thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-	<meta charset="UTF-8">
-	<title>상세페이지</title>
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
 
-	<style>
-		body {
-			font-family: 'Arial', sans-serif;
-			background-color: #f4f4f4;
-			margin: 0;
-			padding: 0;
-		}
+		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
-		header {
-			background-color: #333;
-			color: white;
-			text-align: center;
-			padding: 10px 0;
-		}
+		<head>
+			<meta charset="UTF-8">
+			<title>상세페이지</title>
 
-		table {
-			width: 80%;
-			margin: 20px auto;
-			border-collapse: collapse;
-			background-color: #fff;
-		}
-
-		table th,
-		table td {
-			padding: 10px;
-			border: 1px solid #ccc;
-		}
-
-		table th {
-			background-color: #f2f2f2;
-		}
-
-		table img {
-			max-width: 150px;
-			max-height: 150px;
-			border: 1px solid #ccc;
-		}
-
-		.action-links {
-			text-align: center;
-			margin-top: 20px;
-		}
-
-		.action-links a {
-			margin: 0 10px;
-			padding: 5px 10px;
-			text-decoration: none;
-			color: #333;
-			background-color: #e0e0e0;
-			border-radius: 5px;
-			transition: background-color 0.3s ease;
-		}
-
-		.action-links a:hover {
-			background-color: #ccc;
-		}
-	</style>
-	<script>
-
-		function deleteFunc(bbno) {
-			if (confirm('삭제하시겠습니까?')) {
-				location.href = 'delete?boardnum=' + bbno;
-			}
-		}
+			<script>
+				var name = /*[[${member.name}]]*/ '';
+				var username = /*[[${#authentication.principal.username}]]*/ '';
 
 
-	</script>
-</head>
 
-<body>
-	<header>
-		<h1>판매</h1>
-	</header>
 
-	<table>
-		<tr>
-			<th>글번호</th>
-			<td style="width: 80px;" th:text="${board.bbno}"></td>
-			<th>조회수</th>
-			<td style="width: 50px;" th:text="${board.hits}"></td>
-			<th>작성일</th>
-			<td style="width: 150px;" th:text="${board.created_day}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td colspan="3" th:text="${board.title}"></td>
-			<th>작성자</th>
-			<td th:text="${board.id}"></td>
-		</tr>
-		<tr>
-			<th>사진</th>
-			<td>
-				<img th:src="${board.thumbnail}">
-			</td>
-		</tr>
-		<tr>
-			<th colspan="6">내용</th>
-		</tr>
-		<tr>
-			<td colspan="6" style="height: 250px;">
-				<pre th:utext="${board.content}"></pre>
-			</td>
-		</tr>
-		<tr>
-			<th>가격</th>
-			<td th:text="${board.price}"></td>
-		</tr>
-		<tr>
-			<th>수량</th>
-			<td th:text="${board.amount}"></td>
-		</tr>
-		<a th:href="@{/bookBoard/bookBoardList}">목록으로</a>
-		<div th:if="${#authentication.name == board.id}" style="text-align: center;">
-			<a th:href="@{/bookBoard/update(boardnum=${board.bbno})}">수정</a>
-			<a th:href="|javascript:deleteFunc(${board.bbno})|">삭제</a>
+				function deleteFunc(bbno) {
+					if (confirm('삭제하시겠습니까?')) {
+						location.href = 'delete?boardnum=' + bbno;
+					}
+				}
+
+				// API 개별 테스트 연동 키
+				// 토스페이먼츠에 회원 가입하기 전이라면 아래 키는 문서 테스트 키입니다.
+				// 토스페이먼츠에 회원 가입하고 로그인한 상태라면 아래 키는 내 테스트 키입니다.
+				const clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq';
+				const secretKey = 'test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R';
+
+				// ------ 결제창 띄우기 ------
+				tossPayments
+					.requestPayment('카드', {
+						// 결제수단 파라미터 (카드, 계좌이체, 가상계좌, 휴대폰 등)
+						// 결제 정보 파라미터
+						// 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
+						// https://docs.tosspayments.com/reference/js-sdk
+						amount: 100, // 결제 금액
+						orderId: 'Tl8D__OA9p5WT1VTbV8tz', // 주문 ID(주문 ID는 상점에서 직접 만들어주세요.)
+						orderName: '테스트 결제', // 주문명
+						customerName: '김토스', // 구매자 이름
+						successUrl: 'https://docs.tosspayments.com/guides/payment/test-success', // 결제 성공 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+						failUrl: 'https://docs.tosspayments.com/guides/payment/test-fail', // 결제 실패 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+					})
+					// ------결제창을 띄울 수 없는 에러 처리 ------
+					// 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
+					// 결제창에서 발생할 수 있는 에러를 확인하세요.
+					// https://docs.tosspayments.com/reference/error-codes#결제창공통-sdk-에러
+					.catch(function (error) {
+						if (error.code === 'USER_CANCEL') {
+							// 결제 고객이 결제창을 닫았을 때 에러 처리
+						} else if (error.code === 'INVALID_CARD_COMPANY') {
+							// 유효하지 않은 카드 코드에 대한 에러 처리
+						}
+					})
+      // ------결제
+			</script>
+		</head>
+
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="product-image">
+						<img th:src="${board.thumbnail}" alt="Product Image" class="img-fluid" width="40%">
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="product-details">
+						<table class="table">
+							<tr>
+								<th>글번호</th>
+								<td th:text="${board.bbno}"></td>
+								<th>조회수</th>
+								<td th:text="${board.hits}"></td>
+								<th>작성일</th>
+								<td th:text="${board.created_day}"></td>
+							</tr>
+							<tr>
+								<th>제목</th>
+								<td colspan="5" th:text="${board.title}"></td>
+							</tr>
+							<tr>
+								<th>작성자</th>
+								<td th:text="${board.id}"></td>
+							</tr>
+							<tr>
+								<th>내용</th>
+								<td colspan="5">
+									<pre th:utext="${board.content}"></pre>
+								</td>
+							</tr>
+							<tr>
+								<th>가격</th>
+								<td th:text="${board.price}"></td>
+							</tr>
+							<tr>
+								<th>수량</th>
+								<td th:text="${board.amount}"></td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="action-links mt-3 d-flex">
+						<a th:href="@{/bookBoard/bookBoardList}" class="btn btn-primary me-2">목록으로</a>
+
+						<div class="d-flex">
+							<a th:if="${#authentication.name == board.id}" th:href="@{/bookBoard/update(boardnum=${board.bbno})}"
+								class="btn btn-warning me-2">수정</a>
+							<a th:if="${#authentication.name == board.id}" href="javascript:deleteFunc(${board.bbno})" class="btn btn-danger me-2">삭제</a>
+							<!--
+							<form action="../chat/chatRoom" method="post">
+								<input type="hidden" name="bbno" value='${board.bbno}'>
+								<input type="hidden" name="boardId" value='${board.id.toString()}'>
+								<input type="submit" value="채팅하기" class="btn btn-info me-2">
+							</form>
+							-->
+							<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}" class="btn btn-dark me-2">구매하기</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-
-	</table>
-
-
-</body>
+		</div>
+	</th:block>
+</th:block>
 
 </html>
