@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/chat")
+@RequestMapping("chat")
 public class ChatController {
 
 	@Autowired
@@ -39,23 +39,50 @@ public class ChatController {
 	 */
 
 	// 채팅방 목록 조회
-	@PostMapping("/chatRoom")
-	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, 
-			int bbno, String boardId) {
+	@GetMapping("showChatRoom")
+	public String showChatRoom(@AuthenticationPrincipal UserDetails user, Model model) {
+
+		ArrayList<ChatRoom> chatRoom = service.showChatRoomAll(user.getUsername());
+
+		if (chatRoom != null) {
+			model.addAttribute("roomList", chatRoom);
+			log.info("roomList : {}", chatRoom);
+			model.addAttribute("room", chatRoom.get(0));
+			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatRoom.get(0));
+
+			if (chatmessage != null) {
+				model.addAttribute("chatMessage", chatmessage);
+			}
+
+			log.info("로그 확인 {}", chatmessage);
+
+			return "chat/room";
+
+		}
+
+		return "chat/room";
+
+	}
+
+	@PostMapping("chatRoom")
+	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, int bbno,
+			String boardId) {
+		
+		ArrayList<ChatRoom> chatRoomList = service.showChatRoomAll(user.getUsername());
+		
+		model.addAttribute("roomList", chatRoomList);
+		
 		chatRoom.setId(user.getUsername());
-		chatRoom.setBuno(boardId);
+		chatRoom.setBoard_id(boardId);
 		chatRoom.setBbno(bbno);
 		log.info("# All Chat Rooms");
 
 		log.info("chatRoom :  {}", chatRoom);
 
 		int chatRoomNum = service.selectChatRoom(chatRoom);
-		
 
-		if (chatRoom.getBuno().equals(user.getUsername())) {
+		if (chatRoom.getBoard_id().equals(user.getUsername())) {
 			ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
-			model.addAttribute("roomList", chatRoomByBoard);
-			log.info("roomList : {}", chatRoomByBoard);
 			model.addAttribute("room", chatRoomByBoard.get(0));
 			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatRoomByBoard.get(0));
 
@@ -66,8 +93,7 @@ public class ChatController {
 			log.info("로그 확인 {}", chatmessage);
 
 			return "chat/room";
-			
-		
+
 		} else {
 			if (chatRoomNum == 0) {
 
@@ -75,10 +101,6 @@ public class ChatController {
 			}
 
 			ChatRoom chatrooms = service.findRoomById(chatRoom);
-
-			model.addAttribute("room", chatrooms);
-
-			log.info("chatRoom, {}", chatrooms);
 
 			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatrooms);
 
@@ -91,11 +113,11 @@ public class ChatController {
 			return "chat/room";
 		}
 	}
-	
-	@PostMapping("/BoardchatRoom")
-	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, 
-			int roomId, int bbno) {
-		
+
+	@PostMapping("BoardchatRoom")
+	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, int roomId,
+			int bbno) {
+
 		ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
 		ChatRoom selectRoom = service.selectByChatRoom(roomId);
 		model.addAttribute("roomList", chatRoomByBoard);
@@ -108,37 +130,33 @@ public class ChatController {
 		}
 
 		log.info("로그 확인 {}", chatmessage);
-		
+
 		return "chat/room";
 	}
 
 	/*
-	// 채팅방 개설
-	@PostMapping("/createRoom")
-	public String create(@RequestParam String name) {
+	 * // 채팅방 개설
+	 * 
+	 * @PostMapping("/createRoom") public String create(@RequestParam String name) {
+	 * 
+	 * log.info("# Create Chat Room , name: " + name); return
+	 * "redirect:/chat/rooms"; }
+	 */
 
-		log.info("# Create Chat Room , name: " + name);
-		return "redirect:/chat/rooms";
-	}
-	*/
-
-	
 	// 채팅방 조회
 	/*
-	@GetMapping("/rooms")
-	public String getRoom(String roomId, Model model) {
-
-		log.info("# get Chat Room, roomID : " + roomId);
-
-		// model.addAttribute("room", service.findRoomById(roomId));
-
-		// ArrayList<ChatMessage> chatmessage = service.findByMessage(roomId);
-
-		// model.addAttribute("chatMessage", chatmessage);
-
-		// log.info("로그 확인 {}", chatmessage);
-
-		return "chat/room";
-	}
-	*/
+	 * @GetMapping("/rooms") public String getRoom(String roomId, Model model) {
+	 * 
+	 * log.info("# get Chat Room, roomID : " + roomId);
+	 * 
+	 * // model.addAttribute("room", service.findRoomById(roomId));
+	 * 
+	 * // ArrayList<ChatMessage> chatmessage = service.findByMessage(roomId);
+	 * 
+	 * // model.addAttribute("chatMessage", chatmessage);
+	 * 
+	 * // log.info("로그 확인 {}", chatmessage);
+	 * 
+	 * return "chat/room"; }
+	 */
 }
