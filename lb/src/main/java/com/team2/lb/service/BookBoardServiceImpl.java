@@ -37,6 +37,12 @@ public class BookBoardServiceImpl implements BookBoardService {
 		int result = dao.deleteBoard(boardnum);
 		return result;
 	}
+
+	@Override
+	public int updateBoard(BookBoard bookBoard) {
+		int result = dao.updateBoard(bookBoard);
+		return result;
+	}
 	
 	
 	

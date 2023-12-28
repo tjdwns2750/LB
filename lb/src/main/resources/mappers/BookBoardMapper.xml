@@ -44,6 +44,22 @@
 		#{price}
 		, #{amount}
 		)
+
+</insert>
+<select id="showBoardList" resultType="BookBoard">
+	select * from BookBoard
+</select>
+<select id="readBoard" parameterType="int" resultType="BookBoard">
+	select *
+	from BookBoard
+	where bbno = #{bbno}
+</select>
+<delete id="deleteBoard" parameterType="int">
+	delete from BookBoard
+	where
+	bbno like #{bbno}
+</delete>
+
 	</insert>
 	<select id="showBoardList" resultType="BookBoard">
 		SELECT b.bbno ,b.id, a.name, b.address, b.title, b.content, b.hits, b.category,
@@ -67,5 +83,25 @@
 		bbno like #{bbno}
 
 	</delete>
+
+
+<update id="updateBoard" parameterType="BookBoard">
+	update BookBoard
+			set
+			title = #{title}
+			, content = #{content}
+			, address = #{address}
+			, isbn = #{isbn}
+			, thumbnail = #{thumbnail}
+			, bookTitle = #{bookTitle}
+			, author = #{author}
+			, publisher = #{publisher}
+			, price = #{price}
+			, amount = #{amount}
+			where
+			bbno = #{bbno}
+			and
+			id = #{id}
+</update>
 
 </mapper>
