@@ -55,7 +55,25 @@ insert into BookBoard
 	delete from BookBoard
 	where
 	bbno like #{bbno}
-
 </delete>
+
+<update id="updateBoard" parameterType="BookBoard">
+	update BookBoard
+			set
+			title = #{title}
+			, content = #{content}
+			, address = #{address}
+			, isbn = #{isbn}
+			, thumbnail = #{thumbnail}
+			, bookTitle = #{bookTitle}
+			, author = #{author}
+			, publisher = #{publisher}
+			, price = #{price}
+			, amount = #{amount}
+			where
+			bbno = #{bbno}
+			and
+			id = #{id}
+</update>
 
 </mapper>

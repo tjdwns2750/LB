@@ -1,97 +1,110 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="thymeleaf.org">
 
-<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
-	<th:block th:fragment="content">
-		<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+<head>
+	<meta charset="UTF-8">
+	<title>상세페이지</title>
 
-		</div>
-		</div>
-		<style>
-			body {
-				font-family: 'Arial', sans-serif;
-				background-color: #f4f4f4;
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f4f4f4;
+		}
+
+		.container-fluid.bg-primary {
+			color: #ffffff;
+			/* 배경 색상이 primary일 때 텍스트 색상을 밝게 설정 */
+		}
+
+		.hero-header {
+			text-align: center;
+		}
+
+		h1 {
+			margin-top: 50px;
+			text-align: center;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #ffffff;
+			margin-top: 20px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		table th,
+		table td {
+			padding: 15px;
+			text-align: left;
+			border-bottom: 1px solid #e0e0e0;
+		}
+
+		table th {
+			background-color: #f8f8f8;
+		}
+
+		table tr:hover {
+			background-color: #f9f9f9;
+		}
+
+		a {
+			color: #007bff;
+			/* 링크 색상을 부트스트랩의 기본 색상으로 설정 */
+			text-decoration: none;
+			transition: color 0.3s ease;
+		}
+
+		a:hover {
+			color: #0056b3;
+			/* 링크에 호버시 더 진한 색상으로 변경 */
+		}
+	</style>
+	<script>
+
+		function deleteFunc(bbno) {
+			if (confirm('삭제하시겠습니까?')) {
+				location.href = 'delete?boardnum=' + bbno;
 			}
+		}
 
-			.container-fluid.bg-primary {
-				color: #ffffff;
-				/* 배경 색상이 primary일 때 텍스트 색상을 밝게 설정 */
-			}
 
-			.hero-header {
-				text-align: center;
-			}
+	</script>
+</head>
 
-			h1 {
-				margin-top: 50px;
-				text-align: center;
-			}
+<body>
+	<h1>판매 리스트</h1>
 
-			table {
-				width: 100%;
-				border-collapse: collapse;
-				background-color: #ffffff;
-				margin-top: 20px;
-				box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-			}
+	<table>
+		<tr>
+			<td colspan="3"></td>
+			<td>
+				<a th:href="@{/bookBoard/sellBoard}" class="nav-item nav-link">판매등록</a>
+				<a th:href="@{/}">홈</a>
+			</td>
+		</tr>
+		<tr>
+			<th>글번호</th>
+			<th>작성자</th>
+			<th style="width: 230px;">제목</th>
+			<th>조회수</th>
+			<th style="width:150px;">작성일</th>
+		</tr>
 
-			table th,
-			table td {
-				padding: 15px;
-				text-align: left;
-				border-bottom: 1px solid #e0e0e0;
-			}
+		<!-- controller에서 model로 부터 받아온 데이터를 출력하는 부분 -->
 
-			table th {
-				background-color: #f8f8f8;
-			}
+		<tr th:each="board : ${boardList}">
+			<td th:text="${board.bbno}"></td>
+			<td th:text="${board.id}"></td>
+			<td>
+				<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}" th:text="${board.title}"></a>
+			</td>
+			<td th:text="${board.hits}"></td>
+			<td th:text="${board.created_day}"></td>
+		</tr>
+	</table>
 
-			table tr:hover {
-				background-color: #f9f9f9;
-			}
 
-			a {
-				color: #007bff;
-				/* 링크 색상을 부트스트랩의 기본 색상으로 설정 */
-				text-decoration: none;
-				transition: color 0.3s ease;
-			}
-
-			a:hover {
-				color: #0056b3;
-				/* 링크에 호버시 더 진한 색상으로 변경 */
-			}
-		</style>
-		<h1>판매 리스트</h1>
-
-		<table>
-			<tr>
-				<td colspan="3"></td>
-				<td>
-					<a th:href="@{/bookBoard/sellBoard}" class="nav-item nav-link">판매등록</a>
-					<a th:href="@{/}">홈</a>
-				</td>
-			</tr>
-			<tr>
-				<th>글번호</th>
-				<th>작성자</th>
-				<th style="width: 230px;">제목</th>
-				<th>조회수</th>
-				<th style="width:150px;">작성일</th>
-			</tr>
-			<!-- controller에서 model로 부터 받아온 데이터를 출력하는 부분 -->
-			<tr th:each="board : ${boardList}">
-				<td th:text="${board.bbno}"></td>
-				<td th:text="${board.id}"></td>
-				<td>
-					<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}" th:text="${board.title}"></a>
-				</td>
-				<td th:text="${board.hits}"></td>
-				<td th:text="${board.created_day}"></td>
-			</tr>
-		</table>
-
-	</th:block>
-</th:block>
+</body>
 
 </html>
