@@ -223,7 +223,13 @@
 	</style>
 </head>
 
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
+		
+	<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
+
 	<h1>판매 정보 수정</h1>
 
 	<form th:action="@{/bookBoard/update}" method="post">
@@ -382,6 +388,8 @@
 	</div>
 
 
-</body>
+	</th:block>
+</th:block>
+
 
 </html>
