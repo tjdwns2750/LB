@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="thymeleaf.org">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +15,7 @@
 		$(document).ready(function () {
 			$('#bookName').on('keydown', function (event) {
 				if (event.key === 'Enter') {
+					event.preventDefault();
 					searchBookAndOpenModal(); // 엔터 키가 눌리면 검색 및 모달 열기 함수 호출
 				}
 			});
@@ -28,6 +28,7 @@
 			});
 
 			$('#choice').on('click', function () {
+				
 				let selectedBookInfo = $('input[name="selectBook"]:checked').closest('tr').find('td:not(:first-child)');
 				let selectedBookText = "";
 				selectedBookInfo.each(function () {
@@ -223,9 +224,10 @@
 </head>
 
 <body>
-	<h1>판매 등록</h1>
+	<h1>판매 정보 수정</h1>
 
-	<form th:action="@{/bookBoard/registSell}" method="post">
+	<form th:action="@{/bookBoard/update}" method="post">
+		<input type="hidden" name="bbno" th:value="${board.bbno}">
 		<table>
 			<tr>
 				<th>상품 이미지</th>
@@ -249,16 +251,16 @@
 			<tr>
 				<th>선택된 책</th>
 				<td>
-					<div id="selectedBookThumbnail" th:text="${board.bookTitle}">
-						<img src="">
+					<div id="selectedBookThumbnail" >
+						<img th:src="${board.thumbnail}">
 					</div>
-					<p id="selectedBook" name="selectedBook"></p>
+					<p id="selectedBook" name="selectedBook" th:text="${board.bookTitle}"></p>
 
-					<input type="hidden" id="selectedIsbn" name="isbn">
-					<input type="hidden" id="selectedThumbnail" name="thumbnail">
-					<input type="hidden" id="selectedTitle" name="bookTitle">
-					<input type="hidden" id="selectedAuthor" name="author">
-					<input type="hidden" id="selectedPublisher" name="publisher">
+					<input type="hidden" th:value="${board.isbn}" id="selectedIsbn" name="isbn">
+					<input type="hidden" th:value="${board.thumbnail}" id="selectedThumbnail" name="thumbnail">
+					<input type="hidden" th:value="${board.bookTitle}" id="selectedTitle" name="bookTitle">
+					<input type="hidden" th:value="${board.author}" id="selectedAuthor" name="author">
+					<input type="hidden" th:value="${board.publisher}" id="selectedPublisher" name="publisher">
 
 				</td>
 			</tr>
@@ -269,7 +271,7 @@
 					<button type="button" id="addressSearchBtn" class="btn btn-primary">주소 검색</button>
 					<button type="button">최근 지역</button>
 					<div>
-						<input type="text" id="address_kakao" name="address" placeholder="주소" readonly="readonly">
+						<input type="text" th:value="${board.address}" id="address_kakao" name="address" placeholder="주소" readonly="readonly">
 					</div>
 				</td>
 			</tr>
@@ -322,24 +324,24 @@
 			<tr>
 				<th>가격</th>
 				<td>
-					<input type="text" name="price" placeholder="가격을 입력해주세요.">
+					<input type="text" th:value="${board.price}" name="price" placeholder="가격을 입력해주세요.">
 				</td>
 			</tr>
 			<tr>
 				<th>설명</th>
 				<td>
-					<input type="textarea" name="content" placeholder="상품설명을 입력해주세요.">
+					<input type="textarea" th:value="${board.content}" name="content" placeholder="상품설명을 입력해주세요.">
 				</td>
 			</tr>
 			<tr>
 				<th>수량</th>
 				<td>
-					<input type="number" name="amount" value="1">
+					<input type="number" th:value="${board.amount}" name="amount" value="1">
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-					<input type="submit" value="등록">
+					<input type="submit" value="수정">
 				</td>
 			</tr>
 		</table>

@@ -16,6 +16,8 @@ public interface BookBoardDAO {
 	BookBoard readBoard(int boardnum);
 
 	int deleteBoard(int boardnum);
+
+	int updateBoard(BookBoard bookBoard);
 	
 	
 
