@@ -14,4 +14,6 @@ public interface BookBoardService {
 
 	int deleteBoard(int boardnum);
 
+	int updateBoard(BookBoard bookBoard);
+
 }
