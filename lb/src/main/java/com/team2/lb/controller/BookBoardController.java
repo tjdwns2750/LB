@@ -65,5 +65,12 @@ public class BookBoardController {
 		model.addAttribute("board", bookBoard);
 		return "/bookBoard/update";
 	}
+	
+	@PostMapping("update")
+	public String update(BookBoard bookBoard, @AuthenticationPrincipal UserDetails user) {
+		bookBoard.setId(user.getUsername());
+		int result = service.updateBoard(bookBoard);
+		return "redirect:/bookBoard/read?boardnum=" + bookBoard.getBbno();
+	}
 
 }
