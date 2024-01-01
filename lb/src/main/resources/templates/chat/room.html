@@ -10,85 +10,18 @@
 
 	<link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
 	<div th:fragment="content">
+	<link th:href="@{/css/chat.css}" rel="stylesheet">
 
-		<style>
-			.wrap .chat {
-				display: flex;
-				align-items: flex-start;
-				padding: 20px;
-			}
-
-			.wrap .chat .icon {
-				position: relative;
-				overflow: hidden;
-				width: 50px;
-				height: 50px;
-				border-radius: 50%;
-				background-color: #eee;
-			}
-
-			.wrap .chat .icon i {
-				position: absolute;
-				top: 10px;
-				left: 50%;
-				font-size: 2.5rem;
-				color: #aaa;
-				transform: translateX(-50%);
-			}
-
-			.wrap .chat .textbox {
-				position: relative;
-				display: inline-block;
-				max-width: calc(100% - 70px);
-				padding: 10px;
-				margin-top: 7px;
-				font-size: 13px;
-				border-radius: 10px;
-			}
-
-			.wrap .chat .textbox::before {
-				position: absolute;
-				display: block;
-				top: 0;
-				font-size: 1.5rem;
-			}
-
-			.wrap .ch1 .textbox {
-				margin-left: 20px;
-				background-color: #ddd;
-			}
-
-			.wrap .ch1 .textbox::before {
-				left: -15px;
-				content: "◀";
-				color: #ddd;
-			}
-
-			.wrap .ch2 {
-				flex-direction: row-reverse;
-			}
-
-			.wrap .ch2 .textbox {
-				margin-right: 20px;
-				background-color: #F9EB54;
-			}
-
-			.wrap .ch2 .textbox::before {
-				right: -15px;
-				content: "▶";
-				color: #F9EB54;
-			}
-		</style>
 
 		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
 		<div class="d-flex" id="wrapper">
 
 			<!-- Sidebar -->
-				<div class="bg-light border-right" id="sidebar-wrapper">
-					<div class="sidebar-heading" style="text-align: center;">채팅목록</div>
-					<div class="list-group list-group-flush" id="list"></div>
-				</div>
+			<div class="bg-light border-right" id="sidebar-wrapper">
+				<div class="sidebar-heading" style="text-align: center;">채팅목록</div>
+				<div class="list-group list-group-flush" id="list"></div>
+			</div>
 			<!-- /#sidebar-wrapper -->
 
 			<div class="container-fluid">
@@ -117,46 +50,47 @@
 
 
 
-
-		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 		<script th:inline="javascript">
+			var sockJs = new SockJS("/lb/stomp/chat");
+			var stomp = Stomp.over(sockJs);
+
 			$(document).ready(function () {
 				var chatMessage = /*[[${chatMessage}]]*/[];
-				var roomId = /*[[${room.roomId}]]*/ '';
+				var roomId = /*[[${room?.roomId}]]*/ '';
+				var name = /*[[${member?.name}]]*/ '';
 				var username = /*[[${#authentication.principal.username}]]*/ '';
-				var name = /*[[${room.name}]]*/ '';
 
-				var sockJs = new SockJS("/lb/stomp/chat");
-				var stomp = Stomp.over(sockJs);
 
 				stomp.connect({}, function () {
 					console.log("STOMP Connection");
 
 					chatMessage.forEach(renderMessage);
 
-					var str2 = '';
+					stomp.subscribe("/sub/layout/main/" + username, function (chat, chatmessage) {
+						var content = JSON.parse(chat.body);
+						content.forEach(function (alarmItem) {
+							if (alarmItem.prefix == 'chat') {
+								var createdDate = new Date(alarmItem.created_day);
+								var timeDiff = calculateTimeDifference(createdDate);
+								alarmList.push({message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.'});
+							}
+						});
+						displayAlarms();
+						alarmList = [];
+					});
 
-					var today = new Date();
+					stomp.subscribe("/sub/layout/main/num" + username, function (chat, num) {
+						var num = JSON.parse(chat.body);
+						if (num == 0) {
+							$('#alarmArea').hide();
+						} else {
+							$('#alarmArea').show();
+						}
+						console.log("number : ", num);
+						$('#alarmNum').text(num);
+					});
 
-					var formattedTime = ('0' + today.getHours()).slice(-2) + ':' + ('0' + today.getMinutes()).slice(-2);
 
-					var writer = username;
-
-					var bubbleClass = (writer === username) ? 'ch2' : 'ch1';
-
-					var messageContainer = $("#messageContainer");
-					var iconClass = (bubbleClass === 'ch1') ? 'fa-user' : 'fa-user';
-
-					var str2 = "<div class='chat " + bubbleClass + "'>";
-					str2 += "<div class='icon'><i class='fa-solid " + iconClass + "'></i></div>";
-					str2 += "<div class='textbox'>";
-					str2 += "<div class='message-content'>" + writer + ": " + "님이 접속했습니다." + "</div>";
-					str2 += "<div class='message-time'>" + formattedTime + "</div>";
-					str2 += "</div>";
-					str2 += "</div>";
-
-					$("#msgArea").append(str2);
 
 					stomp.subscribe("/sub/chat/room/" + roomId, function (chat, chatmessage) {
 						var content = JSON.parse(chat.body);
@@ -178,6 +112,7 @@
 						var iconClass = (bubbleClass === 'ch1') ? 'fa-user' : 'fa-user';
 
 						var str = "<div class='chat " + bubbleClass + "'>";
+						str += "<h6>" + writer + "</h6>"
 						str += "<div class='icon'><i class='fa-solid " + iconClass + "'></i></div>";
 						str += "<div class='textbox'>";
 						str += "<div class='message-content'>" + writer + ": " + message + "</div>";
@@ -199,7 +134,7 @@
 					stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username}));
 					msg.value = '';
 				});
-			
+
 				$('#msg').on('keydown', function (event) {
 					if (event.key === 'Enter') {
 						var msg = document.getElementById("msg");
@@ -222,6 +157,7 @@
 					var iconClass = (bubbleClass === 'ch1') ? 'fa-user' : 'fa-user'; // Change this to the appropriate icon class.
 
 					var str = "<div class='chat " + bubbleClass + "'>";
+					str += "<h6>" + writer + "</h6>"
 					str += "<div class='icon'><i class='fa-solid " + iconClass + "'></i></div>";
 					str += "<div class='textbox'>";
 					str += "<div class='message-content'>" + message + "</div>";
@@ -245,20 +181,33 @@
 
 			console.log("roomList :", roomList);
 
+			var username = /*[[${#authentication.principal.username}]]*/ '';
+
 			var str = '';
+
+
 			if (roomList) {
 				roomList.forEach(function (room) {
-					str += '<div>';
-					str += '<form action="../chat/BoardchatRoom" method="post">';
+					str += '<div class="chat-room">';
+					str += '<form action="../chat/BoardchatRoom" method="post" class="chat-info">';
 					str += '<input type="hidden" name="bbno" value=' + room.bbno + '>';
 					str += '<input type="hidden" name="roomId" value=' + room.roomId + '>';
-					str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + room.id + '님과 채팅하기"></input>';
+
+					// roomList에서 가져온 사용자 아이디를 기반으로 버튼 텍스트 생성
+					if (room.id == username) {
+						var buttonText = room.board_id + '님과 채팅하기';
+					} else {
+						var buttonText = room.id + '님과 채팅하기';
+					}
+
+					str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + buttonText + '">';
+					str += '<img class="thumbnail" src=' + room.thumbnail + "'>";
+					str += '<h6>' + "해당 계시물 제목:" + room.title + '</h6>';
+					str += '</input>';
 					str += '</form>';
 					str += '</div>';
 				});
 			}
-
-
 
 			$("#menu-toggle").click(function (e) {
 				e.preventDefault();
