@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatMessage {
-
-	private int roomId;
-	private int bbno;
-	private String writer;
-	private String message;
+public class Alarm {
+	private long ano;
+	private String member_id;
+	private String code;
+	private String checked;
 	private String created_day;
-	private String name;
-	private String board_id;
+	private String prefix;
+	private long bbno;
+	private long room_id;
 }
