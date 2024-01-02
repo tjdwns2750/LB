@@ -131,11 +131,6 @@ stomp.connect({}, function() {
 
 	stomp.subscribe("/sub/layout/main/num" + username, function(chat, num) {
 		var num = JSON.parse(chat.body);
-		if (num == 0) {
-			$('#alarmArea').hide();
-		} else {
-			$('#alarmArea').show();
-		}
 		console.log("number : ", num);
 		$('#alarmNum').text(num);
 	});
