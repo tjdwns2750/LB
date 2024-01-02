@@ -15,8 +15,6 @@
 				var username = /*[[${#authentication.principal.username}]]*/ '';
 
 
-
-
 				function deleteFunc(bbno) {
 					if (confirm('삭제하시겠습니까?')) {
 						location.href = 'delete?boardnum=' + bbno;
@@ -105,17 +103,18 @@
 						<a th:href="@{/bookBoard/bookBoardList}" class="btn btn-primary me-2">목록으로</a>
 
 						<div class="d-flex">
-							<a th:if="${#authentication.name == board.id}" th:href="@{/bookBoard/update(boardnum=${board.bbno})}"
+							<a th:if="${#authentication.name == board.id}"
+								th:href="@{/bookBoard/update(boardnum=${board.bbno})}"
 								class="btn btn-warning me-2">수정</a>
-							<a th:if="${#authentication.name == board.id}" href="javascript:deleteFunc(${board.bbno})" class="btn btn-danger me-2">삭제</a>
-							<!--
-							<form action="../chat/chatRoom" method="post">
-								<input type="hidden" name="bbno" value='${board.bbno}'>
-								<input type="hidden" name="boardId" value='${board.id.toString()}'>
-								<input type="submit" value="채팅하기" class="btn btn-info me-2">
+							<a th:if="${#authentication.name == board.id}" href="javascript:deleteFunc(${board.bbno})"
+								class="btn btn-danger me-2">삭제</a>
+							<a th:if="${#authentication.name != board.id}"
+								th:href="@{/payment/toss(price=${board.price})}" class="btn btn-dark me-2">구매하기</a>
+							<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom" method="post">
+								<input type="hidden" name="bbno" th:value="${board.bbno}">
+								<input type="hidden" name="boardId" th:value="${board.id}">
+								<input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
 							</form>
-							-->
-							<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}" class="btn btn-dark me-2">구매하기</a>
 						</div>
 					</div>
 				</div>

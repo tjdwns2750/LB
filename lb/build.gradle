@@ -43,6 +43,9 @@ dependencies {
    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
    // https://mvnrepository.com/artifact/org.webjars/stomp-websocket
    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.3-1'
+   
+   // 결제 테스트 express
+   implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 tasks.named('test') {
