@@ -38,40 +38,38 @@ public class ChatController {
 	 * return "jinu/chat"; }
 	 */
 
-	// 채팅방 목록 조회
 	@GetMapping("showChatRoom")
 	public String showChatRoom(@AuthenticationPrincipal UserDetails user, Model model) {
+		log.info("user id: {}", user.getUsername());		// 한 번만 호출하도록 수정
+		ArrayList<ChatRoom> chatRooms = service.showChatRoomAll(user.getUsername());
 
-		ArrayList<ChatRoom> chatRoom = service.showChatRoomAll(user.getUsername());
+		log.info("chatriin {}", chatRooms);
 
-		if (chatRoom != null) {
-			model.addAttribute("roomList", chatRoom);
-			log.info("roomList : {}", chatRoom);
-			model.addAttribute("room", chatRoom.get(0));
-			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatRoom.get(0));
+		if (chatRooms != null && !chatRooms.isEmpty()) {
+			model.addAttribute("roomList", chatRooms);
+			log.info("roomList : {}", chatRooms);
+			model.addAttribute("room", chatRooms.get(0));
+
+			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatRooms.get(0));
 
 			if (chatmessage != null) {
 				model.addAttribute("chatMessage", chatmessage);
 			}
 
 			log.info("로그 확인 {}", chatmessage);
-
-			return "chat/room";
-
+		}else {
+			chatRooms = null;
+			model.addAttribute("roomList", chatRooms);
 		}
 
 		return "chat/room";
-
 	}
 
 	@PostMapping("chatRoom")
 	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, int bbno,
 			String boardId) {
-		
-		ArrayList<ChatRoom> chatRoomList = service.showChatRoomAll(user.getUsername());
-		
-		model.addAttribute("roomList", chatRoomList);
-		
+
+
 		chatRoom.setId(user.getUsername());
 		chatRoom.setBoard_id(boardId);
 		chatRoom.setBbno(bbno);
@@ -82,8 +80,14 @@ public class ChatController {
 		int chatRoomNum = service.selectChatRoom(chatRoom);
 
 		if (chatRoom.getBoard_id().equals(user.getUsername())) {
+			
+			ArrayList<ChatRoom> chatRoomList = service.showChatRoomAll(user.getUsername());
+			
+			model.addAttribute("roomList", chatRoomList);
+			
 			ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
 			model.addAttribute("room", chatRoomByBoard.get(0));
+			log.info(boardId);
 			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatRoomByBoard.get(0));
 
 			if (chatmessage != null) {
@@ -99,8 +103,14 @@ public class ChatController {
 
 				service.createChatRoom(chatRoom);
 			}
+			
+			ArrayList<ChatRoom> chatRoomList = service.showChatRoomAll(user.getUsername());
 
 			ChatRoom chatrooms = service.findRoomById(chatRoom);
+			
+			model.addAttribute("roomList", chatRoomList);
+
+			model.addAttribute("room", chatrooms);
 
 			ArrayList<ChatMessage> chatmessage = service.findByMessage(chatrooms);
 
@@ -118,10 +128,10 @@ public class ChatController {
 	public String rooms(Model model, ChatRoom chatRoom, @AuthenticationPrincipal UserDetails user, int roomId,
 			int bbno) {
 
-		ArrayList<ChatRoom> chatRoomByBoard = service.showChatRoom(bbno);
+		ArrayList<ChatRoom> chatRoomList = service.showChatRoomAll(user.getUsername());
+
+		model.addAttribute("roomList", chatRoomList);
 		ChatRoom selectRoom = service.selectByChatRoom(roomId);
-		model.addAttribute("roomList", chatRoomByBoard);
-		log.info("roomList : {}", chatRoomByBoard);
 		model.addAttribute("room", selectRoom);
 		ArrayList<ChatMessage> chatmessage = service.findByMessage(selectRoom);
 

@@ -24,9 +24,10 @@ package com.team2.lb.security;
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             http.csrf().disable()
+            .cors().and()
             .authorizeRequests()
             .antMatchers(
-            		
+            		"/stomp/**",
             		"/",
             		"/join",
             		"/about",

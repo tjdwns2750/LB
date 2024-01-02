@@ -10,8 +10,10 @@ import lombok.NoArgsConstructor;
 public class ChatMessage {
 
 	private int roomId;
+	private int bbno;
 	private String writer;
 	private String message;
 	private String created_day;
 	private String name;
+	private String board_id;
 }

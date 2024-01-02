@@ -16,6 +16,7 @@ public class ChatRoom {
 	private String name; // 사용자 이름
 	private String title;
 	private String thumbnail;
+	private long bookboard_bbno;
 	// private String roomName;
 	
 }

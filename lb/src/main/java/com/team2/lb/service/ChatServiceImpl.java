@@ -2,11 +2,7 @@ package com.team2.lb.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +11,10 @@ import com.team2.lb.dao.ChatDAO;
 import com.team2.lb.vo.ChatMessage;
 import com.team2.lb.vo.ChatRoom;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ChatServiceImpl implements ChatService{
 	
 	@Autowired
@@ -44,6 +43,7 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public void saveMessage(ChatMessage message) {
+		log.info("board_id {}", message.getWriter());
 		dao.saveMessage(message);
 		
 	}
@@ -77,8 +77,31 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public ArrayList<ChatRoom> showChatRoomAll(String id) {
-		ArrayList<ChatRoom> chatRoom = dao.showChatRoomAll(id);
-		return chatRoom;
+	    log.info("id: {}", id);
+	    ArrayList<ChatRoom> chatRooms = dao.showChatRoomAll(id);
+	    log.info("chatRoom service: {}", chatRooms);
+		return chatRooms;
+	}
+
+
+	@Override
+	public String findByBoardId(int roomId) {
+		String boardId = dao.findByBoardId(roomId);
+		return boardId;
+	}
+
+
+	@Override
+	public int findByBbno(int roomId) {
+		int bbno = dao.findByBbno(roomId);
+		return bbno;
+	}
+
+
+	@Override
+	public String findByMemberId(int roomId) {
+		String memberId = dao.findByMemberId(roomId);
+		return memberId;
 	}
 
 }
