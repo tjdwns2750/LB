@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.team2.lb.dao.AlarmDAO">
+	<insert id="createAlarm" parameterType="Alarm">
+		insert into alarm(
+		ano,
+		member_id, code, prefix, bbno, room_id
+		) values (
+		alarm_seq.nextval, #{member_id},#{code},#{prefix},#{bbno},#{room_id}
+		)
+
+
+	</insert>
+	
+	<select id="showAlarm" parameterType="String" resultType="Alarm">
+		select * from alarm where member_id = #{id} and checked = 'X'
+		order by created_day desc
+	</select>
+	
+	<select id="alarmNum" parameterType="String" resultType="int">
+	select count(*) from alarm where member_id = #{id} and checked = 'X'
+		order by created_day desc
+	
+	</select>
+	
+	<update id="updateAlarm" parameterType="String">
+		update alarm set checked = 'O' where member_id = #{id}
+	</update>
+
+</mapper>
