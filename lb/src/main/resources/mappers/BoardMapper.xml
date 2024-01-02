@@ -102,4 +102,12 @@
 			and bno = #{bno}
 	</delete>
 	
+	<select id="bestBoardList" resultType="Board">
+      SELECT * FROM (
+      SELECT * FROM board
+      WHERE ROWNUM &lt; 4
+      ORDER BY hits DESC
+      ) WHERE ROWNUM &lt; 4
+   </select>
+   
 </mapper>
