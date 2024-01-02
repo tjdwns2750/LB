@@ -14,13 +14,7 @@ public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
 	BoardDAO dao;
-
-	@Override
-	public ArrayList<Board> showBoardList() {
-		ArrayList<Board> boardList = dao.showBoardList();
-		return boardList;
-	}
-
+	
 	@Override
 	public int writeBoard(Board board) {
 		int result = dao.writeBoard(board);
@@ -64,5 +58,11 @@ public class BoardServiceImpl implements BoardService{
 		int result = dao.deleteBoard(board);
 		return result;
 	}
+	
+	   @Override
+	   public ArrayList<Board> bestBoardList() {
+	      ArrayList<Board> board = dao.bestBoardList();
+	      return board;
+	   }
 
 }

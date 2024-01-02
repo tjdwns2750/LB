@@ -26,4 +26,5 @@ public interface BoardDAO {
 
 	int deleteBoard(Board board);
 
+	ArrayList<Board> bestBoardList();
 }

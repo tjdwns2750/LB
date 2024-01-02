@@ -1,0 +1,98 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team2.lb.dao.ChatDAO">
+
+	<select id="showChatRoomAll" parameterType="String" resultType="ChatRoom">
+		SELECT b.roomId, b.id, b.buno, b.bbno, b.created_day,
+		c.name
+		FROM ChatRoom b
+		INNER JOIN MEMBER c ON c.id =b.id
+		WHERE b.buno = #{id} or b.id = #{id}
+	</select>
+
+	<select id="selectChatRoom" parameterType="ChatRoom"
+		resultType="int">
+		SELECT count(*)
+		FROM ChatRoom
+		WHERE id = #{id} AND buno =
+		#{buno} AND bbno = #{bbno}
+	</select>
+
+	<select id="showChatRoom" parameterType="int"
+		resultType="ChatRoom">
+		SELECT b.roomId, b.id, b.buno, b.bbno, b.created_day,
+		c.name
+		FROM ChatRoom b
+		INNER JOIN MEMBER c ON c.id =b.id
+		WHERE b.bbno = #{bbno}
+
+	</select>
+
+	<select id="selectByChatRoom" parameterType="int"
+		resultType="ChatRoom">
+		SELECT b.roomId, b.id, b.buno, b.bbno, b.created_day,
+		c.name
+		FROM ChatRoom b
+		INNER JOIN MEMBER c ON c.id =b.buno
+		WHERE b.roomId = #{roomId}
+
+	</select>
+
+	<insert id="createChatRoom" parameterType="ChatRoom">
+		insert into ChatRoom(
+		roomId,
+		id,
+		buno,
+		bbno
+		)
+		values (
+		CHATROOM_SEQ.nextval,
+		#{id},
+		#{buno},
+		#{bbno}
+		)
+	</insert>
+
+	<select id="findAllRooms" resultType="ChatRoom"
+		parameterType="ChatRoom">
+		SELECT b.roomId, b.id, b.buno, b.bbno, b.created_day,
+		c.name
+		from ChatRoom b
+		INNER JOIN MEMBER c ON c.id =b.id
+		where b.id like #{id} and
+		b.buno like
+		#{buno} and b.bbno = #{bbno}
+	</select>
+
+	<select id="findRoomById" parameterType="ChatRoom"
+		resultType="ChatRoom">
+		SELECT b.roomId, b.id, b.buno, b.bbno, b.created_day,
+		c.name
+		FROM ChatRoom b
+		INNER JOIN MEMBER c ON c.id = b.id
+		WHERE b.id LIKE #{id} AND
+		b.buno LIKE #{buno} AND b.bbno LIKE #{bbno}
+
+	</select>
+
+	<select id="findByMessage" parameterType="ChatRoom"
+		resultType="ChatMessage">
+		SELECT a.roomId, a.writer, a.message, a.created_day, c.name
+		FROM Chat_Messages a
+		INNER JOIN ChatRoom b ON a.roomid = b.roomid
+		INNER JOIN MEMBER c ON c.id = a.writer
+		WHERE b.id = #{id} AND b.buno = #{buno} AND
+		b.bbno = #{bbno}
+		ORDER BY a.created_day ASC
+	</select>
+
+	<insert id="saveMessage" parameterType="ChatMessage">
+		INSERT INTO CHAT_MESSAGES
+		(roomId, writer, message)
+		VALUES (#{roomId}, #{writer}, #{message})
+	</insert>
+
+
+</mapper>

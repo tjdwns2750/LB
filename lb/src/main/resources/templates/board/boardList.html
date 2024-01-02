@@ -1,40 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>게시판</title>
-</head>
-<body>
-<h1 style="text-align: center;">게시판</h1>
-	
-	<table>
-		<tr>
-			<td class="white">전체</td>
-			<td class="white" colspan="3"></td>
-			<td class="white">
-				<a th:href="@{/board/writeForm}">글쓰기</a>
-				<a th:href="@{/}">홈</a>
-			</td>
-		</tr>
-		<tr>
-			<th>글번호</th>
-			<th>작성자</th>
-			<th style="width:230px;">제목</th>
-			<th>조회수</th>
-			<th style="width:150px;">작성일</th>
-		</tr>
-		
-		<tr th:each="board : ${boardList}">
-			<td th:text="${board.bno}"></td>
-			<td th:text="${board.id}"></td>
-			<td>
-				<a th:href="@{/board/read(bno=${board.bno})}"
-					th:text="${board.title}"></a>
-			</td>
-			<td th:text="${board.hits}"></td>
-			<td th:text="${board.created_day}"></td>
-		</tr>
-	</table>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-</body>
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
+		<html xmlns:th="thymeleaf.org">
+
+		<head>
+			<meta charset="UTF-8">
+			<title>게시판</title>
+		</head>
+
+
+			<div class="container-fluid bg-light py-5 mb-5 hero-header"></div>
+			
+			<h1 style="text-align: center;">게시판</h1>
+
+			<table>
+				<tr>
+					<td class="white">전체</td>
+					<td class="white" colspan="3"></td>
+					<td class="white">
+						<a th:href="@{/board/writeForm}">글쓰기</a>
+						<a th:href="@{/}">홈</a>
+					</td>
+				</tr>
+				<tr>
+					<th>글번호</th>
+					<th>작성자</th>
+					<th style="width:230px;">제목</th>
+					<th>조회수</th>
+					<th style="width:150px;">작성일</th>
+				</tr>
+
+				<tr th:each="board : ${boardList}">
+					<td th:text="${board.bno}"></td>
+					<td th:text="${board.id}"></td>
+					<td>
+						<a th:href="@{/board/read(bno=${board.bno})}" th:text="${board.title}"></a>
+					</td>
+					<td th:text="${board.hits}"></td>
+					<td th:text="${board.created_day}"></td>
+				</tr>
+			</table>
+
+	</th:block>
+</th:block>
+
 </html>

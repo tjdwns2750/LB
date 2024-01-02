@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				return; // 주소가 없으면 처리 중단
 			}
 
-			console.log('게시글', board.bno, '의 주소:', board.address);
+			console.log('게시글', board.bbno, '의 주소:', board.address);
 
 			// 주소를 좌표로 변환
 			geocodeAddress(board.address, function(latlng) {
@@ -132,19 +132,30 @@ function addMarkerToMap(latlng, board) {
 			anchor: new naver.maps.Point(12, 37)
 		}
 	});
+	console.log(board.bbno);
+	console.log(board.id);
 
 	var infoWindow = new naver.maps.InfoWindow({
 		content: '<div style="padding:10px;min-width:200px;line-height:150%;">' +
-			'<a id="boardtitle" style="font-size:20px" href="./board/read/(bno=' + board.bno + ')">' + '제목 :' + board.title + '</a>' +
-			'<p id="boardcontent">' + '내용 :' + board.content + '</p>' +
+			'<h3>' + '판매' +'</h3>' +
+			'<h3>' + board.name + '</h3>' +
+			'<a id="boardtitle" style="font-size:20px" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
+			'<img id="bookBoardImg" src="' + board.thumbnail + '">' +
+			'<p id="boardcontent">' + '내용 : ' + board.content + '</p>' +
+			'<p id="boardprice">' + '가격 : ' + board.price + '</p>' +
 			'<p id="boardaddress">' + '거래 주소 :' + board.address + '</p>' +
 			'<p id createdDay>' + '작성일 :' + board.created_day + '</p>' +
-
-			+ '</div>'
+			'<form action="./chat/chatRoom" method="post">' +
+			'<input type="hidden" name="bbno" value=' +board.bbno + '>' +
+			'<input type="hidden" name="boardId" value=' +board.id.toString() + '>' +
+			'<input type="submit" value="채팅하기"></input>' +
+			'</form>' +
+			// '<a href="chat/chatRoom?bbno=' +board.bbno +"&id=" +board.id + '"> 채팅하기' + '</a>' +
+			'</div>'
 	});
 
 	naver.maps.Event.addListener(marker, 'click', function() {
-		if (infoWindow.getMap()) {
+		if (infoWindow. getMap()) {
 			infoWindow.close();
 		} else {
 			infoWindow.open(map, marker);
@@ -223,8 +234,8 @@ function searchAddressToCoordinate(address) {
 		*/
 
 		infoWindow.setContent([
-			'<div style="padding:10px;min-width:200px;line-height:150%;">',
-			'<h4 style="margin-top:5px;">검색 주소 : ' + address + '</h4><br />',
+			'<div style="padding:10px;min-width:200px;line-height:100%;">',
+			'<h4 style="margin-top:5px;">현재 위치 : ' + address + '</h4><br />',
 			htmlAddresses.join('<br />'),
 			'</div>'
 		].join('\n'));
@@ -242,7 +253,7 @@ function onSuccessGeolocation(position) {
 		position.coords.longitude);
 
 	map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
-	map.setZoom(30); // 지도의 줌 레벨을 변경합니다.
+	map.setZoom(17); // 지도의 줌 레벨을 변경합니다.
 
 	infowindow.setContent('<div style="padding:20px;">' + 'geolocation.getCurrentPosition() 위치' + '</div>');
 
