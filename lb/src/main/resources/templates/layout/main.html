@@ -115,10 +115,12 @@
 
 						<!--<a href="@{/contact.html}" class="nav-item nav-link">연결</a>-->
 					</div>
+					<a th:href="@{/chat/showChatRoom}" th:text="채팅하기" class="btn btn-warning rounded-pill py-2 px-4"></a>
 					<a sec:authorize="not isAuthenticated()" th:href="@{/member/loginForm}"
 						class="btn btn-dark rounded-pill py-2 px-4">로그인</a>
 					<a sec:authorize="isAuthenticated()" th:href="@{/member/logout}"
 						class="btn btn-dark rounded-pill py-2 px-4">로그아웃</a>
+					
 				</div>
 			</nav>
 		</div>

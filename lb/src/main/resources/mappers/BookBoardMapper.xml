@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.team2.lb.dao.BookBoardDAO">
+
 	<insert id="registSell" parameterType="BookBoard">
 		insert into BookBoard
 		(
@@ -47,49 +48,92 @@
 
 	</insert>
 	
-	<select id="showBoardList" resultType="BookBoard">
-		SELECT b.bbno ,b.id, a.name, b.address, b.title, b.content, b.hits,
-		b.category,
-		b.originalfile,
-		b.savedfile, b.recommend, b.created_day,
-		b.isbn, b.thumbnail, b.bookTitle,
-		b.author, b.publisher, b.price,
-		b.amount
-		FROM member a
-		INNER JOIN bookBoard b
-		ON a.id= b.id
+	<!-- <select id="showBoardList" resultType="BookBoard"> SELECT b.bbno ,b.id, 
+		a.name, b.address, b.title, b.content, b.hits, b.category, b.originalfile, 
+		b.savedfile, b.recommend, b.created_day, b.isbn, b.thumbnail, b.bookTitle, 
+		b.author, b.publisher, b.price, b.amount FROM member a INNER JOIN bookBoard 
+		b ON a.id= b.id </select> -->
+
+	<select id="showBoardList" parameterType="map" resultType="BookBoard">
+		select * from bookBoard
+		<if test="type != null and searchWord != null">
+			<where>
+				<if test="type == 'title'">
+					upper(title) like '%' || upper(#{searchWord}) || '%'
+				</if>
+				<if test="type == 'contents'">
+					upper(content) like '%'|| upper(#{searchWord}) || '%'
+				</if>
+				<if test="type == 'memberid'">
+					id like '%' || #{searchWord} || '%'
+				</if>
+				<if test="type == 'all'">
+					upper(title) like '%' || upper(#{searchWord}) || '%'
+					or
+					upper(content) like '%' || upper(#{searchWord}) || '%'
+					or 
+					id like '%' || #{searchWord} || '%'
+				</if>
+			</where>
+		</if>
+		order by bbno desc
 	</select>
-	
+
+	<select id="countTotal" parameterType="map" resultType="int">
+		select count(*) from BookBoard
+		<if test="type != null and searchWord != null">
+			<where>
+				<if test="type == 'title'">
+					upper(title) like '%' || upper(#{searchWord}) || '%'
+				</if>
+				<if test="type == 'contents'">
+					upper(content) like '%'|| upper(#{searchWord}) || '%'
+				</if>
+				<if test="type == 'memberid'">
+					id like '%' || #{searchWord} || '%'
+				</if>
+				<if test="type == 'all'">
+					upper(title) like '%' || upper(#{searchWord}) || '%'
+					or
+					upper(content) like '%' || upper(#{searchWord}) || '%'
+					or id like '%' || #{searchWord} || '%'
+				</if>
+			</where>
+		</if>
+	</select>
+
 	<select id="readBoard" parameterType="int"
 		resultType="BookBoard">
 		select *
 		from BookBoard
 		where bbno = #{bbno}
 	</select>
-	
-	<delete id="deleteBoard" parameterType="int">
-		delete from BookBoard
-		where
-		bbno like #{bbno}
-	</delete>
 
 	<update id="updateBoard" parameterType="BookBoard">
 		update BookBoard
 		set
-		title = #{title}
+		title
+		= #{title}
 		, content = #{content}
 		, address = #{address}
 		, isbn = #{isbn}
 		, thumbnail = #{thumbnail}
 		, bookTitle = #{bookTitle}
-		, author = #{author}
+		, author =
+		#{author}
 		, publisher = #{publisher}
 		, price = #{price}
-		, amount = #{amount}
+		, amount =
+		#{amount}
 		where
 		bbno = #{bbno}
 		and
 		id = #{id}
 	</update>
 
+	<delete id="deleteBoard" parameterType="int">
+		delete from BookBoard
+		where
+		bbno like #{bbno}
+	</delete>
 </mapper>

@@ -1,35 +1,27 @@
 <!DOCTYPE html>
-
+<!--
 <html xmlns:th="thymeleaf.org">
-
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
-	<th:block th:fragment="content">
-		
-		<style>
-			.sell-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #3498db;
-            text-decoration: none;
-        }
-		</style>
-
-		<style>
-			body {
-				font-family: 'Arial', sans-serif;
-				background-color: #f4f4f4;
-			}
+-->
 
 <head>
-	<meta charset="UTF-8">
-	<title>상세페이지</title>
+	<style>
+		.sell-link {
+			display: block;
+			text-align: center;
+			margin-top: 20px;
+			font-size: 16px;
+			font-weight: bold;
+			color: #3498db;
+			text-decoration: none;
+		}
+	</style>
 
 	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f4f4f4;
+		}
+
 		body {
 			font-family: 'Arial', sans-serif;
 			background-color: #f4f4f4;
@@ -50,33 +42,36 @@
 			text-align: center;
 		}
 
-			table {
-				width: 100%;
-				border-collapse: collapse;
-				background-color: #ffffff;
-				margin-top: 20px;
-				box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-			}
-			
-			.package-item img {
-                width: 100%;
-                height: auto;
-                max-width: 100%; /* 이미지의 최대 너비를 100%로 설정 */
-                max-width: 150px; /* 이미지의 최대 너비 설정 */
-            }
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			background-color: #ffffff;
+			margin-top: 20px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
 
-			table th,
-			table td {
-				padding: 15px;
-				text-align: left;
-				border-bottom: 1px solid #e0e0e0;
-			}
-			
-			table td img {
-                width: 100%;
-                height: auto;
-                max-width: 150px; /* 이미지의 최대 너비 설정 */
-            }
+		.package-item img {
+			width: 100%;
+			height: auto;
+			max-width: 100%;
+			/* 이미지의 최대 너비를 100%로 설정 */
+			max-width: 150px;
+			/* 이미지의 최대 너비 설정 */
+		}
+
+		table th,
+		table td {
+			padding: 15px;
+			text-align: left;
+			border-bottom: 1px solid #e0e0e0;
+		}
+
+		table td img {
+			width: 100%;
+			height: auto;
+			max-width: 150px;
+			/* 이미지의 최대 너비 설정 */
+		}
 
 		table {
 			width: 100%;
@@ -112,9 +107,12 @@
 			color: #0056b3;
 			/* 링크에 호버시 더 진한 색상으로 변경 */
 		}
+		
+		#paging {
+			text-align: center;
+		}
 	</style>
 	<script>
-
 		function deleteFunc(bbno) {
 			if (confirm('삭제하시겠습니까?')) {
 				location.href = 'delete?boardnum=' + bbno;
@@ -122,137 +120,86 @@
 
 		}
 
-
+		function pagingFormSubmit(currentPage) {
+			var form = document.getElementById('pagingForm');
+			let page = document.querySelector('#page');
+			page.value = currentPage;
+			form.submit();
+		}
 	</script>
+
 </head>
 
-<body>
-	<h1>판매 리스트</h1>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-	<table>
-		<tr>
-			<td colspan="3"></td>
-			<td>
-				<a th:href="@{/bookBoard/sellBoard}" class="nav-item nav-link">판매등록</a>
-				<a th:href="@{/}">홈</a>
-			</td>
-		</tr>
-		<tr>
-			<th>글번호</th>
-			<th>작성자</th>
-			<th style="width: 230px;">제목</th>
-			<th>조회수</th>
-			<th style="width:150px;">작성일</th>
-		</tr>
-
-		<!-- controller에서 model로 부터 받아온 데이터를 출력하는 부분 -->
-
-		<tr th:each="board : ${boardList}">
-			<td th:text="${board.bbno}"></td>
-			<td th:text="${board.id}"></td>
-			<td>
-				<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}" th:text="${board.title}"></a>
-			</td>
-			<td th:text="${board.hits}"></td>
-			<td th:text="${board.created_day}"></td>
-		</tr>
-	</table>
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
 
 
-</body>
-
-		</style>
-		-->
 		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
-		<!-- Package Start -->
-		<!--
-		<div class="container-xxl py-5">
-			<div class="container">
-				<div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-					<h1 class="mb-5">판매</h1>
-				</div>
-				<div class="row g-4 justify-content-center">
-					<div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s" th:each="board : ${boardList}">
-						<div class="package-item">
-							<div class="overflow-hidden">
-								<img class="img-fluid" th:src="${board.thumbnail}" alt="">
-							</div>
-							<div class="text-center p-4">
-								<h3 class="mb-0" th:text="${board.price}">원</h3>
-								<h6 th:text="${'작성자 ' + board.id}"> </h6>
-								<p th:text="${board.content}"></p>
-								<div class="d-flex justify-content-center mb-2">
-									<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
-										class="btn btn-sm btn-primary px-3 border-end"
-										style="border-radius: 30px 0 0 30px;">내용 더 보기</a>
-									<a href="#" class="btn btn-sm btn-primary px-3"
-										style="border-radius: 0 30px 30px 0;">구매하기</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="text-center wow fadeInUp" data-wow-delay="0.1s" style="padding: 10%;">
-					<a class="mb-5" th:href="@{/bookBoard/sellBoard}" style="font-size: 20px; font-weight: bold;">판매 등록</a>
-				</div>
-			</div>
-		</div>
-		-->
-		<div class="container-xxl">
-			<div class="row">
-				<div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-					<h1 class="mb-5">판매</h1>
-				</div>
-				<div class="col-lg-4 col-md-6  wow fadeInUp" th:each="board : ${boardList}" data-wow-delay="0.1s">
-					<div class="package-item">
-						<div class="overflow-hidden">
-							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
-						</div>
-						<div class="text-center">
-							<h3 class="mb-0" th:text="${board.price}"></h3>
-							<h6 th:text="${board.id}"></h6>
-							<p th:text="${board.content}"></p>
-							<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}" class="btn btn-primary">내용 더 보기</a>
-							<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}" class="btn btn-secondary">구매하기</a>
-						</div>
-					</div>
-				</div>
-				<!-- Add more items as needed -->
-			</div>
-		</div>
-		
-		<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
-		<!-- Package End -->
-		<!--
-		<h1>판매 리스트</h1>
+      <div class="container-xxl">
+         <div class="row">
+            <div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
+               <h1 class=" section-title bg-white text-center text-dark px-3 mb-5">판매</h1>
+            </div>
+            <form id="pagingForm" th:action="@{/board/boardList}" method="get">
+			<input type="hidden" name="page" id="page">
+			<select id="type" name="type">
+				<option value="title" th:selected="${type} == 'title'">제목</option>
+				<option value="contents" th:selected="${type} == 'contents'">본문</option>
+				<option value="memberid" th:selected="${type} == 'memberid'">작성자ID</option>
+				<option value="all" th:selected="${type} == 'all'">전체</option>
+			</select>
+			<input type="text" name="searchWord" th:value="${searchWord}">
+			<input type="button" onclick="pagingFormSubmit(1)" value="검색">
+		</form>
+            <div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
+               <div class="package-item">
+                  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5">
+                     <img class="img-fluid" th:src="${board.thumbnail}" alt="">
+                  </div>
+                  <div class="text-center">
+                     <h3 class="mb-0" th:text="${board.price}"></h3>
+                     <h6 th:text="${board.id}"></h6>
+                     <p th:text="${board.content}"></p>
+                     <div class="btn-group">
+                        <a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
+                           class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+                        <a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}"
+                           class="btn btn-outline-dark btn-sm mx-1">구매하기</a>
+                        <form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
+                           method="post">
+                           <input type="hidden" name="bbno" th:value="${board.bbno}">
+                           <input type="hidden" name="boardId" th:value="${board.id}">
+                           <input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Add more items as needed -->
+         </div>
+      </div>
+      <a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
 
-		<table>
-			<tr>
-				<td colspan="3"></td>
-				<td>
-					<a th:href="@{/bookBoard/sellBoard}" class="nav-item nav-link">판매등록</a>
-					<a th:href="@{/}">홈</a>
-				</td>
-			</tr>
-			<tr>
-				<th>글번호</th>
-				<th>작성자</th>
-				<th style="width: 230px;">제목</th>
-				<th>조회수</th>
-				<th style="width:150px;">작성일</th>
-			</tr>
-			<tr th:each="board : ${boardList}">
-				<td th:text="${board.bbno}"></td>
-				<td th:text="${board.id}"></td>
-				<td>
-					<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}" th:text="${board.title}"></a>
-				</td>
-				<td th:text="${board.hits}"></td>
-				<td th:text="${board.created_day}"></td>
-			</tr>
-		</table>
-		-->
+
+		
+		<section id="paging">
+			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|">◁◁</a>
+			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage - 1})|">◀</a>
+
+			<span th:each="counter : ${#numbers.sequence(navi.startPageGroup, navi.endPageGroup)}">
+				<th:block th:if="${counter == navi.currentPage}"><b></th:block>
+				<a th:text="${counter}" th:if="${counter != 0}" th:href="|javascript:pagingFormSubmit(${counter})|"></a>
+				<th:block th:if="${counter == navi.currentPage}"></b></th:block>
+			</span>
+
+			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage + 1})|">▶</a>
+			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|">▷▷</a>
+			<br><br>
+
+		</section>
 
 	</th:block>
 </th:block>
