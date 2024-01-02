@@ -34,7 +34,7 @@ public class CommonController {
         Member member = service.selectUser(user.getUsername());
         model.addAttribute("member", member);
     }
-	ArrayList<BookBoard> boardList = bookBoardService.showBoardList();
+	ArrayList<BookBoard> boardList = bookBoardService.showBoardAll();
 	model.addAttribute("boardList", boardList);
     // 다른 공통 데이터를 여기에 추가할 수도 있습니다.
 }
