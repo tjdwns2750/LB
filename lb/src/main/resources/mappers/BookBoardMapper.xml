@@ -47,14 +47,18 @@
 		)
 
 	</insert>
-	
-	<!-- <select id="showBoardList" resultType="BookBoard"> SELECT b.bbno ,b.id, 
-		a.name, b.address, b.title, b.content, b.hits, b.category, b.originalfile, 
-		b.savedfile, b.recommend, b.created_day, b.isbn, b.thumbnail, b.bookTitle, 
-		b.author, b.publisher, b.price, b.amount FROM member a INNER JOIN bookBoard 
-		b ON a.id= b.id </select> -->
 
-	<select id="showBoardList" parameterType="map" resultType="BookBoard">
+	<select id="showBoardAll" resultType="BookBoard"> SELECT b.bbno ,b.id,
+		a.name, b.address, b.title, b.content, b.hits, b.category,
+		b.originalfile,
+		b.savedfile, b.recommend, b.created_day, b.isbn, b.thumbnail, b.bookTitle,
+		b.author, b.publisher, b.price, b.amount FROM member a INNER JOIN
+		bookBoard
+		b ON a.id= b.id
+	</select>
+
+	<select id="showBoardList" parameterType="map"
+		resultType="BookBoard">
 		select * from bookBoard
 		<if test="type != null and searchWord != null">
 			<where>
@@ -71,7 +75,7 @@
 					upper(title) like '%' || upper(#{searchWord}) || '%'
 					or
 					upper(content) like '%' || upper(#{searchWord}) || '%'
-					or 
+					or
 					id like '%' || #{searchWord} || '%'
 				</if>
 			</where>
@@ -96,7 +100,8 @@
 					upper(title) like '%' || upper(#{searchWord}) || '%'
 					or
 					upper(content) like '%' || upper(#{searchWord}) || '%'
-					or id like '%' || #{searchWord} || '%'
+					or id like
+					'%' || #{searchWord} || '%'
 				</if>
 			</where>
 		</if>

@@ -25,4 +25,6 @@ public interface BookBoardDAO {
 	int updateBoard(BookBoard bookBoard);
 
 	int deleteBoard(int boardnum);
+
+	ArrayList<BookBoard> showBoardAll();
 }

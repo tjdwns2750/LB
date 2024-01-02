@@ -22,4 +22,6 @@ public interface BookBoardService {
 
 	int deleteBoard(int boardnum);
 
+	ArrayList<BookBoard> showBoardAll();
+
 }

@@ -80,4 +80,10 @@ public class BookBoardServiceImpl implements BookBoardService {
 		return result;
 	}
 
+	@Override
+	public ArrayList<BookBoard> showBoardAll() {
+		ArrayList<BookBoard> boardlist = dao.showBoardAll();
+		return boardlist;
+	}
+
 }
