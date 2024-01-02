@@ -20,5 +20,7 @@ public interface BoardService {
 	int updateBoard(Board board);
 
 	int deleteBoard(Board board);
+	
+	ArrayList<Board> bestBoardList();
 
 }
