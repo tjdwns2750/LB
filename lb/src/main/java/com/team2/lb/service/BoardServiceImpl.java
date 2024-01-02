@@ -58,5 +58,11 @@ public class BoardServiceImpl implements BoardService{
 		int result = dao.deleteBoard(board);
 		return result;
 	}
+	
+	   @Override
+	   public ArrayList<Board> bestBoardList() {
+	      ArrayList<Board> board = dao.bestBoardList();
+	      return board;
+	   }
 
 }

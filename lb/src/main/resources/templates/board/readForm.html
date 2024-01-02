@@ -16,6 +16,14 @@
 		}
 	}
 	
+	//리플 삭제
+	function deleteReply(replynum, bno){
+		if(confirm('삭제하시겠습니까?')) {
+			location.href = '../reply/deleteReply?replynum=' 
+					+ replynum + '&bno=' + bno;
+		}
+	}
+	
 
 </script>
 </head>
@@ -54,6 +62,30 @@
 		</div>
 	</table>
 	
-
+	<section>
+			<!-- 리플 작성 폼 -->
+			<form th:action="@{/reply/writeReply}" method="post">
+				리플내용
+				<input type="hidden" name="bno" th:value="${board.bno}">
+				<input type="text" name="replytext" style="width: 500px;">
+				<input type="submit" value="확인">
+			</form>
+			
+			<!-- 리플 목록 출력 -->
+			<table class="reply">
+				<tr th:each="reply : ${replyList}">
+					<td class="replyid" th:text="${reply.id}"></td>
+					<td class="replytext" th:text="${reply.replytext}"></td>
+					<td class="replydate" th:text="${reply.inputdate}"></td>
+					<td class="white">
+						<th:block th:if="${#authentication.name} == ${reply.id}">
+							<a th:href="|javascript:deleteReply(${reply.replynum}, ${reply.bno})|">
+								<img th:src="@{/image/icon_delete_24.png}">
+							</a>
+						</th:block>
+					</td>
+				</tr>
+			</table>
+		</section>
 </body>
 </html>
