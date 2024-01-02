@@ -23,8 +23,10 @@
 			<div class="container py-5">
 				<div class="row justify-content-center py-5">
 					<div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-						<h1 class="display-3 mb-3 animated slideInDown" style="color: skyblue; font-family: 'Noto Serif Kr', serif;" >책과 책을 연결하다</h1>
-						<h4 class="display-3 mb-3 animated slideInDown" style="color: brown; font-family: 'Noto Serif Kr', serif;">당신의 책을 만나보세요!</h4>
+						<h1 class="display-3 mb-3 animated slideInDown"
+							style="color: skyblue; font-family: 'Noto Serif Kr', serif;">책과 책을 연결하다</h1>
+						<h4 class="display-3 mb-3 animated slideInDown"
+							style="color: brown; font-family: 'Noto Serif Kr', serif;">당신의 책을 만나보세요!</h4>
 						<p class="fs-4 text-white mb-4 animated slideInDown"></p>
 						<div class="position-relative w-75 mx-auto animated slideInDown">
 							<!--
@@ -110,7 +112,8 @@
 				</div>
 				<div class="owl-carousel testimonial-carousel position-relative">
 					<div class="testimonial-item bg-white text-center border p-4" th:each="board : ${boardList}">
-						<img class="bg-white shadow p-1 mx-auto mb-3" th:src="${board.thumbnail}" style="width: 50%; height: 50%;">
+						<img class="bg-white shadow p-1 mx-auto mb-3" th:src="${board.thumbnail}"
+							style="width: 50%; height: 50%;">
 						<h5 class="mb-0" th:text="${board.name}"></h5>
 						<p th:text="${board.price}"></p>
 						<p th:text="${board.content}"></p>
@@ -131,8 +134,28 @@
 		</div>
 		<!-- Testimonial End -->
 
+		<!-- Popular reivew Start -->
+		<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+			<div class="container">
+				<div class="text-center">
+					<h6 class="section-title bg-white text-center text-dark px-3">이 달의 리뷰</h6>
+					<h1 class="mb-5">가장 있기 있는 리뷰</h1>
+				</div>
+				<div class="owl-carousel testimonial-carousel position-relative">
+					<div class="testimonial-item bg-white text-center border p-4" th:each="board : ${reviewList}">
+						<h5 class="mb-0" th:text="${board.id}"></h5>
+						<p th:text="${board.title}"></p>
+						<pre th:utext="${board.content}"></pre>
+						<a th:href="@{/board/read(bno=${board.bno})}"
+							class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Popular reivew End -->
 
 	</th:block>
+
 </th:block>
 
 </html>
