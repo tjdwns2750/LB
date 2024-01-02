@@ -29,4 +29,10 @@ public interface ChatDAO {
 
 	ArrayList<ChatRoom> showChatRoomAll(String id);
 
+	String findByBoardId(int roomId);
+
+	int findByBbno(int roomId);
+
+	String findByMemberId(int roomId);
+
 }
