@@ -15,5 +15,6 @@ public class Alarm {
 	private String created_day;
 	private String prefix;
 	private long bbno;
+	private long bno;
 	private long room_id;
 }

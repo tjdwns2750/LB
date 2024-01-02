@@ -41,6 +41,18 @@ public class AlarmSercieImpl implements AlarmService {
 		return num;
 	}
 
+	@Override
+	public void createReiviewAlarm(Alarm alarm) {
+		dao.createReiviewAlarm(alarm);
+		
+	}
+
+	@Override
+	public String selectBoardId(int bno) {
+		String boardId = dao.selectBoardId(bno);
+		return boardId;
+	}
+
 
 
 }

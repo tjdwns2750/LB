@@ -10,12 +10,16 @@ import com.team2.lb.vo.Alarm;
 public interface AlarmService {
 
 	void createChatAlarm(Alarm alarm);
+	
+	void createReiviewAlarm(Alarm alarm);
 
 	ArrayList<Alarm> showAlarm(String id);
 
 	void updateCheck(String id);
 
 	int alarmNum(String id);
+
+	String selectBoardId(int bno);
 
 
 }
