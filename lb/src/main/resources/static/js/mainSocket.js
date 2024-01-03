@@ -29,11 +29,14 @@ str = ''
 
 console.log("username :", username);
 
+
 setInterval(function() {
 	//stomp.send를 이용하여 메시지 전송
 	stomp.send('/pub/alarm/showAlarm', {}, String(username));
 	stomp.send('/pub/alarm/alarmNum', {}, String(username));
 }, 500); // 1000 밀리초(1초) 간격으로 실행
+
+
 
 var alarmList = []; // 알람 리스트를 저장할 배열
 
@@ -115,14 +118,12 @@ stomp.connect({}, function() {
 			if (alarmItem.prefix == 'chat') {
 				var createdDate = new Date(alarmItem.created_day);
 				var timeDiff = calculateTimeDifference(createdDate);
-				alarmList.push({ message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.', bbno: Number(alarmItem.bbno), id: alarmItem.member_id });
-				console.log(alarmList);
+				alarmList.push({ message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.', bbno: Number(alarmItem.bbno), id: alarmItem.member_id , prefix: alarmItem.prefix });
+				console.log("채팅완료");
 			} else if (alarmItem.prefix == 'review') {
 				var createdDate = new Date(alarmItem.created_day);
 				var timeDiff = calculateTimeDifference(createdDate);
 				alarmList.push({ message: timeDiff + ' 전에 새로운 리뷰가 도착했습니다.', id: alarmItem.member_id, prefix: alarmItem.prefix, bno: alarmItem.bno });
-				console.log(alarmList);
-				console.log("도착완료");
 			}
 		});
 		displayAlarms();
