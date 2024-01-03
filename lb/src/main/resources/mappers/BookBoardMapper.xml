@@ -47,14 +47,20 @@
 		)
 
 	</insert>
-	
-	<!-- <select id="showBoardList" resultType="BookBoard"> SELECT b.bbno ,b.id, 
-		a.name, b.address, b.title, b.content, b.hits, b.category, b.originalfile, 
-		b.savedfile, b.recommend, b.created_day, b.isbn, b.thumbnail, b.bookTitle, 
-		b.author, b.publisher, b.price, b.amount FROM member a INNER JOIN bookBoard 
-		b ON a.id= b.id </select> -->
 
-	<select id="showBoardList" parameterType="map" resultType="BookBoard">
+	<select id="showBoardAll" resultType="BookBoard"> SELECT b.bbno ,b.id,
+		a.name, b.address, b.title, b.content, b.hits, b.category,
+		b.originalfile,
+		b.savedfile, b.recommend, b.created_day, b.isbn,
+		b.thumbnail, b.bookTitle,
+		b.author, b.publisher, b.price, b.amount FROM
+		member a INNER JOIN
+		bookBoard
+		b ON a.id= b.id
+	</select>
+
+	<select id="showBoardList" parameterType="map"
+		resultType="BookBoard">
 		select * from bookBoard
 		<if test="type != null and searchWord != null">
 			<where>
@@ -71,8 +77,9 @@
 					upper(title) like '%' || upper(#{searchWord}) || '%'
 					or
 					upper(content) like '%' || upper(#{searchWord}) || '%'
-					or 
-					id like '%' || #{searchWord} || '%'
+					or
+					id like '%'
+					|| #{searchWord} || '%'
 				</if>
 			</where>
 		</if>
@@ -96,7 +103,8 @@
 					upper(title) like '%' || upper(#{searchWord}) || '%'
 					or
 					upper(content) like '%' || upper(#{searchWord}) || '%'
-					or id like '%' || #{searchWord} || '%'
+					or id like
+					'%' || #{searchWord} || '%'
 				</if>
 			</where>
 		</if>
@@ -108,6 +116,15 @@
 		from BookBoard
 		where bbno = #{bbno}
 	</select>
+
+	<update id="updateHits" parameterType="int">
+		update BookBoard
+		set
+		hits =
+		hits + 1
+		where
+		bbno = #{boardnum}
+	</update>
 
 	<update id="updateBoard" parameterType="BookBoard">
 		update BookBoard
@@ -136,4 +153,56 @@
 		where
 		bbno like #{bbno}
 	</delete>
+
+	<select id="checkLike" parameterType="map" resultType="int">
+		select
+		count(*)
+		from like_board
+		where id = #{id} and bno = #{boardnum}
+	</select>
+
+	<insert id="addLike" parameterType="map">
+		insert into
+		like_board(id,
+		bno)
+		values
+		(#{id}, #{boardnum})
+	</insert>
+
+	<update id="upLike" parameterType="int">
+		update
+		BookBoard
+		set
+		recommend =
+		recommend + 1
+		where
+		bbno = #{boardnum}
+	</update>
+
+	<delete id="deleteLike" parameterType="map">
+		delete from like_board
+		where
+		id = #{id} and bno = #{boardnum}
+	</delete>
+
+	<update id="downLike" parameterType="int">
+		update
+		BookBoard
+		set
+		recommend
+		= recommend - 1
+		where
+		bbno = #{boardnum}
+	</update>
+
+	<select id="selectCnt" parameterType="int" resultType="int">
+		select
+		recommend
+		from
+		BookBoard
+		where
+		bbno = #{boardnum}
+	</select>
+
+
 </mapper>
