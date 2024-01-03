@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.team2.lb.dao.BookBoardDAO;
@@ -64,6 +65,7 @@ public class BookBoardServiceImpl implements BookBoardService {
 
 	@Override
 	public BookBoard readBoard(int boardnum) {
+		dao.updateHits(boardnum);
 		BookBoard bookBoard = dao.readBoard(boardnum);
 		return bookBoard;
 	}
@@ -85,5 +87,47 @@ public class BookBoardServiceImpl implements BookBoardService {
 		ArrayList<BookBoard> boardlist = dao.showBoardAll();
 		return boardlist;
 	}
+	
+	private HashMap<String, Object> getMap(int boardnum, String id) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("boardnum", boardnum);
+		map.put("id" , id);
+		return map;
+	}
+	
+	@Override
+	public int checkLike(int boardnum, String id) {
+		HashMap<String, Object> map = getMap(boardnum, id);
+		int check = dao.checkLike(map);
+		return check;
+	}
+
+	@Override
+	public void addLike(int boardnum, String id) {
+		HashMap<String, Object> map = getMap(boardnum, id);
+		dao.addLike(map);
+	}
+	@Override
+	public void upLike(int boardnum) {
+		dao.upLike(boardnum);
+	}
+
+	@Override
+	public void deleteLike(int boardnum, String id) {
+		HashMap<String, Object> map = getMap(boardnum, id);
+		dao.deleteLike(map);
+	}
+
+	@Override
+	public void downLike(int boardnum) {
+		dao.downLike(boardnum);
+	}
+	
+	@Override
+	public int selectCnt(int boardnum) {
+		int cnt = dao.selectCnt(boardnum);
+		return cnt;
+	}
+	
 
 }

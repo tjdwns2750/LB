@@ -22,9 +22,25 @@ public interface BookBoardDAO {
 
 	BookBoard readBoard(int boardnum);
 
+	void updateHits(int boardnum);
+
 	int updateBoard(BookBoard bookBoard);
 
 	int deleteBoard(int boardnum);
 
 	ArrayList<BookBoard> showBoardAll();
+
+	int checkLike(HashMap<String, Object> map);
+	
+	void addLike(HashMap<String, Object> map);
+
+	void upLike(int boardnum);
+
+	void deleteLike(HashMap<String, Object> map);
+
+	void downLike(int boardnum);
+
+	int selectCnt(int boardnum);
+
+	
 }
