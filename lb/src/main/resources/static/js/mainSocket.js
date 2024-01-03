@@ -29,11 +29,14 @@ str = ''
 
 console.log("username :", username);
 
+
 setInterval(function() {
 	//stomp.send를 이용하여 메시지 전송
 	stomp.send('/pub/alarm/showAlarm', {}, String(username));
 	stomp.send('/pub/alarm/alarmNum', {}, String(username));
 }, 500); // 1000 밀리초(1초) 간격으로 실행
+
+
 
 var alarmList = []; // 알람 리스트를 저장할 배열
 
@@ -72,16 +75,36 @@ function displayAlarms() {
 	$('#alarm').empty();
 
 	alarmList.forEach(function(alarm) {
-		console.log(alarm.bbno)
 
-		// <p> 태그에서는 href 속성이 지원되지 않으므로 수정
-		$('#alarm').append('<p class="dropdown-item">' + alarm.message +
-			'<form action="/lb/chat/chatRoom" method="post">' +
-			'<input type="hidden" name="bbno" value="' + alarm.bbno + '">' +
-			'<input type="hidden" name="boardId" value="' + alarm.id + '">' +
-			'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
-			'</form>' +
-			'</p>');
+		console.log("alarm : ", alarm.prefix);
+		console.log(alarm.bbno)
+		console.log(alarm.bno)
+
+		if (alarm.prefix == 'chat') {
+
+			// <p> 태그에서는 href 속성이 지원되지 않으므로 수정
+			$('#alarm').append('<p class="dropdown-item">' + alarm.message +
+				'<form action="/lb/chat/chatRoom" method="post">' +
+				'<input type="hidden" name="bbno" value="' + alarm.bbno + '">' +
+				'<input type="hidden" name="boardId" value="' + alarm.id + '">' +
+				'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
+				'</form>' +
+				'</p>');
+
+		} else if (alarm.prefix == 'review') {
+			console.log("bno도착", alarm.bno)
+
+			$('#alarm').append('<p class="dropdown-item">' + alarm.message +
+				'<form action="/lb/board/read" method="get">' +
+				'<input type="hidden" name="bno" value="' + alarm.bno + '">' +
+				'<input class="btn btn-secondary" type="submit" value="글 보러가기"></input>' +
+				'</form>' +
+				'</p>');
+			console.log('<a href="./board/read?bno="' + alarm.bno + '"class="btn btn-secondary" > 글보러가기' +
+				'</a>');
+
+		}
+
 	});
 }
 
@@ -95,8 +118,12 @@ stomp.connect({}, function() {
 			if (alarmItem.prefix == 'chat') {
 				var createdDate = new Date(alarmItem.created_day);
 				var timeDiff = calculateTimeDifference(createdDate);
-				alarmList.push({ message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.', bbno: Number(alarmItem.bbno), id: alarmItem.member_id });
-				console.log(alarmList);
+				alarmList.push({ message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.', bbno: Number(alarmItem.bbno), id: alarmItem.member_id , prefix: alarmItem.prefix });
+				console.log("채팅완료");
+			} else if (alarmItem.prefix == 'review') {
+				var createdDate = new Date(alarmItem.created_day);
+				var timeDiff = calculateTimeDifference(createdDate);
+				alarmList.push({ message: timeDiff + ' 전에 새로운 리뷰가 도착했습니다.', id: alarmItem.member_id, prefix: alarmItem.prefix, bno: alarmItem.bno });
 			}
 		});
 		displayAlarms();
@@ -105,11 +132,6 @@ stomp.connect({}, function() {
 
 	stomp.subscribe("/sub/layout/main/num" + username, function(chat, num) {
 		var num = JSON.parse(chat.body);
-		if (num == 0) {
-			$('#alarmArea').hide();
-		} else {
-			$('#alarmArea').show();
-		}
 		console.log("number : ", num);
 		$('#alarmNum').text(num);
 	});

@@ -8,25 +8,43 @@
 		ano,
 		member_id, code, prefix, bbno, room_id
 		) values (
-		alarm_seq.nextval, #{member_id},#{code},#{prefix},#{bbno},#{room_id}
+		alarm_seq.nextval,
+		#{member_id},#{code},#{prefix},#{bbno},#{room_id}
 		)
 
 
 	</insert>
-	
+
+	<insert id="createReiviewAlarm" parameterType="Alarm">
+		insert into alarm(
+		ano,
+		member_id, code, prefix, bno
+		) values (
+		alarm_seq.nextval, #{member_id},#{code},#{prefix},#{bno}
+		)
+	</insert>
+
 	<select id="showAlarm" parameterType="String" resultType="Alarm">
-		select * from alarm where member_id = #{id} and checked = 'X'
-		order by created_day desc
+		select
+		* from alarm where member_id = #{id} and checked = 'X'
+		order by
+		created_day desc
 	</select>
-	
+
 	<select id="alarmNum" parameterType="String" resultType="int">
-	select count(*) from alarm where member_id = #{id} and checked = 'X'
-		order by created_day desc
-	
+		select count(*) from alarm where member_id = #{id} and checked = 'X'
+		order by
+		created_day desc
+
 	</select>
-	
+
 	<update id="updateAlarm" parameterType="String">
-		update alarm set checked = 'O' where member_id = #{id}
+		update alarm set checked
+		= 'O' where member_id = #{id}
 	</update>
+	
+	<select id="selectBoardId" parameterType="int" resultType="String">
+		select distinct id from board where bno = #{bno} 
+	</select>
 
 </mapper>

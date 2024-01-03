@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.team2.lb.dao.ReviewReplyDAO">
+
+	<!-- 리플 저장 -->
+	<insert id="writeReply" parameterType="ReviewReply">
+		insert into review_reply (
+				replynum
+				, bno
+				, id
+				, replytext
+		)
+		values (
+				review_reply_seq.nextval
+				, #{bno}
+				, #{id}
+				, #{replytext}
+		)
+	</insert>
+	
+	<select id="replyList" parameterType="int" resultType="ReviewReply">
+		select 
+			* 
+		from 
+			review_reply 
+		where 
+			bno = #{bno}
+		order by
+			replynum
+	</select>
+	
+	<delete id="deleteReply" parameterType="ReviewReply">
+		delete 
+			review_reply
+		where
+			replynum = #{replynum}
+			and
+			id = #{id}
+			
+	</delete>
+</mapper>
