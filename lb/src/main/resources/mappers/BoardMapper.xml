@@ -44,7 +44,8 @@
 		board_seq.nextval
 		, #{id}
 		, #{title}
-		, #{content}
+		,
+		#{content}
 		)
 	</insert>
 
@@ -82,7 +83,8 @@
 		update
 		board
 		set
-		hits = hits + 1
+		hits = hits
+		+ 1
 		where
 		bno = #{bno}
 	</update>
@@ -92,7 +94,8 @@
 		update
 		board
 		set
-		title = #{title}
+		title =
+		#{title}
 		, content = #{content}
 		where
 		bno = #{bno}
@@ -103,29 +106,23 @@
 		delete
 		board
 		where
-		id like #{id}
+		id like
+		#{id}
 		and bno = #{bno}
 	</delete>
 
 	<select id="bestBoardList" resultType="Board">
 		SELECT * FROM (
-		SELECT * FROM board
+		SELECT *
+		FROM board
 		WHERE ROWNUM &lt; 4
 		ORDER BY hits DESC
 		) WHERE ROWNUM &lt; 4
 	</select>
 
-	<select id="BoardcheckLike" parameterType="LikeBoard" resultType="int">
-		select
-		count(*)
-		from like_board
-		where id = #{id} and bno = #{bno}
-		and prefix = #{prefix}
-	</select>
-
-	<select id="checkBoardLike" parameterType="LikeBoard" resultType="int">
-		select
-		count(*)
+	<select id="checkBoardLike" parameterType="LikeBoard"
+		resultType="int">
+		select count(*)
 		from like_board
 		where id = #{id} and bno = #{bno} and prefix = #{prefix}
 	</select>
@@ -150,7 +147,8 @@
 	</update>
 
 	<delete id="deleteBoardLike" parameterType="LikeBoard">
-		delete from like_board
+		delete from
+		like_board
 		where
 		id = #{id} and bno = #{bno} and prefix = #{prefix}
 	</delete>
@@ -162,10 +160,11 @@
 		recommend
 		= recommend - 1
 		where
-		bno = #{bno} 
+		bno = #{bno}
 	</update>
 
-	<select id="selectBoardCnt" parameterType="LikeBoard" resultType="int">
+	<select id="selectBoardCnt" parameterType="LikeBoard"
+		resultType="int">
 		select
 		recommend
 		from
