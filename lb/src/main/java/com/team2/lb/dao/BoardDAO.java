@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.team2.lb.vo.Board;
+import com.team2.lb.vo.LikeBoard;
 
 @Mapper
 public interface BoardDAO {
@@ -27,4 +28,16 @@ public interface BoardDAO {
 	int deleteBoard(Board board);
 
 	ArrayList<Board> bestBoardList();
+
+	int checkBoardLike(LikeBoard like);
+
+	int selectBoardCnt(LikeBoard like);
+
+	void downBoardLike(LikeBoard like);
+
+	void deleteBoardLike(LikeBoard like);
+
+	void addBoardLike(LikeBoard like);
+
+	void upBoardLike(LikeBoard like);
 }
