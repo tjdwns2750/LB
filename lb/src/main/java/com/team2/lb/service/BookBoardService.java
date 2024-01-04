@@ -47,6 +47,8 @@ public interface BookBoardService {
 
 	// 추천수 조회
 	int selectCnt(int boardnum);
+
+	ArrayList<BookBoard> bestBoardList();
 	
 
 }
