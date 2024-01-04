@@ -76,10 +76,19 @@ public class BoardController {
 	
 	@GetMapping("read")
 	public String read(@RequestParam(name = "bno", 
-				defaultValue = "0")int bno, Model model) {
+				defaultValue = "0")int bno, Model model, @AuthenticationPrincipal UserDetails user, LikeBoard like) {
 		//DB에서 글번호에 일치하는 글정보 가져오기
 		Board board = service.readBoard(bno);
 		log.debug("board??: {}", board);
+		
+		if(user!= null) {
+			like.setBno(bno);
+			like.setId(user.getUsername());
+			like.setPrefix("review");
+			int check = service.checkBoardLike(like);
+			model.addAttribute("check" , check);
+			log.info("check {}", check);
+		}
 		// 리플 목록 가져오기
 		ArrayList<ReviewReply> replyList = rService.replyList(bno);
 		
@@ -208,6 +217,7 @@ public class BoardController {
 		like.setPrefix("review");
 //		좋아요 테이블에 게시글번호, 유저아이디가 동시에 매칭되는 열이 있는지 체크 있으면 1 없음면 0
 		int check = service.checkBoardLike(like);
+		log.info("controller check : {}", check);
 
 		return check;
 

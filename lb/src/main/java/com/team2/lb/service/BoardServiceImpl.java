@@ -10,7 +10,10 @@ import com.team2.lb.dao.BoardDAO;
 import com.team2.lb.vo.Board;
 import com.team2.lb.vo.LikeBoard;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
@@ -67,11 +70,11 @@ public class BoardServiceImpl implements BoardService{
 	   }
 
 	@Override
-	public int checkBoardLike(LikeBoard likes) {
+	public int checkBoardLike(LikeBoard like) {
 		
-		
-		int like = dao.checkBoardLike(likes);
-		return like;
+		int likes = dao.checkBoardLike(like);
+		log.info("check service : {}" , likes);
+		return likes;
 	}
 
 	@Override
