@@ -26,6 +26,7 @@ import com.google.gson.JsonObject;
 import com.team2.lb.service.BoardService;
 import com.team2.lb.service.ReviewReplyService;
 import com.team2.lb.vo.Board;
+import com.team2.lb.vo.LikeBoard;
 import com.team2.lb.vo.ReviewReply;
 
 import lombok.extern.slf4j.Slf4j;
@@ -161,6 +162,55 @@ public class BoardController {
 	        e.printStackTrace();
 	    }
 	    return jsonObject.toString();
+	}
+	
+	@ResponseBody
+	@PostMapping("recommend")
+	public int recommend(int bno, @AuthenticationPrincipal UserDetails user, LikeBoard like) {
+		// 현재 로그인한 유저의 id를 세팅
+		String id = user.getUsername();
+
+//		좋아요 테이블에 게시글번호, 유저아이디가 동시에 매칭되는 열이 있는지 체크 있으면 1 없음면 0
+		like.setBno(bno);
+		like.setId(id);
+		like.setPrefix("review");
+		
+		
+		
+		int check = service.checkBoardLike(like);
+//		좋아요 수를 담을 cnt
+		int cnt = 0;
+
+		if (check == 0) {
+			log.debug("추천안했음");
+			service.addBoardLike(like);
+			service.upBoardLike(like);
+			cnt = service.selectBoardCnt(like);
+			return cnt;
+		} else {
+			log.debug("추천이미했음");
+			service.deleteBoardLike(like);
+			service.downBoardLike(like);
+			cnt = service.selectBoardCnt(like);
+			return cnt;
+		}
+
+	}
+	
+	@ResponseBody
+	@PostMapping("likeCnt")
+	public int likeCnt(int bno, @AuthenticationPrincipal UserDetails user, LikeBoard like) {
+		// 현재 로그인한 유저의 id를 세팅
+		String id = user.getUsername();
+		
+		like.setBno(bno);
+		like.setId(id);
+		like.setPrefix("review");
+//		좋아요 테이블에 게시글번호, 유저아이디가 동시에 매칭되는 열이 있는지 체크 있으면 1 없음면 0
+		int check = service.checkBoardLike(like);
+
+		return check;
+
 	}
 
 

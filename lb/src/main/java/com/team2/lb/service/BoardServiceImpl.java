@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.team2.lb.dao.BoardDAO;
 import com.team2.lb.vo.Board;
+import com.team2.lb.vo.LikeBoard;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -64,5 +65,44 @@ public class BoardServiceImpl implements BoardService{
 	      ArrayList<Board> board = dao.bestBoardList();
 	      return board;
 	   }
+
+	@Override
+	public int checkBoardLike(LikeBoard likes) {
+		
+		
+		int like = dao.checkBoardLike(likes);
+		return like;
+	}
+
+	@Override
+	public int selectBoardCnt(LikeBoard like) {
+		int likes = dao.selectBoardCnt(like);
+		return likes;
+	}
+
+	@Override
+	public void downBoardLike(LikeBoard like) {
+		dao.downBoardLike(like);
+		
+	}
+
+	@Override
+	public void deleteBoardLike(LikeBoard like) {
+		dao.deleteBoardLike(like);
+		
+	}
+
+	@Override
+	public void addBoardLike(LikeBoard like) {
+		dao.addBoardLike(like);
+		
+	}
+
+	@Override
+	public void upBoardLike(LikeBoard like) {
+		dao.upBoardLike(like);
+		
+	}
+	
 
 }
