@@ -17,7 +17,6 @@ import com.team2.lb.service.ChatService;
 import com.team2.lb.service.MemberService;
 import com.team2.lb.vo.Board;
 import com.team2.lb.vo.BookBoard;
-import com.team2.lb.vo.ChatMessage;
 import com.team2.lb.vo.ChatRoom;
 import com.team2.lb.vo.Member;
 
@@ -39,6 +38,7 @@ public class HomeController {
 	@Autowired
 	BoardService boardservice;
 
+
 	// 메인 페이지
 	@GetMapping("/")
 	public String home(Model model, @AuthenticationPrincipal UserDetails user, ChatRoom chatRoom) {
@@ -47,8 +47,10 @@ public class HomeController {
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
 		}
+		ArrayList<BookBoard> bookList = bookboardservice.bestBoardList();
 		ArrayList<Board> board = boardservice.bestBoardList();
 		model.addAttribute("reviewList", board);
+		model.addAttribute("bookList", bookList);
 		return "home";
 
 	}
