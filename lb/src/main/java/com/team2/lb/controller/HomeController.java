@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team2.lb.service.BoardService;
 import com.team2.lb.service.BookBoardService;
 import com.team2.lb.service.ChatService;
 import com.team2.lb.service.MemberService;
+import com.team2.lb.vo.Board;
 import com.team2.lb.vo.BookBoard;
 import com.team2.lb.vo.ChatMessage;
 import com.team2.lb.vo.ChatRoom;
@@ -33,6 +35,9 @@ public class HomeController {
 
 	@Autowired
 	ChatService chatservice;
+	
+	@Autowired
+	BoardService boardservice;
 
 	// 메인 페이지
 	@GetMapping("/")
@@ -42,6 +47,8 @@ public class HomeController {
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
 		}
+		ArrayList<Board> board = boardservice.bestBoardList();
+		model.addAttribute("reviewList", board);
 		return "home";
 
 	}

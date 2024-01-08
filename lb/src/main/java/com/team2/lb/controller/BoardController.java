@@ -24,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonObject;
 import com.team2.lb.service.BoardService;
+import com.team2.lb.service.ReviewReplyService;
 import com.team2.lb.vo.Board;
+import com.team2.lb.vo.ReviewReply;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +38,8 @@ public class BoardController {
 	@Autowired
 	BoardService service;
 	
+	@Autowired
+	ReviewReplyService rService;
 	
 	@GetMapping("boardList")
 	public String boardList(Model model
@@ -76,11 +80,11 @@ public class BoardController {
 		Board board = service.readBoard(bno);
 		log.debug("board??: {}", board);
 		// 리플 목록 가져오기
-		//ArrayList<Reply> replyList = rService.replyList(bno);
+		ArrayList<ReviewReply> replyList = rService.replyList(bno);
 		
 		// model 객체를 이용해 readForm.html에 출력
 		model.addAttribute("board", board);
-		//model.addAttribute("replyList", replyList);
+		model.addAttribute("replyList", replyList);
 		return "board/readForm";
 			
 	}

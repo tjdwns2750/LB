@@ -17,4 +17,8 @@ public interface AlarmDAO {
 
 	int alarmNum(String id);
 
+	void createReiviewAlarm(Alarm alarm);
+
+	String selectBoardId(int bno);
+
 }
