@@ -46,6 +46,12 @@ dependencies {
    
    // 결제 테스트 express
    implementation 'org.springframework.boot:spring-boot-starter-web'
+   
+   // 이메일 인증시 필요
+   implementation 'org.springframework.boot:spring-boot-starter-mail'
+   implementation 'javax.mail:javax.mail-api:1.6.2' // 최신 버전 확인
+   
+   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.6.3'
 }
 
 tasks.named('test') {
