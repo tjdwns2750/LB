@@ -206,20 +206,12 @@ function searchCoordinateToAddress(latlng) {
 			htmlAddresses.push((i + 1) + '. ' + addrType + ' ' + address);
 		}
 
-		infoWindow.setContent([
-			'<div style="padding:10px;min-width:200px;line-height:150%;">',
-			'<h4 style="margin-top:5px;">검색 좌표</h4><br />',
-			'<a href="/">예시</a>',
-			htmlAddresses.join('<br />'),
-			'</div>'
-		].join('\n'));
 
 		infoWindow.open(map, latlng);
 	});
 }
 
 function searchAddressToCoordinate(address) {
-
 	naver.maps.Service.geocode({
 		query: address
 	}, function(status, response) {
@@ -231,34 +223,24 @@ function searchAddressToCoordinate(address) {
 			return alert('입력한 지역이 없습니다. 다시 한번 확인해주세요.');
 		}
 
-		var htmlAddresses = [],
-			item = response.v2.addresses[0],
+		var item = response.v2.addresses[0],
 			point = new naver.maps.Point(item.x, item.y);
 
-		/*
-		if (item.roadAddress) {
-			htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-		}
+		// Create a marker and set its position
+		var marker = new naver.maps.Marker({
+			position: point,
+			map: map,
+			icon: {
+				url: HOME_PATH + '/img/marker.ico',
+				size: new naver.maps.Size(48, 48),
+				anchor: new naver.maps.Point(12, 37)
+			}
 
-		if (item.jibunAddress) {
-			htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
-		}
 
-		if (item.englishAddress) {
-			htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
-		}
-		*/
+		});
+		console.log(marker);
 
-		infoWindow.setContent([
-			'<div style="padding:10px;min-width:200px;line-height:100%;">',
-			'<h4 style="margin-top:5px;">현재 위치 : ' + address + '</h4><br />',
-			htmlAddresses.join('<br />'),
-			'</div>'
-		].join('\n'));
-
-		console.log()
 		map.setCenter(point);
-		infoWindow.open(map, point);
 	});
 }
 
@@ -268,12 +250,9 @@ function onSuccessGeolocation(position) {
 	var location = new naver.maps.LatLng(position.coords.latitude,
 		position.coords.longitude);
 
-	map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
-	map.setZoom(17); // 지도의 줌 레벨을 변경합니다.
+	map.setZoom(15);
+	map.setCenter(location);
 
-	infowindow.setContent('<div style="padding:20px;">' + 'geolocation.getCurrentPosition() 위치' + '</div>');
-
-	infowindow.open(map, location);
 	console.log('Coordinates: ' + location.toString());
 }
 
@@ -296,42 +275,24 @@ function initGeocoder() {
 	*/
 
 
-	if ($('#getAddress').val() != null) {
-		let address = $('#getAddress').val();
-		map.addListener('click', function(e) {
-			searchCoordinateToAddress(e.coord);
-		});
-
-		$('#address').on('keydown', function(e) {
-			var keyCode = e.which;
-
-			if (keyCode === 13) { // Enter Key
-				searchAddressToCoordinate($('#address').val());
-			}
-		});
-
-		$('#submit').on('click', function(e) {
-			e.preventDefault();
-
-			searchAddressToCoordinate($('#address').val());
-		});
-
-
-		searchAddressToCoordinate(address);
+	if (navigator.geolocation) {
+		/**
+		 * navigator.geolocation 은 Chrome 50 버젼 이후로 HTTP 환경에서 사용이 Deprecate 되어 HTTPS 환경에서만 사용 가능 합니다.
+		 * http://localhost 에서는 사용이 가능하며, 테스트 목적으로, Chrome 의 바로가기를 만들어서 아래와 같이 설정하면 접속은 가능합니다.
+		 * chrome.exe --unsafely-treat-insecure-origin-as-secure="http://example.com"
+		 */
+		navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
 	} else {
-		if (navigator.geolocation) {
-			/**
-			 * navigator.geolocation 은 Chrome 50 버젼 이후로 HTTP 환경에서 사용이 Deprecate 되어 HTTPS 환경에서만 사용 가능 합니다.
-			 * http://localhost 에서는 사용이 가능하며, 테스트 목적으로, Chrome 의 바로가기를 만들어서 아래와 같이 설정하면 접속은 가능합니다.
-			 * chrome.exe --unsafely-treat-insecure-origin-as-secure="http://example.com"
-			 */
-			navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
-		} else {
-			var center = map.getCenter();
-			infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
-			infowindow.open(map, center);
-		}
+		var center = map.getCenter();
+		infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
+		infowindow.open(map, center);
 	}
+
+	$('#submit').on('click', function(e) {
+		e.preventDefault();
+
+		searchAddressToCoordinate($('#address').val());
+	});
 
 }
 

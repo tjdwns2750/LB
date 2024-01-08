@@ -4,7 +4,6 @@
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
 	<th:block th:fragment="content">
 
-		<input sec:authorize="isAuthenticated()" id="getAddress" type="hidden" th:value="${member.address}">
 		<input sec:authorize="isAuthenticated()" id="getImage" type="hidden" th:value="${member.originalfile}">
 
 		<style>
