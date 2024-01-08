@@ -14,6 +14,11 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
 		$(document).ready(function () {
+			/**
+			if(event.key === 'Enter') {
+				event.preventDefault();
+			}
+			*/
 			$('#bookName').on('keydown', function (event) {
 				if (event.key === 'Enter') {
 					event.preventDefault();  // 엔터키 누를시 submit 되는것을 방지
@@ -38,7 +43,7 @@
             });
             // 썸네일과 제목 추출
             let selectedBookThumbnail = selectedBookInfo.eq(1).find('img').attr('src'); // 썸네일이 두 번째 열에 있다고 가정
-            let selectedBookTitle = selectedBookInfo.eq(3).text(); // 제목이 네 번째 열에 있다고 가정
+            let selectedBookTitle = selectedBookInfo.eq(2).text(); // 제목이 네 번째 열에 있다고 가정
 
             // hidden으로 전송할 나머지 정보들 
             let selectedIsbn = selectedBookInfo.eq(0).text(); // ISBN이 첫 번째 열에 있다고 가정
@@ -66,7 +71,7 @@
 				new daum.Postcode({
 					oncomplete: function (data) {
 						document.getElementById("address_kakao").value = data.address;
-						document.querySelector('#condition').focus();
+						document.querySelector('#choice').focus();
 					}
 				}).open();
 			});
@@ -136,6 +141,43 @@
 		function openUrlInNewTab(url) {
 			window.open(url, '_blank');
 		}
+		/**
+		function joinCheck() {
+			let title = document.querySelector('#title');
+			let selectedIsbn = document.querySelector('#selectedIsbn');
+			let address_kakao = document.querySelector('#address_kakao');
+			let price = document.querySelector('#price');
+			let content = document.querySelector('#content');
+			let amount = document.querySelector('#amount');
+			alert("aa");
+
+			if (title.value.length < 2 || title.value.length > 40) {
+				alert("상품명을 입력하세요");
+				return false;
+			}
+			if (selectedIsbn.value == '') {
+				alert('책을 등록하세요');
+				return false;
+			}
+			if (address_kakao.value == '') {
+				alert('주소을 입력하세요');
+				return false;
+			}
+			if (price.value == '') {
+				alert('가격을 입력하세요');
+				return false;
+			}
+			if (content.value == '') {
+				alert('상품 설명을 입력하세요');
+				return false;
+			}
+			if (amount.value == '') {
+				alert('수량을 입력하세요');
+				return false;
+			}
+			return true;
+		}
+		*/
 	</script>
 	<style>
 		body {
@@ -239,7 +281,7 @@
 
 	<h1>판매 등록</h1>
 
-	<form th:action="@{/bookBoard/registSell}" method="post">
+	<form th:action="@{/bookBoard/registSell}" method="post" onsubmit="return joinCheck()">
 		<table>
 			<tr>
 				<th>상품 이미지</th>
@@ -247,7 +289,7 @@
 			</tr>
 			<tr>
 				<th>판매글 제목</th>
-				<td><input type="text" name="title" placeholder="제목을 입력해주세요."></td>
+				<td><input type="text" name="title" placeholder="상품명을 입력해주세요."></td>
 			</tr>
 			<tr>
 				<th>책 등록</th>
@@ -288,43 +330,8 @@
 				</td>
 			</tr>
 			<tr>
-				<th>상품상태</th>
-				<td>
-					<div id="condition">
-						<label>
-							<input type="radio" name="condition" checked>새 상품 (미사용)
-							<span>사용하지 않은 새 상품</span>
-						</label>
-					</div>
-					<div>
-						<label>
-							<input type="radio" name="condition">새 상품 (미사용)
-							<span>사용하지 않은 새 상품</span>
-						</label>
-					</div>
-					<div>
-						<label>
-							<input type="radio" name="condition">사용감 없음
-							<span>사용은 했지만 눈에 띄는 흔적이나 얼룩이 없음</span>
-						</label>
-					</div>
-					<div>
-						<label>
-							<input type="radio" name="condition">사용감 적음
-							<span>눈에 띄는 흔적이나 얼룩이 약간 있음</span>
-						</label>
-					</div>
-					<div>
-						<label>
-							<input type="radio" name="condition">사용감 많음
-							<span>눈에 띄는 흔적이나 얼룩이 많이 있음</span>
-						</label>
-					</div>
-				</td>
-			</tr>
-			<tr>
 				<th>교환</th>
-				<td>
+				<td id="ch">
 					<label>
 						<input type="radio" name="s" value="change" checked>불가
 					</label>
@@ -336,19 +343,19 @@
 			<tr>
 				<th>가격</th>
 				<td>
-					<input type="text" name="price" placeholder="가격을 입력해주세요.">
+					<input type="text" name="price" id="price" placeholder="가격을 입력해주세요.">
 				</td>
 			</tr>
 			<tr>
 				<th>설명</th>
 				<td>
-					<input type="textarea" name="content" placeholder="상품설명을 입력해주세요.">
+					<input type="textarea" name="content" id="content" placeholder="상품설명을 입력해주세요.">
 				</td>
 			</tr>
 			<tr>
 				<th>수량</th>
 				<td>
-					<input type="number" name="amount" value="1">
+					<input type="number" name="amount" id="amount" value="1">
 				</td>
 			</tr>
 			<tr>
