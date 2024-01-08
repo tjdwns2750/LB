@@ -1,6 +1,6 @@
 /********** Template CSS **********/
 :root {
-	--primary: brown;
+	--primary: skyblue;
 	--secondary: #FE8800;
 	--light: #F5F5F5;
 	--dark: #14141F;
@@ -9,7 +9,7 @@
 }
 
 .package-item {
-    display: none;
+	display: none;
 }
 
 .fw-medium {
@@ -28,7 +28,31 @@
 	z-index: 99;
 }
 
+@keyframes fallLeaves {
+	0% {
+		transform: translateY(-40vh) translateX(40%);
+		opacity: 1;
+	}
 
+	50% {
+		transform: translateY(10vh) translateX(60%);
+	}
+
+	100% {
+		transform: translateY(30vh) translateX(50%);
+		opacity: 0;
+	}
+}
+
+.falling-leaves {
+	position: absolute;
+	width: 50%;
+	height: 20%;
+	animation: fallLeaves 12s ease-out forwards;
+	/* Use forwards to keep the final state after animation ends */
+	animation-iteration-count: 1;
+	/* Run the animation only once */
+}
 
 
 /*** Spinner ***/
@@ -83,9 +107,10 @@
 	font-weight: normal;
 	border-radius: 0px;
 }
+
 #alarm.dropdown-menu {
-    max-height: 500px;
-    overflow-y: auto;
+	max-height: 500px;
+	overflow-y: auto;
 }
 
 /*** Navbar ***/
@@ -357,6 +382,7 @@
 .testimonial-carousel .owl-item.center .testimonial-item * {
 	transition: .5s;
 }
+
 .testimonial-carousel .owl-dots {
 	margin-top: 24px;
 	display: flex;

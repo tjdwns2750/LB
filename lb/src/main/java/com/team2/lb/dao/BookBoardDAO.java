@@ -42,5 +42,7 @@ public interface BookBoardDAO {
 
 	int selectCnt(int boardnum);
 
+	ArrayList<BookBoard> bestBoardList();
+
 	
 }

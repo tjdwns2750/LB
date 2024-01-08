@@ -30,14 +30,6 @@ public class ChatController {
 	@Autowired
 	ChatService service;
 
-	/*
-	 * @GetMapping("/") public String chatGET(){
-	 * 
-	 * log.info("@ChatController, chat GET()");
-	 * 
-	 * return "jinu/chat"; }
-	 */
-
 	@GetMapping("showChatRoom")
 	public String showChatRoom(@AuthenticationPrincipal UserDetails user, Model model) {
 		log.info("user id: {}", user.getUsername());		// 한 번만 호출하도록 수정
@@ -129,7 +121,6 @@ public class ChatController {
 			int bbno) {
 
 		ArrayList<ChatRoom> chatRoomList = service.showChatRoomAll(user.getUsername());
-
 		model.addAttribute("roomList", chatRoomList);
 		ChatRoom selectRoom = service.selectByChatRoom(roomId);
 		model.addAttribute("room", selectRoom);

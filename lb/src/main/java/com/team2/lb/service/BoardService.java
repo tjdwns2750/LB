@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.team2.lb.vo.Board;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.LikeBoard;
 
 @Service
 public interface BoardService {
@@ -22,5 +23,17 @@ public interface BoardService {
 	int deleteBoard(Board board);
 	
 	ArrayList<Board> bestBoardList();
+
+	int checkBoardLike(LikeBoard like);
+
+	int selectBoardCnt(LikeBoard like);
+
+	void downBoardLike(LikeBoard like);
+
+	void deleteBoardLike(LikeBoard like);
+
+	void addBoardLike(LikeBoard like);
+
+	void upBoardLike(LikeBoard like);
 
 }

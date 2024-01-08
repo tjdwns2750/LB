@@ -1,91 +1,229 @@
 <!DOCTYPE html>
-<html xmlns:th="thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Read Form</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<style>
-	table td, th {
-		text-align: center;
-	}
-</style>
-<script>
-	function deleteFunc(bno){
-		if(confirm('삭제하시겠습니까?')){
-			location.href = 'delete?bno=' + bno;
-		}
-	}
-	
-	//리플 삭제
-	function deleteReply(replynum, bno){
-		if(confirm('삭제하시겠습니까?')) {
-			location.href = '../reply/deleteReply?replynum=' 
-					+ replynum + '&bno=' + bno;
-		}
-	}
-	
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
 
-</script>
-</head>
-<body>
-<header>
-		<h1>글 읽기</h1>
-	</header>
+		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
-	<table>
-		<tr>
-			<th>글번호</th>
-			<td style="width: 80px;" th:text="${board.bno}"></td>
-			<th>조회수</th>
-			<td style="width: 50px;" th:text="${board.hits}"></td>
-			<th>작성일</th>
-			<td style="width: 150px;" th:text="${board.created_day}"></td>
-		</tr>
-		<tr>
-			<th>제목</th>
-			<td colspan="3" th:text="${board.title}"></td>
-			<th>작성자</th>
-			<td th:text="${board.id}"></td>
-		</tr>
-		<tr>
-			<th colspan="6">내용</th>
-		</tr>
-		<tr>
-			<td colspan="6" style="height: 250px;">
-				<pre th:utext="${board.content}"></pre>
-			</td>
-		</tr>
-		
-		<div th:if="${#authentication.name == board.id}" style="text-align: center;">
-		<a th:href="@{/board/update(bno=${board.bno})}">수정</a>
-		<a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a>
-		</div>
-	</table>
-	
-	<section>
-			<!-- 리플 작성 폼 -->
-			<form th:action="@{/reply/writeReply}" method="post">
-				리플내용
-				<input type="hidden" name="bno" th:value="${board.bno}">
-				<input type="text" name="replytext" style="width: 500px;">
-				<input type="submit" value="확인">
-			</form>
-			
-			<!-- 리플 목록 출력 -->
-			<table class="reply">
-				<tr th:each="reply : ${replyList}">
-					<td class="replyid" th:text="${reply.id}"></td>
-					<td class="replytext" th:text="${reply.replytext}"></td>
-					<td class="replydate" th:text="${reply.inputdate}"></td>
-					<td class="white">
-						<th:block th:if="${#authentication.name} == ${reply.id}">
-							<a th:href="|javascript:deleteReply(${reply.replynum}, ${reply.bno})|">
-								<img th:src="@{/image/icon_delete_24.png}">
-							</a>
-						</th:block>
+		<head>
+			<meta charset="UTF-8">
+			<title>Read Form</title>
+
+			<style>
+				table td,
+				th {
+					text-align: center;
+				}
+			</style>
+			<script>
+				function deleteFunc(bno) {
+					if (confirm('삭제하시겠습니까?')) {
+						location.href = 'delete?bno=' + bno;
+					}
+				}
+
+				//리플 삭제
+				function deleteReply(replynum, bno) {
+					if (confirm('삭제하시겠습니까?')) {
+						location.href = '../reply/deleteReply?replynum='
+							+ replynum + '&bno=' + bno;
+					}
+				}
+
+
+			</script>
+			<script th:src="@{/js/jquery-3.6.0.js}"></script>
+			<script th:inline="javaScript">
+				var check = /*[[${check}]]*/ '';
+				var fileName = [
+    				/*[[@{/image/like.png}]]*/,
+    				/*[[@{/image/unlike.png}]]*/,
+				];
+
+				function updateLikeImage(check) {
+					var heartIcon = $('#likeBt');
+					if (parseInt(check) !== 1) {
+						heartIcon.attr('src', fileName[1]); // Change the path accordingly
+					} else {
+						heartIcon.attr('src', fileName[0]); // Change the path accordingly
+					}
+				}
+
+				$(function () {
+					var heartIcon = $('#likeBt');
+					var bno = heartIcon.attr('bno');
+
+					// 페이지 로딩 시에 좋아요 여부 확인
+					$.ajax({
+						url: 'likeCnt',
+						type: 'post',
+						data: {bno: bno},
+						success: function (check) {
+							console.log(check);
+							updateLikeImage(check);
+						},
+						error: function () {
+							alert('Error checking like status.');
+						}
+					});
+
+					$('#likeBt').click(function () {
+						// Move the check variable inside the click event handler
+						$.ajax({
+							url: 'recommend',
+							type: 'post',
+							data: {bno: bno},
+							success: function (n) {
+								$('#cnt').html(n);
+							},
+							error: function () {
+								alert('Error recommending.');
+							}
+						});
+
+						// 이미지 변경 및 check 값 업데이트
+						console.log("하기전", check);
+						if (check == 0) {
+							check = 1;
+						} else {
+							check = 0;
+						}
+						console.log(check);
+						updateLikeImage(check);
+					});
+				});
+			</script>
+		</head>
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="product-details">
+						<table class="table">
+							<tr>
+								<th>글번호</th>
+								<td th:text="${board.bno}"></td>
+								<th>조회수</th>
+								<td th:text="${board.hits}"></td>
+								<th>작성일</th>
+								<td th:text="${board.created_day}"></td>
+							</tr>
+							<tr>
+
+								<th>제목</th>
+								<div th:if="${#authentication.name != board.id}" style="text-align: center;">
+									<td colspan="5" th:text="${board.title}"></td>
+								</div>
+								<div th:if="${#authentication.name == board.id}" style="text-align: center;">
+									<td colspan="3" th:text="${board.title}"></td>
+									<td><a th:href="@{/board/update(bno=${board.bno})}">수정</a></td>
+									<td><a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a></td>
+								</div>
+							</tr>
+							<tr>
+								<th>작성자</th>
+								<td th:text="${board.id}"></td>
+							</tr>
+							<tr>
+								<th>내용</th>
+
+								<td colspan="5">
+									<pre th:utext="${board.content}"></pre>
+								</td>
+
+								<th> <img id="likeBt" th:src="@{/image/unlike.png}" th:bno="${board.bno}"
+										style="width: 30px; height: 30px;">
+									<p id="cnt" th:text="${board.recommend}"></p>
+								</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!--
+			<header>
+				<h1>글 읽기</h1>
+			</header>
+
+			<table>
+				<tr>
+					<th>글번호</th>
+					<td style="width: 80px;" th:text="${board.bno}"></td>
+					<th>조회수</th>
+					<td style="width: 50px;" th:text="${board.hits}"></td>
+					<th>작성일</th>
+					<td style="width: 150px;" th:text="${board.created_day}"></td>
+				</tr>
+				<tr>
+					<th>제목</th>
+					<td colspan="3" th:text="${board.title}"></td>
+					<th>작성자</th>
+					<td th:text="${board.id}"></td>
+				</tr>
+				<tr>
+					<th colspan="6">내용</th>
+					<th> <img id="likeBt" th:src="@{/image/unlike.png}" th:bno="${board.bno}"
+							style="width: 30px; height: 30px;">
+						<p id="cnt" th:text="${board.recommend}"></p>
+					</th>
+				</tr>
+				<tr>
+					<td colspan="6" style="height: 250px;">
+						<pre th:utext="${board.content}"></pre>
 					</td>
 				</tr>
+
+				<div th:if="${#authentication.name == board.id}" style="text-align: center;">
+					<a th:href="@{/board/update(bno=${board.bno})}">수정</a>
+					<a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a>
+				</div>
 			</table>
-		</section>
-</body>
+			-->
+
+			<section>
+				<!-- 리플 작성 폼 -->
+				<form th:action="@{/reply/writeReply}" method="post">
+					리플내용
+					<input type="hidden" name="bno" th:value="${board.bno}">
+					<input type="text" name="replytext" style="width: 500px;">
+					<input type="submit" value="확인">
+				</form>
+
+				<!-- 리플 목록 출력 -->
+				<div class="card mb-4">
+					<div class="card-body" th:each="reply : ${replyList}">
+						<p>Type your note, and hit enter to add it</p>
+
+						<div class="d-flex justify-content-between">
+							<div class="d-flex flex-row align-items-center">
+								<p class="small mb-0 ms-2" th:text="${reply.id}">Martha</p>
+							</div>
+							<div class="d-flex flex-row align-items-center">
+								<p class="small text-muted mb-0" th:text="${reply.replytext}"></p>
+								<i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+								<p class="small text-muted mb-0">3</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<table class="reply">
+					<tr th:each="reply : ${replyList}">
+						<td class="replyid" th:text="${reply.id}"></td>
+						<td class="replytext" th:text="${reply.replytext}"></td>
+						<td class="replydate" th:text="${reply.inputdate}"></td>
+						<td class="white">
+							<th:block th:if="${#authentication.name} == ${reply.id}">
+								<a th:href="|javascript:deleteReply(${reply.replynum}, ${reply.bno})|">
+									<img th:src="@{/image/icon_delete_24.png}">
+								</a>
+							</th:block>
+						</td>
+					</tr>
+				</table>
+			</section>
+	</th:block>
+</th:block>
+
 </html>
