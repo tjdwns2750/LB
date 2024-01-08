@@ -173,10 +173,12 @@
 							<div class="btn-group">
 								<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
 									class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+									<!--
 								<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}"
 									class="btn btn-outline-dark btn-sm mx-1">구매하기</a>
 								<a th:if="${#authentication.name != board.id}" th:href="@{/bookBoard/pay}"
 									class="btn btn-outline-dark btn-sm mx-1">구매하기2</a>
+									-->
 								<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
 									method="post">
 									<input type="hidden" name="bbno" th:value="${board.bbno}">
