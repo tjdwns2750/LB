@@ -6,7 +6,7 @@
 
 		<head>
 			<script src="https://code.jquery.com/jquery-3.6.0.js"
-		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+				integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 			<meta charset="UTF-8">
 			<title>게시판</title>
 			<style>
@@ -76,17 +76,22 @@
 
 		<div class="container">
 			<!-- Loop through your boardList here -->
-			<div id="list" class="card" th:each=" board : ${boardList}" bno="${board.bno}" >
+			<div id="list" class="card" th:each=" board : ${boardList}" bno="${board.bno}">
 				<div class="card-body">
 					<div class="card-title" th:text="${board.title}"></div>
 					<div class="card-info">
 						<p th:text="${board.id}"></p>
 						<p th:text="${board.hits}"></p>
 						<p th:text="${board.created_day}"></p>
+						<div class="btn-group">
+								<a th:href="@{/board/read(bno=${board.bno})}"
+									class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+						</div>
 					</div>
 				</div>
 			</div>
 			<!-- Repeat the above card structure for each board in boardList -->
+			<a th:href="@{./writeForm}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">글쓰기</a>
 		</div>
 	</th:block>
 </th:block>
