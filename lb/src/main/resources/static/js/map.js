@@ -38,25 +38,33 @@ var MARKER_SPRITE_X_OFFSET = 29,
 
 // controller에서 받은 데이터를 좌표로 수정
 document.addEventListener('DOMContentLoaded', function() {
+
+	var username = $('#memberId').val();
 	// JavaScript에서 Thymeleaf를 통해 전달된 데이터 사용
 	if (boardList) {
+
+
 		boardList.forEach(function(board) {
-			// 각 게시글의 주소를 좌표로 변환
-			if (!board.address) {
-				console.error('게시글', board.bno, '의 주소가 없습니다.');
-				return; // 주소가 없으면 처리 중단
-			}
 
-			console.log('게시글', board.bbno, '의 주소:', board.address);
-
-			// 주소를 좌표로 변환
-			geocodeAddress(board.address, function(latlng) {
-				if (latlng) {
-					// 좌표를 이용하여 지도에 마커 추가
-					addMarkerToMap(latlng, board);
+			if (board.id != username) {
+				// 각 게시글의 주소를 좌표로 변환
+				if (!board.address) {
+					console.error('게시글', board.bno, '의 주소가 없습니다.');
+					return; // 주소가 없으면 처리 중단
 				}
-			});
+
+				console.log('게시글', board.bbno, '의 주소:', board.address);
+
+				// 주소를 좌표로 변환
+				geocodeAddress(board.address, function(latlng) {
+					if (latlng) {
+						// 좌표를 이용하여 지도에 마커 추가
+						addMarkerToMap(latlng, board);
+					}
+				});
+			}
 		});
+
 	}
 });
 
@@ -132,12 +140,17 @@ function addMarkerToMap(latlng, board) {
 			anchor: new naver.maps.Point(12, 37)
 		}
 	});
-	console.log(board.bbno);
+	var username = $('#memberId').val();
+
 	console.log(board.id);
+	console.log(username);
+
+
+
 
 	var infoWindow = new naver.maps.InfoWindow({
 		content: '<div style="padding:10px;min-width:200px;line-height:150%;">' +
-			'<h3>' + '판매' +'</h3>' +
+			'<h3>' + '판매' + '</h3>' +
 			'<h3>' + board.name + '</h3>' +
 			'<a id="boardtitle" style="font-size:20px" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
 			'<img id="bookBoardImg" src="' + board.thumbnail + '">' +
@@ -145,17 +158,20 @@ function addMarkerToMap(latlng, board) {
 			'<p id="boardprice">' + '가격 : ' + board.price + '</p>' +
 			'<p id="boardaddress">' + '거래 주소 :' + board.address + '</p>' +
 			'<p id createdDay>' + '작성일 :' + board.created_day + '</p>' +
+
 			'<form action="./chat/chatRoom" method="post">' +
-			'<input type="hidden" name="bbno" value=' +board.bbno + '>' +
-			'<input type="hidden" name="boardId" value=' +board.id.toString() + '>' +
-			'<input type="submit" value="채팅하기"></input>' +
+			'<input type="hidden" name="bbno" value=' + board.bbno + '>' +
+			'<input type="hidden" name="boardId" value=' + board.id.toString() + '>' +
+			'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
 			'</form>' +
-			// '<a href="chat/chatRoom?bbno=' +board.bbno +"&id=" +board.id + '"> 채팅하기' + '</a>' +
 			'</div>'
 	});
 
+
+
+
 	naver.maps.Event.addListener(marker, 'click', function() {
-		if (infoWindow. getMap()) {
+		if (infoWindow.getMap()) {
 			infoWindow.close();
 		} else {
 			infoWindow.open(map, marker);
@@ -299,7 +315,7 @@ function initGeocoder() {
 
 			searchAddressToCoordinate($('#address').val());
 		});
-		
+
 
 		searchAddressToCoordinate(address);
 	} else {

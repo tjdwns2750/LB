@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.team2.lb.service.BoardService;
 import com.team2.lb.service.BookBoardService;
 import com.team2.lb.service.ChatService;
 import com.team2.lb.service.MemberService;
+import com.team2.lb.vo.Board;
 import com.team2.lb.vo.BookBoard;
 import com.team2.lb.vo.ChatMessage;
 import com.team2.lb.vo.ChatRoom;
@@ -33,6 +35,9 @@ public class HomeController {
 
 	@Autowired
 	ChatService chatservice;
+	
+	@Autowired
+	BoardService boardservice;
 
 	// 메인 페이지
 	@GetMapping("/")
@@ -42,6 +47,8 @@ public class HomeController {
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
 		}
+		ArrayList<Board> board = boardservice.bestBoardList();
+		model.addAttribute("reviewList", board);
 		return "home";
 
 	}
@@ -55,7 +62,7 @@ public class HomeController {
 			log.error("member : {}", member.getAddress());
 		}
 		// 계시판 전체 조회
-		ArrayList<BookBoard> boardList = bookboardservice.showBoardList();
+		ArrayList<BookBoard> boardList = bookboardservice.showBoardAll();
 		log.info("boardlist {}", boardList);
 
 		// 지도에 계시판을 출력하기 위해 json형식으로 파싱
@@ -71,61 +78,7 @@ public class HomeController {
 		model.addAttribute("boardListJson", boardListJson);
 		log.info("boardListJSON {}", boardListJson);
 		model.addAttribute("boardlist", boardList);
-		return "jinu/findBoard";
+		return "findBoard";
 	}
 
-	@GetMapping("layout")
-	public String layout() {
-		return "jinu/layout";
-	}
-
-	@GetMapping("test")
-	public String test() {
-		return "jinu/test";
-	}
-
-	@GetMapping("test2")
-	public String test2() {
-		return "jinu/index";
-	}
-
-	@GetMapping("about")
-	public String about() {
-		return "jinu/about";
-	}
-
-	@GetMapping("service")
-	public String service() {
-		return "jinu/service";
-	}
-
-	@GetMapping("package")
-	public String packages() {
-		return "jinu/package";
-	}
-
-	@GetMapping("destination")
-	public String destination() {
-		return "jinu/package";
-	}
-
-	@GetMapping("testimonial")
-	public String testimontial() {
-		return "jinu/testimonial";
-	}
-
-	@GetMapping("team")
-	public String contact() {
-		return "jinu/team";
-	}
-
-	@GetMapping("booking")
-	public String booking() {
-		return "jinu/booking";
-	}
-
-	@GetMapping("exam")
-	public String exam() {
-		return "chat/exam";
-	}
 }

@@ -10,10 +10,13 @@ import lombok.NoArgsConstructor;
 public class ChatRoom {
 	private long roomId; // 채팅방 아이디
 	private String id; // 사용자 아이디
-	private String buno; // 블로그 사용자
+	private String board_id; // 블로그 사용자
 	private long bbno; // 블로그 번호
 	private String created_day; // 생성일
 	private String name; // 사용자 이름
+	private String title;
+	private String thumbnail;
+	private long bookboard_bbno;
 	// private String roomName;
 	
 }

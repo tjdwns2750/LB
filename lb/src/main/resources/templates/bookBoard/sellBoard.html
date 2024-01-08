@@ -16,10 +16,12 @@
 		$(document).ready(function () {
 			$('#bookName').on('keydown', function (event) {
 				if (event.key === 'Enter') {
+					event.preventDefault();  // 엔터키 누를시 submit 되는것을 방지
 					searchBookAndOpenModal(); // 엔터 키가 눌리면 검색 및 모달 열기 함수 호출
 				}
 			});
 
+			// 책 검색 버튼을 눌렀을때 searchBookAndOpenModal() 실행됨
 			$('#searchBook').on('click', searchBookAndOpenModal);
 
 			// 모달이 열릴 때 이벤트 핸들러 등록
@@ -47,7 +49,7 @@
             $('#selectedBookThumbnail img').attr('src', selectedBookThumbnail);
             $('#selectedBook').html(selectedBookTitle);
 
-            // 나머지 정보 값 설정
+            // hidden으로 전송할 나머지 정보 값 설정
             $('#selectedIsbn').val(selectedIsbn);
             $('#selectedThumbnail').val(selectedBookThumbnail);
             $('#selectedTitle').val(selectedBookTitle);
@@ -58,6 +60,7 @@
             $('#exampleModal').modal('hide');
         });
 
+			// 주소 검색 기능
 			$('#addressSearchBtn').on('click', function () {
 				// Open Daum Postcode API when the button is clicked
 				new daum.Postcode({
@@ -69,6 +72,7 @@
 			});
 		});
 
+		// 검색 기능과 모달 열기를 동시에 실행하기 위한 함수
 		function searchBookAndOpenModal() {
 			searchBook(); // 검색 함수 실행
 			openModal(); // 모달 열기
@@ -83,7 +87,7 @@
 				data: {query: bookName},
 				headers: {Authorization: "KakaoAK 0e4539a7d8a447b33267208c32b4b39f"}
 			})
-				.done(function (msg) {
+				.done(function (msg) { // 검색 결과를 msg로 받아옴
 					let tableBody = $('#bookTable tbody'); // 테이블의 tbody를 가져옴
 
 					tableBody.empty(); // 테이블의 tbody를 비움
@@ -112,9 +116,11 @@
 								'</tr>');
 						}
 
+						// 행 아무곳을 눌러도 그 행이 체크됨
 						$('.bookRow').click(function () {
 							$(this).find('.bookInfo').prop('checked', true);
 						});
+						
 					} else {
 						// 검색된 책이 없는 경우에 대한 처리
 						tableBody.append('<tr><td colspan="3">검색된 책이 없습니다.</td></tr>');
