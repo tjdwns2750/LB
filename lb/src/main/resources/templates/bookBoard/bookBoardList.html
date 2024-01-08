@@ -138,11 +138,11 @@
 
 		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
-		<div class="container-xxl">
-			<div class="row">
-				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
-					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5">판매</h1>
-				</div>
+      <div class="container-xxl">
+         <div class="row">
+            <div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
+               <h1 class=" section-title bg-white text-center text-dark px-3 mb-5">판매</h1>
+            </div>
 				<div class="position-relative w-75 mx-auto animated slideInDown"
 					style="padding: 5%; display: flex; align-items: center; justify-content: space-between;">
 					<form id="pagingForm" th:action="@{/bookBoard/bookBoardList}" method="get"
@@ -161,38 +161,37 @@
 							value="검색">
 					</form>
 				</div>
-				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
-					<div class="package-item">
-						<div class="overflow-hidden d-flex justify-content-center align-items-center mb-5">
-							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
-						</div>
-						<div class="text-center">
-							<h3 class="mb-0" th:text="${board.price}"></h3>
-							<h6 th:text="${board.id}"></h6>
-							<p th:text="${board.content}"></p>
-							<div class="btn-group">
-								<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
-									class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
-									<!--
-								<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}"
-									class="btn btn-outline-dark btn-sm mx-1">구매하기</a>
-								<a th:if="${#authentication.name != board.id}" th:href="@{/bookBoard/pay}"
-									class="btn btn-outline-dark btn-sm mx-1">구매하기2</a>
-									-->
-								<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
-									method="post">
-									<input type="hidden" name="bbno" th:value="${board.bbno}">
-									<input type="hidden" name="boardId" th:value="${board.id}">
-									<input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Add more items as needed -->
-			</div>
-		</div>
-		<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
+            <div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
+               <div class="package-item">
+                  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5">
+                     <img class="img-fluid" th:src="${board.thumbnail}" alt="">
+                  </div>
+                  <div class="text-center">
+					 <h2 class="mb-0" th:text="${board.bookTitle}"></h2>
+                     <h3 class="mb-0" th:text="${board.price}"></h3>
+                     <h6 th:text="${board.id}"></h6>
+                     <p th:text="${board.content}"></p>
+                     <div class="btn-group">
+                        <a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
+                           class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+                        <a th:if="${#authentication.name != board.id}" th:href="@{/payment2/join}"
+                           class="btn btn-outline-dark btn-sm mx-1">구매하기</a>
+                        <a th:if="${#authentication.name != board.id}" th:href="@{/email}"
+                           class="btn btn-outline-dark btn-sm mx-1">구매하기2</a>
+                        <form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
+                           method="post">
+                           <input type="hidden" name="bbno" th:value="${board.bbno}">
+                           <input type="hidden" name="boardId" th:value="${board.id}">
+                           <input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Add more items as needed -->
+         </div>
+      </div>
+      <a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
 
 
 
