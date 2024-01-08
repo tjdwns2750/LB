@@ -95,8 +95,52 @@
 				});
 			</script>
 		</head>
+		<div class="container mt-4">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="product-details">
+						<table class="table">
+							<tr>
+								<th>글번호</th>
+								<td th:text="${board.bno}"></td>
+								<th>조회수</th>
+								<td th:text="${board.hits}"></td>
+								<th>작성일</th>
+								<td th:text="${board.created_day}"></td>
+							</tr>
+							<tr>
 
-		<body>
+								<th>제목</th>
+								<div th:if="${#authentication.name != board.id}" style="text-align: center;">
+									<td colspan="5" th:text="${board.title}"></td>
+								</div>
+								<div th:if="${#authentication.name == board.id}" style="text-align: center;">
+									<td colspan="3" th:text="${board.title}"></td>
+									<td><a th:href="@{/board/update(bno=${board.bno})}">수정</a></td>
+									<td><a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a></td>
+								</div>
+							</tr>
+							<tr>
+								<th>작성자</th>
+								<td th:text="${board.id}"></td>
+							</tr>
+							<tr>
+								<th>내용</th>
+
+								<td colspan="5">
+									<pre th:utext="${board.content}"></pre>
+								</td>
+
+								<th> <img id="likeBt" th:src="@{/image/unlike.png}" th:bno="${board.bno}"
+										style="width: 30px; height: 30px;">
+									<p id="cnt" th:text="${board.recommend}"></p>
+								</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!--
 			<header>
 				<h1>글 읽기</h1>
 			</header>
@@ -134,6 +178,7 @@
 					<a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a>
 				</div>
 			</table>
+			-->
 
 			<section>
 				<!-- 리플 작성 폼 -->
@@ -145,6 +190,24 @@
 				</form>
 
 				<!-- 리플 목록 출력 -->
+				<div class="card mb-4">
+					<div class="card-body" th:each="reply : ${replyList}">
+						<p>Type your note, and hit enter to add it</p>
+
+						<div class="d-flex justify-content-between">
+							<div class="d-flex flex-row align-items-center">
+								<p class="small mb-0 ms-2" th:text="${reply.id}">Martha</p>
+							</div>
+							<div class="d-flex flex-row align-items-center">
+								<p class="small text-muted mb-0" th:text="${reply.replytext}"></p>
+								<i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+								<p class="small text-muted mb-0">3</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
 				<table class="reply">
 					<tr th:each="reply : ${replyList}">
 						<td class="replyid" th:text="${reply.id}"></td>
