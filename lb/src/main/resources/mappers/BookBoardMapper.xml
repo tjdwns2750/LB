@@ -203,6 +203,13 @@
 		where
 		bbno = #{boardnum}
 	</select>
+	
+	<select id="myShop" parameterType="String" resultType="BookBoard">
+		select * from bookBoard
+		where
+		id = #{id}
+		order by bbno desc
+	</select>
 
 	<select id="bestBoardList" resultType="BookBoard">
 		SELECT * FROM (
