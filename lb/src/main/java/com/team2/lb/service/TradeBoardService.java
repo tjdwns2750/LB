@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.team2.lb.util.PageNavigator;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.LikeBoard;
 import com.team2.lb.vo.TradeBoard;
 
 public interface TradeBoardService {
@@ -22,7 +23,7 @@ public interface TradeBoardService {
 	// 글 읽기
 	TradeBoard readBoard(int boardnum);
 
-	int checkLike(int boardnum, String id);
+	int checkLike(LikeBoard likes);
 
 	// 글 업데이트
 	int updateBoard(TradeBoard tradeBoard);
@@ -32,15 +33,15 @@ public interface TradeBoardService {
 
 	ArrayList<TradeBoard> showBoardAll();
 	
-	void addLike(int boardnum, String id);
+	void addLike(LikeBoard likes);
 
-	void upLike(int boardnum);
+	void upLike(LikeBoard likes);
 
-	int selectCnt(int boardnum);
+	int selectCnt(LikeBoard likes);
 
-	void deleteLike(int boardnum, String id);
+	void deleteLike(LikeBoard likes);
 
-	void downLike(int boardnum);
+	void downLike(LikeBoard likes);
 	
 	ArrayList<TradeBoard> bestBoardList();
 

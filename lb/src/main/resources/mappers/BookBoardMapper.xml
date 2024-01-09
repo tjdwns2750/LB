@@ -148,51 +148,51 @@
 		id = #{id}
 	</update>
 
-	<delete id="deleteBoard" parameterType="int">
+	<delete id="deleteBoard" parameterType="LikeBoard">
 		delete from BookBoard
 		where
-		bbno like #{bbno}
+		bbno like #{bno}
 	</delete>
 
-	<select id="checkLike" parameterType="map" resultType="int">
-		select
-		count(*)
+	<select id="checkLike" parameterType="LikeBoard" resultType="int">
+		select count(*)
 		from like_board
-		where id = #{id} and bno = #{boardnum}
+		where id = #{id} and bno = #{bno} and prefix = #{prefix}
 	</select>
 
-	<insert id="addLike" parameterType="map">
+	<insert id="addLike" parameterType="LikeBoard">
 		insert into
 		like_board(id,
-		bno)
+		bno,
+		prefix)
 		values
-		(#{id}, #{boardnum})
+		(#{id}, #{bno}, #{prefix})
 	</insert>
 
-	<update id="upLike" parameterType="int">
+	<update id="upLike" parameterType="LikeBoard">
 		update
 		BookBoard
 		set
 		recommend =
 		recommend + 1
 		where
-		bbno = #{boardnum}
+		bbno = #{bno}
 	</update>
 
-	<delete id="deleteLike" parameterType="map">
+	<delete id="deleteLike" parameterType="LikeBoard">
 		delete from like_board
 		where
-		id = #{id} and bno = #{boardnum}
+		id = #{id} and bno = #{bno} and prefix = #{prefix}
 	</delete>
 
-	<update id="downLike" parameterType="int">
+	<update id="downLike" parameterType="LikeBoard">
 		update
 		BookBoard
 		set
 		recommend
 		= recommend - 1
 		where
-		bbno = #{boardnum}
+		bbno = #{bno}
 	</update>
 	
 	<update id="sellComplete" parameterType="int">
@@ -204,13 +204,13 @@
       bbno = #{boardnum}
    </update>
 
-	<select id="selectCnt" parameterType="int" resultType="int">
+	<select id="selectCnt" parameterType="LikeBoard" resultType="int">
 		select
 		recommend
 		from
 		BookBoard
 		where
-		bbno = #{boardnum}
+		bbno = #{bno}
 	</select>
 	
 	<select id="myShop" parameterType="String" resultType="BookBoard">

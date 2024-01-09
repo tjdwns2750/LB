@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.team2.lb.dao.TradeBoardDAO;
 import com.team2.lb.util.PageNavigator;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.LikeBoard;
 import com.team2.lb.vo.TradeBoard;
 
 @Service
@@ -61,9 +62,8 @@ public class TradeBoardServiceImpl implements TradeBoardService{
 		return tradeBoard;
 	}
 	@Override
-	public int checkLike(int boardnum, String id) {
-		HashMap<String, Object> map = getMap(boardnum, id);
-		int check = dao.checkLike(map);
+	public int checkLike(LikeBoard likes) {
+		int check = dao.checkLike(likes);
 		return check;
 	}
 	@Override
@@ -77,36 +77,29 @@ public class TradeBoardServiceImpl implements TradeBoardService{
 		return result;
 	}
 	@Override
-	public void addLike(int boardnum, String id) {
-		HashMap<String, Object> map = getMap(boardnum, id);
-		dao.addLike(map);
+	public void addLike(LikeBoard likes) {
+		dao.addLike(likes);
 		
 	}
-	private HashMap<String, Object> getMap(int boardnum, String id) {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("boardnum", boardnum);
-		map.put("id" , id);
-		return map;
-	}
+
 	@Override
-	public void upLike(int boardnum) {
-		dao.upLike(boardnum);
+	public void upLike(LikeBoard likes) {
+		dao.upLike(likes);
 		
 	}
 	@Override
-	public int selectCnt(int boardnum) {
-		int cnt = dao.selectCnt(boardnum);
+	public int selectCnt(LikeBoard likes) {
+		int cnt = dao.selectCnt(likes);
 		return cnt;
 	}
 	@Override
-	public void deleteLike(int boardnum, String id) {
-		HashMap<String, Object> map = getMap(boardnum, id);
-		dao.deleteLike(map);
+	public void deleteLike(LikeBoard likes) {
+		dao.deleteLike(likes);
 		
 	}
 	@Override
-	public void downLike(int boardnum) {
-		dao.downLike(boardnum);
+	public void downLike(LikeBoard likes) {
+		dao.downLike(likes);
 		
 	}
 	@Override
