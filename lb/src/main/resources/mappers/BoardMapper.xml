@@ -102,7 +102,7 @@
 		and id = #{id}
 	</update>
 
-	<delete id="deleteBoard" parameterType="Board">
+	<delete id="deleteBoard" parameterType="int">
 		delete
 		board
 		where

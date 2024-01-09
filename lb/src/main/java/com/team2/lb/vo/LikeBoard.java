@@ -12,4 +12,5 @@ public class LikeBoard {
 	private String id;
 	private int bno;
 	private String prefix;
+	private String boardnum;
 }
