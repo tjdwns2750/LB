@@ -42,7 +42,10 @@ public interface BookBoardDAO {
 
 	int selectCnt(int boardnum);
 
+	ArrayList<BookBoard> myShop(String id);
+
 	ArrayList<BookBoard> bestBoardList();
+
 
 	
 }
