@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.team2.lb.vo.LikeBoard;
 import com.team2.lb.vo.TradeBoard;
 
 @Mapper
@@ -22,21 +23,21 @@ public interface TradeBoardDAO {
 
 	TradeBoard readBoard(int boardnum);
 
-	int checkLike(HashMap<String, Object> map);
+	int checkLike(LikeBoard likes);
 
 	int updateBoard(TradeBoard tradeBoard);
 
 	int deleteBoard(int boardnum);
 
-	void addLike(HashMap<String, Object> map);
+	void addLike(LikeBoard likes);
 
-	void upLike(int boardnum);
+	void upLike(LikeBoard likes);
 
-	void deleteLike(HashMap<String, Object> map);
+	void deleteLike(LikeBoard likes);
 
-	void downLike(int boardnum);
+	void downLike(LikeBoard likes);
 
-	int selectCnt(int boardnum);
+	int selectCnt(LikeBoard likes);
 
 	ArrayList<TradeBoard> bestBoardList();
 

@@ -138,54 +138,54 @@
 		bbno like #{bbno}
 	</delete>
 	
-	<select id="checkLike" parameterType="map" resultType="int">
+	<select id="checkLike" parameterType="LIkeBoard" resultType="int">
 		select
 		count(*)
 		from like_board
-		where id = #{id} and bno = #{boardnum}
+		where id = #{id} and bno = #{bno} and prefix = #{prefix}
 	</select>
 
-	<insert id="addLike" parameterType="map">
+	<insert id="addLike" parameterType="LikeBoard">
 		insert into
 		like_board(id,
-		bno)
+		bno,prefix)
 		values
-		(#{id}, #{boardnum})
+		(#{id}, #{bno}, #{prefix})
 	</insert>
 
-	<update id="upLike" parameterType="int">
+	<update id="upLike" parameterType="likeBoard">
 		update
 		TradeBoard
 		set
 		recommend =
 		recommend + 1
 		where
-		bbno = #{boardnum}
+		bbno = #{bno}
 	</update>
 
-	<delete id="deleteLike" parameterType="map">
+	<delete id="deleteLike" parameterType="likeBoard">
 		delete from like_board
 		where
-		id = #{id} and bno = #{boardnum}
+		id = #{id} and bno = #{bno} and prefix = #{prefix}
 	</delete>
 
-	<update id="downLike" parameterType="int">
+	<update id="downLike" parameterType="LikeBoard">
 		update
 		tradeBoard
 		set
 		recommend
 		= recommend - 1
 		where
-		bbno = #{boardnum}
+		bbno = #{bno}
 	</update>
 
-	<select id="selectCnt" parameterType="int" resultType="int">
+	<select id="selectCnt" parameterType="LikeBoard" resultType="int">
 		select
 		recommend
 		from
 		tradeBoard
 		where
-		bbno = #{boardnum}
+		bbno = #{bno}
 	</select>
 	
 	<update id="updateHits" parameterType="int">

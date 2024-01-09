@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.LikeBoard;
 
 @Mapper
 public interface BookBoardDAO {
@@ -30,17 +31,17 @@ public interface BookBoardDAO {
 
 	ArrayList<BookBoard> showBoardAll();
 
-	int checkLike(HashMap<String, Object> map);
+	int checkLike(LikeBoard likes);
 	
-	void addLike(HashMap<String, Object> map);
+	void addLike(LikeBoard likes);
 
-	void upLike(int boardnum);
+	void upLike(LikeBoard likes);
 
-	void deleteLike(HashMap<String, Object> map);
+	void deleteLike(LikeBoard likes);
 
-	void downLike(int boardnum);
+	void downLike(LikeBoard likes);
 
-	int selectCnt(int boardnum);
+	int selectCnt(LikeBoard likes);
 
 	ArrayList<BookBoard> myShop(String id);
 
