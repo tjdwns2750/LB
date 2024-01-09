@@ -21,7 +21,7 @@ public class MailController {
     public String MailPage(){
         return "mail/Main";
     }
-
+    
     @ResponseBody
     @PostMapping("mail")
     public String MailSend(String mail){

@@ -42,6 +42,7 @@ package com.team2.lb.security;
                     "/test",
                     "/mail/**/",
                     "/member/join",
+                    "/member/join/mail",
                     "/member/idCheck",
                     "/member/goSign",
                     "/email/mail",
