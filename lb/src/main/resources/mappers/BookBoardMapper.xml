@@ -211,5 +211,13 @@
 		order by bbno desc
 	</select>
 
+	<select id="bestBoardList" resultType="BookBoard">
+		SELECT * FROM (
+		SELECT * FROM bookboard
+		WHERE ROWNUM &lt; 4
+		ORDER BY hits DESC
+		) WHERE ROWNUM &lt; 4
+	</select>
+
 
 </mapper>

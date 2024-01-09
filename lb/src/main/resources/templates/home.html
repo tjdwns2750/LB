@@ -18,15 +18,23 @@
 			}
 		</style>
 
-		<div class=" py-5 mb-5 hero-header"
-			style="background-image: url(./img/mainImg4.jpg); background-size: cover;display: flex; align-items: center; justify-content: center; text-align: center;">
+		<div class="py-5 mb-5 hero-header" style="background-image: url(./img/homeImg2.jpg); background-size: cover; display: flex; align-items: center; justify-content: center; text-align: center;
+            background-color: rgba(255, 255, 255, 0.3);">
 			<div class="container py-5">
+
+				<!-- Add the falling leaves div -->
+				<div class="falling-leaves"
+					style="animation-duration: 6s; background: url('./img/maple.png') no-repeat; width: 50%; height: 50%;">
+				</div>
 				<div class="row justify-content-center py-5">
 					<div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
 						<h1 class="display-3 mb-3 animated slideInDown"
-							style="color: skyblue; font-family: 'Noto Serif Kr', serif;">책과 책을 연결하다</h1>
-						<h4 class="display-3 mb-3 animated slideInDown"
-							style="color: brown; font-family: 'Noto Serif Kr', serif;">당신의 책을 만나보세요!</h4>
+							style="color: skyblue; font-weight: bold; font-family: 'Noto Serif Kr', serif; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); ">
+							책과 책을 연결하다</h1>
+						<h4 id="hiddenText" class="display-3 mb-3"
+							style="color: darkseagreen; font-weight: bold; font-family: 'Noto Serif Kr', serif; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); display: none;">
+
+							당신의 책을 만나보세요!</h4>
 						<p class="fs-4 text-white mb-4 animated slideInDown"></p>
 						<div class="position-relative w-75 mx-auto animated slideInDown">
 							<!--
@@ -43,7 +51,7 @@
 				</div>
 			</div>
 		</div>
-
+		</div>
 		<!-- Service Start -->
 		<div class="container-xxl py-5"
 			style=" display: flex; align-items: center; justify-content: center; text-align: center;">
@@ -99,7 +107,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 		<!-- Service End -->
 
@@ -111,7 +118,7 @@
 					<h1 class="mb-5">사용자들이 가장 많이 조회한 도서</h1>
 				</div>
 				<div class="owl-carousel testimonial-carousel position-relative">
-					<div class="testimonial-item bg-white text-center border p-4" th:each="board : ${boardList}">
+					<div class="testimonial-item bg-white text-center border p-4" th:each="board : ${bookList}">
 						<img class="bg-white shadow p-1 mx-auto mb-3" th:src="${board.thumbnail}"
 							style="width: 50%; height: 50%;">
 						<h5 class="mb-0" th:text="${board.name}"></h5>
@@ -146,13 +153,15 @@
 						<h5 class="mb-0" th:text="${board.id}"></h5>
 						<p th:text="${board.title}"></p>
 						<pre th:utext="${board.content}"></pre>
-						<a th:href="@{/board/read(bno=${board.bno})}"
-							class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+						<a th:href="@{/board/read(bno=${board.bno})}" class="btn btn-outline-danger btn-sm mx-1">내용
+							더
+							보기</a>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- Popular reivew End -->
+		<script th:src="@{/js/home.js}"></script>
 
 	</th:block>
 

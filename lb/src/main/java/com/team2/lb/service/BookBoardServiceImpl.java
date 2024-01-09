@@ -135,6 +135,11 @@ public class BookBoardServiceImpl implements BookBoardService {
 		return boardlist;
 	}
 	
+  @Override
+	public ArrayList<BookBoard> bestBoardList() {
+		 ArrayList<BookBoard> bookList = dao.bestBoardList();
+		return bookList;
+	}
 	
 
 }

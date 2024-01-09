@@ -44,5 +44,8 @@ public interface BookBoardDAO {
 
 	ArrayList<BookBoard> myShop(String id);
 
+	ArrayList<BookBoard> bestBoardList();
+
+
 	
 }
