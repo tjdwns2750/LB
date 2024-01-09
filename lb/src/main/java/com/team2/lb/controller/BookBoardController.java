@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.team2.lb.service.BookBoardService;
+import com.team2.lb.service.MemberService;
 import com.team2.lb.util.PageNavigator;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +37,9 @@ public class BookBoardController {
 	@Autowired
 	BookBoardService service;
 	
+	@Autowired
+	MemberService memberService;
+	
 	@GetMapping("pay")
 	public String pay() {
 		return "bookBoard/pay2";
@@ -50,6 +55,18 @@ public class BookBoardController {
 		bookBoard.setId(user.getUsername());
 		int result = service.registSell(bookBoard);
 		return "redirect:/bookBoard/bookBoardList";
+	}
+	
+	@GetMapping("myShop")
+	public String myShop(Model model, @AuthenticationPrincipal UserDetails user) {
+		String id = user.getUsername();
+		Member member = memberService.selectUser(id);
+		log.debug("id는:{}",id);
+		ArrayList<BookBoard> boardList = service.myShop(id);
+		model.addAttribute("member", member);
+		model.addAttribute("boardList", boardList);
+		
+		return "bookBoard/myShop";
 	}
 	
 	@GetMapping("bookBoardList")

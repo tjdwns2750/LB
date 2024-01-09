@@ -128,6 +128,13 @@ public class BookBoardServiceImpl implements BookBoardService {
 		int cnt = dao.selectCnt(boardnum);
 		return cnt;
 	}
+
+	@Override
+	public ArrayList<BookBoard> myShop(String id) {
+		ArrayList<BookBoard> boardlist = dao.myShop(id);
+		return boardlist;
+	}
+	
 	
 
 }
