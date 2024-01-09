@@ -6,25 +6,24 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.team2.lb.dao.BookBoardDAO;
+import com.team2.lb.dao.TradeBoardDAO;
 import com.team2.lb.util.PageNavigator;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.TradeBoard;
 
 @Service
-public class BookBoardServiceImpl implements BookBoardService {
+public class TradeBoardServiceImpl implements TradeBoardService{
 
 	@Autowired
-	BookBoardDAO dao;
-
+	TradeBoardDAO dao;
+	
 	@Override
-	public int registSell(BookBoard bookBoard) {
-		int reuslt = dao.registSell(bookBoard);
+	public int registTrade(TradeBoard tradeBoard) {
+		int reuslt = dao.registTrade(tradeBoard);
 		return reuslt;
 	}
-
 	@Override
 	public PageNavigator getPageNavigator(int pagePerGroup, int countPerPage, int page, String type,
 			String searchWord) {
@@ -36,25 +35,6 @@ public class BookBoardServiceImpl implements BookBoardService {
 		PageNavigator navi = new PageNavigator(pagePerGroup, countPerPage, page, total);
 		return navi;
 	}
-
-	@Override
-	public ArrayList<BookBoard> showBoardList(PageNavigator navi, String type, String searchWord) {
-
-		HashMap<String, String> map = getMap(type, searchWord);
-
-//		MyBatis 에서 제공해주는 record를 관리하는 객체 RowBounds
-//		param 2개 : 1=시작레코드, 2=몇개가져올지
-		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
-
-		ArrayList<BookBoard> boardList = dao.showBoardList(map, rb);
-		return boardList;
-	}
-
-	@Override
-	public ArrayList<BookBoard> search(Map<String, String> map) {
-		ArrayList<BookBoard> boardList = dao.search(map);
-		return boardList;
-	}
 	
 	private HashMap<String, String> getMap(String type, String searchWord) {
 		HashMap<String, String> map = new HashMap<>();
@@ -62,84 +42,89 @@ public class BookBoardServiceImpl implements BookBoardService {
 		map.put("searchWord", searchWord);
 		return map;
 	}
-
+	
 	@Override
-	public BookBoard readBoard(int boardnum) {
+	public ArrayList<TradeBoard> showBoardList(PageNavigator navi, String type, String searchWord) {
+		HashMap<String, String> map = getMap(type, searchWord);
+
+//		MyBatis 에서 제공해주는 record를 관리하는 객체 RowBounds
+//		param 2개 : 1=시작레코드, 2=몇개가져올지
+		RowBounds rb = new RowBounds(navi.getStartRecord(), navi.getCountPerPage());
+
+		ArrayList<TradeBoard> boardList = dao.showBoardList(map, rb);
+		return boardList;
+	}
+	@Override
+	public TradeBoard readBoard(int boardnum) {
 		dao.updateHits(boardnum);
-		BookBoard bookBoard = dao.readBoard(boardnum);
-		return bookBoard;
+		TradeBoard tradeBoard = dao.readBoard(boardnum);
+		return tradeBoard;
 	}
-
-	@Override
-	public int updateBoard(BookBoard bookBoard) {
-		int result = dao.updateBoard(bookBoard);
-		return result;
-	}
-
-	@Override
-	public int deleteBoard(int boardnum) {
-		int result = dao.deleteBoard(boardnum);
-		return result;
-	}
-
-	@Override
-	public ArrayList<BookBoard> showBoardAll() {
-		ArrayList<BookBoard> boardlist = dao.showBoardAll();
-		return boardlist;
-	}
-	
-	private HashMap<String, Object> getMap(int boardnum, String id) {
-		HashMap<String, Object> map = new HashMap<>();
-		map.put("boardnum", boardnum);
-		map.put("id" , id);
-		return map;
-	}
-	
 	@Override
 	public int checkLike(int boardnum, String id) {
 		HashMap<String, Object> map = getMap(boardnum, id);
 		int check = dao.checkLike(map);
 		return check;
 	}
-
+	@Override
+	public int updateBoard(TradeBoard tradeBoard) {
+		int result = dao.updateBoard(tradeBoard);
+		return result;
+	}
+	@Override
+	public int deleteBoard(int boardnum) {
+		int result = dao.deleteBoard(boardnum);
+		return result;
+	}
 	@Override
 	public void addLike(int boardnum, String id) {
 		HashMap<String, Object> map = getMap(boardnum, id);
 		dao.addLike(map);
+		
+	}
+	private HashMap<String, Object> getMap(int boardnum, String id) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("boardnum", boardnum);
+		map.put("id" , id);
+		return map;
 	}
 	@Override
 	public void upLike(int boardnum) {
 		dao.upLike(boardnum);
+		
 	}
-
-	@Override
-	public void deleteLike(int boardnum, String id) {
-		HashMap<String, Object> map = getMap(boardnum, id);
-		dao.deleteLike(map);
-	}
-
-	@Override
-	public void downLike(int boardnum) {
-		dao.downLike(boardnum);
-	}
-	
 	@Override
 	public int selectCnt(int boardnum) {
 		int cnt = dao.selectCnt(boardnum);
 		return cnt;
 	}
-
 	@Override
-	public ArrayList<BookBoard> myShop(String id) {
-		ArrayList<BookBoard> boardlist = dao.myShop(id);
+	public void deleteLike(int boardnum, String id) {
+		HashMap<String, Object> map = getMap(boardnum, id);
+		dao.deleteLike(map);
+		
+	}
+	@Override
+	public void downLike(int boardnum) {
+		dao.downLike(boardnum);
+		
+	}
+	@Override
+	public ArrayList<TradeBoard> search(Map<String, String> map) {
+		ArrayList<TradeBoard> boardList = dao.search(map);
+		return boardList;
+	}
+	@Override
+	public ArrayList<TradeBoard> showBoardAll() {
+		ArrayList<TradeBoard> boardlist = dao.showBoardAll();
 		return boardlist;
 	}
-	
-  @Override
-	public ArrayList<BookBoard> bestBoardList() {
-		 ArrayList<BookBoard> bookList = dao.bestBoardList();
+	@Override
+	public ArrayList<TradeBoard> bestBoardList() {
+		ArrayList<TradeBoard> bookList = dao.bestBoardList();
 		return bookList;
 	}
+	
 	
 
 }

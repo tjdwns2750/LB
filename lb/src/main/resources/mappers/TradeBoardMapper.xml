@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.team2.lb.dao.BookBoardDAO">
+<mapper namespace="com.team2.lb.dao.TradeBoardDAO">
 
-	<insert id="registSell" parameterType="BookBoard">
-		insert into BookBoard
+	<insert id="registTrade" parameterType="TradeBoard">
+		insert into TradeBoard
 		(
 		bbno
 		, id
@@ -21,12 +21,11 @@
 		, bookTitle
 		, author
 		, publisher
-		, price
 		, amount
 
 		) values
 		(
-		bookBoard_seq.nextval
+		tradeBoard_seq.nextval
 		, #{id}
 		, #{address}
 		, #{title}
@@ -41,27 +40,25 @@
 		, #{bookTitle}
 		, #{author}
 		, #{publisher}
-		,
-		#{price}
 		, #{amount}
 		)
 
 	</insert>
-
-	<select id="showBoardAll" resultType="BookBoard"> SELECT b.bbno ,b.id,
+	
+	<select id="showBoardAll" resultType="TradeBoard"> SELECT b.bbno ,b.id,
 		a.name, b.address, b.title, b.content, b.hits, b.category,
 		b.originalfile,
 		b.savedfile, b.recommend, b.created_day, b.isbn,
 		b.thumbnail, b.bookTitle,
 		b.author, b.publisher, b.price, b.amount FROM
 		member a INNER JOIN
-		bookBoard
+		tradeBoard
 		b ON a.id= b.id
 	</select>
-
+	
 	<select id="showBoardList" parameterType="map"
-		resultType="BookBoard">
-		select * from bookBoard
+		resultType="TradeBoard">
+		select * from tradeBoard
 		<if test="type != null and searchWord != null">
 			<where>
 				<if test="type == 'title'">
@@ -87,7 +84,7 @@
 	</select>
 
 	<select id="countTotal" parameterType="map" resultType="int">
-		select count(*) from BookBoard
+		select count(*) from tradeBoard
 		<if test="type != null and searchWord != null">
 			<where>
 				<if test="type == 'title'">
@@ -109,51 +106,38 @@
 			</where>
 		</if>
 	</select>
-
+	
 	<select id="readBoard" parameterType="int"
-		resultType="BookBoard">
+		resultType="TradeBoard">
 		select *
-		from BookBoard
+		from tradeBoard
 		where bbno = #{bbno}
 	</select>
-
-	<update id="updateHits" parameterType="int">
-		update BookBoard
+	
+		<update id="updateBoard" parameterType="TradeBoard">
+		update TradeBoard
 		set
-		hits =
-		hits + 1
-		where
-		bbno = #{boardnum}
-	</update>
-
-	<update id="updateBoard" parameterType="BookBoard">
-		update BookBoard
-		set
-		title
-		= #{title}
+		title= #{title}
 		, content = #{content}
 		, address = #{address}
 		, isbn = #{isbn}
 		, thumbnail = #{thumbnail}
 		, bookTitle = #{bookTitle}
-		, author =
-		#{author}
+		, author = #{author}
 		, publisher = #{publisher}
-		, price = #{price}
-		, amount =
-		#{amount}
+		, amount = #{amount}
 		where
 		bbno = #{bbno}
 		and
 		id = #{id}
 	</update>
-
+	
 	<delete id="deleteBoard" parameterType="int">
-		delete from BookBoard
+		delete from tradeBoard
 		where
 		bbno like #{bbno}
 	</delete>
-
+	
 	<select id="checkLike" parameterType="map" resultType="int">
 		select
 		count(*)
@@ -171,7 +155,7 @@
 
 	<update id="upLike" parameterType="int">
 		update
-		BookBoard
+		TradeBoard
 		set
 		recommend =
 		recommend + 1
@@ -187,7 +171,7 @@
 
 	<update id="downLike" parameterType="int">
 		update
-		BookBoard
+		tradeBoard
 		set
 		recommend
 		= recommend - 1
@@ -199,25 +183,26 @@
 		select
 		recommend
 		from
-		BookBoard
+		tradeBoard
 		where
 		bbno = #{boardnum}
 	</select>
 	
-	<select id="myShop" parameterType="String" resultType="BookBoard">
-		select * from bookBoard
+	<update id="updateHits" parameterType="int">
+		update TradeBoard
+		set
+		hits =
+		hits + 1
 		where
-		id = #{id}
-		order by bbno desc
-	</select>
+		bbno = #{boardnum}
+	</update>
 
-	<select id="bestBoardList" resultType="BookBoard">
+	<select id="bestBoardList" resultType="TradeBoard">
 		SELECT * FROM (
-		SELECT * FROM bookboard
+		SELECT * FROM tradeboard
 		WHERE ROWNUM &lt; 4
 		ORDER BY hits DESC
 		) WHERE ROWNUM &lt; 4
 	</select>
-
-
+	
 </mapper>
