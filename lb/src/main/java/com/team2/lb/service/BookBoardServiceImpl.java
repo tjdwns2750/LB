@@ -141,5 +141,10 @@ public class BookBoardServiceImpl implements BookBoardService {
 		return bookList;
 	}
 	
+  @Override
+  public void sellComplete(int boardnum) {
+     dao.sellComplete(boardnum);
+     
+  } 
 
 }
