@@ -20,6 +20,7 @@ import com.team2.lb.service.BookBoardService;
 import com.team2.lb.service.MemberService;
 import com.team2.lb.util.PageNavigator;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.LikeBoard;
 import com.team2.lb.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
@@ -96,11 +97,14 @@ public class BookBoardController {
 	}
 
 	@GetMapping("read")
-	public String read(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum, Model model, @AuthenticationPrincipal UserDetails user) {
+	public String read(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum, Model model, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		BookBoard bookBoard = service.readBoard(boardnum);
 		model.addAttribute("board", bookBoard);
 		if(user!= null) {
-			int check = service.checkLike(boardnum, user.getUsername());
+			likes.setBno(boardnum);
+			likes.setId(user.getUsername());
+			likes.setPrefix("sell");
+			int check = service.checkLike(likes);
 			model.addAttribute("check" , check);
 			log.info("check {}", check);
 		}
@@ -130,26 +134,30 @@ public class BookBoardController {
 
 	@ResponseBody
 	@PostMapping("recommend")
-	public int recommend(int boardnum, @AuthenticationPrincipal UserDetails user) {
+	public int recommend(int boardnum, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		// 현재 로그인한 유저의 id를 세팅
 		String id = user.getUsername();
+		
+		likes.setBno(boardnum);
+		likes.setId(id);
+		likes.setPrefix("sell");
 
 //		좋아요 테이블에 게시글번호, 유저아이디가 동시에 매칭되는 열이 있는지 체크 있으면 1 없음면 0
-		int check = service.checkLike(boardnum, id);
+		int check = service.checkLike(likes);
 //		좋아요 수를 담을 cnt
 		int cnt = 0;
 
 		if (check == 0) {
 			log.debug("추천안했음");
-			service.addLike(boardnum, id);
-			service.upLike(boardnum);
-			cnt = service.selectCnt(boardnum);
+			service.addLike(likes);
+			service.upLike(likes);
+			cnt = service.selectCnt(likes);
 			return cnt;
 		} else {
 			log.debug("추천이미했음");
-			service.deleteLike(boardnum, id);
-			service.downLike(boardnum);
-			cnt = service.selectCnt(boardnum);
+			service.deleteLike(likes);
+			service.downLike(likes);
+			cnt = service.selectCnt(likes);
 			return cnt;
 		}
 
@@ -157,11 +165,16 @@ public class BookBoardController {
 
 	@ResponseBody
 	@PostMapping("likeCnt")
-	public int likeCnt(int boardnum, @AuthenticationPrincipal UserDetails user) {
+	public int likeCnt(int boardnum, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		// 현재 로그인한 유저의 id를 세팅
 		String id = user.getUsername();
+		
+		likes.setBno(boardnum);
+		likes.setId(id);
+		likes.setPrefix("sell");
+
 //		좋아요 테이블에 게시글번호, 유저아이디가 동시에 매칭되는 열이 있는지 체크 있으면 1 없음면 0
-		int check = service.checkLike(boardnum, id);
+		int check = service.checkLike(likes);
 
 		return check;
 
