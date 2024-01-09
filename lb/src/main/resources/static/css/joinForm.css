@@ -25,9 +25,10 @@ form {
 */
  body {
             display: flex;
-            height: 100vh; /* 100% 뷰포트 높이 설정 */
-            margin: 0;
+            height: auto; /* 100% 뷰포트 높이 설정 */
+            margin: 0px 20px;
             background-color: #F3EBF6;
+            text-align: center;
         }
 
         .content {
@@ -49,7 +50,6 @@ form {
             justify-content: center;
             align-items: center;
             font-family: "Orbit", Orbit;
-           
         }
 
         .login-form {
@@ -72,7 +72,7 @@ form {
         border: 2px solid rgba(0, 0, 0, 0.18) !important;
         
    		}
-   		.un {
+   	.un {
     width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
@@ -85,14 +85,13 @@ form {
     outline: none;
     box-sizing: border-box;
     border: 2px solid rgba(0, 0, 0, 0.02);
-    margin-bottom: 50px;
-    margin-left: 46px;
+    margin-bottom: 30px;
     text-align: center;
-    margin-bottom: 27px;
+    margin-bottom: 20px;
     font-family: 'Ubuntu', sans-serif;
     }
      .pass {
-            width: 76%;
+    width: 76%;
     color: rgb(38, 50, 56);
     font-weight: 700;
     font-size: 14px;
@@ -104,10 +103,9 @@ form {
     outline: none;
     box-sizing: border-box;
     border: 2px solid rgba(0, 0, 0, 0.02);
-    margin-bottom: 50px;
-    margin-left: 46px;
+    margin-bottom: 30px;
     text-align: center;
-    margin-bottom: 27px;
+    margin-bottom: 20px;
     font-family: 'Ubuntu', sans-serif;
     }
     
@@ -137,8 +135,24 @@ form {
         padding-bottom: 10px;
         padding-top: 10px;
         font-family: 'Orbit', Orbit;
-        margin-left: 35%;
+        
         font-size: 16px;
+        box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    }
+    .submit2 {
+		text-align: center;
+      cursor: pointer;
+        border-radius: 5em;
+        color: #fff;
+        background: linear-gradient(to right, #9C27B0, #E040FB);
+        border: 0;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        font-family: 'Orbit', Orbit;
+        
+        font-size: 15px;
         box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
     }
     
@@ -151,12 +165,13 @@ form {
         text-align: center;
     }
     
-     .main {
+    
+    .main2 {
         background-color: #FFFFFF;
-        width: 400px;
-        height: 400px;
-        margin: 7em auto;
+        width: 500px;
+        height: 900px;
+        margin: 3em auto;
         border-radius: 1.5em;
         box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+       /* margin-bottom: 100px; */
     }
-    
