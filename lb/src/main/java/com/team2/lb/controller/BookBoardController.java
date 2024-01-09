@@ -51,6 +51,14 @@ public class BookBoardController {
 	public String sellBoard() {
 		return "bookBoard/sellBoard";
 	}
+	
+	@GetMapping("sale")
+	public String sell(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum) {
+	   service.sellComplete(boardnum);
+	      
+	   return "redirect:/bookBoard/bookBoardList";
+	      
+	}
 
 	@PostMapping("registSell")
 	public String registSell(BookBoard bookBoard, @AuthenticationPrincipal UserDetails user) {
