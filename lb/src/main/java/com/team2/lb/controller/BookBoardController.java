@@ -1,11 +1,13 @@
 package com.team2.lb.controller;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -39,7 +41,6 @@ public class BookBoardController {
 	@Autowired
 	BookBoardService service;
 
-	
 	@Autowired
 	MemberService memberService;
 
@@ -52,13 +53,22 @@ public class BookBoardController {
 	public String sellBoard() {
 		return "bookBoard/sellBoard";
 	}
-	
-	@GetMapping("sale")
+
+	@ResponseBody
+	@GetMapping("sold")
 	public String sell(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum) {
-	   service.sellComplete(boardnum);
-	      
-	   return "redirect:/bookBoard/bookBoardList";
-	      
+		log.debug("보드넘:{}", boardnum);
+		service.sellComplete(boardnum);
+		return "redirect:/bookBoard/myShop";
+
+	}
+
+	@GetMapping("sale")
+	public String resell(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum) {
+		service.resellComplete(boardnum);
+
+		return "redirect:/bookBoard/myShop";
+
 	}
 
 	@PostMapping("registSell")
@@ -70,16 +80,17 @@ public class BookBoardController {
 
 	@GetMapping("myShop")
 	public String myShop(Model model, @AuthenticationPrincipal UserDetails user) {
+		
 		String id = user.getUsername();
 		Member member = memberService.selectUser(id);
-		log.debug("id는:{}",id);
+		log.debug("id는:{}", id);
 		ArrayList<BookBoard> boardList = service.myShop(id);
 		model.addAttribute("member", member);
 		model.addAttribute("boardList", boardList);
-		
+
 		return "bookBoard/myShop";
 	}
-	
+
 	@GetMapping("bookBoardList")
 	public String boardList(Model model, @RequestParam(name = "page", defaultValue = "1") int page, String type,
 			String searchWord) {
@@ -97,18 +108,47 @@ public class BookBoardController {
 	}
 
 	@GetMapping("read")
-	public String read(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum, Model model, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
+	public String read(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum, Model model,
+			@AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		BookBoard bookBoard = service.readBoard(boardnum);
+
+//		LocalDate now = LocalDate.now(); 
+		/**
+		 * // 연도, 월(문자열, 숫자), 일, 일(year 기준), 요일(문자열, 숫자) int year = now.getYear();
+		 * String month = now.getMonth().toString(); int monthValue =
+		 * now.getMonthValue(); int dayOfMonth = now.getDayOfMonth(); int dayOfYear =
+		 * now.getDayOfYear(); String dayOfWeek = now.getDayOfWeek().toString(); int
+		 * dayOfWeekValue = now.getDayOfWeek().getValue(); // 결과 출력
+		 * System.out.println(now); // 2021-06-17 System.out.println(year); // 2021
+		 * System.out.println(month + "(" + monthValue + ")"); // JUNE(6)
+		 * System.out.println(dayOfMonth); // 17 System.out.println(dayOfYear); // 168
+		 * System.out.println(dayOfWeek + "(" + dayOfWeekValue + ")"); // THURSDAY(4) }}
+		 * 
+		 */
+//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
+//		Date date = formatter.parse(bookBoard.getCreated_day());
+		LocalTime now = LocalTime.now(); // 현재시간 출력
+//	    System.out.println(now);  // 06:20:57.008731300         // 포맷 정의하기        
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분 ss초"); // 포맷 적용하기
+//	    String formatedNow = now.format(formatter);         // 포맷 적용된 현재 시간 출력        
+//	    System.out.println(formatedNow);  // 06시 20분 57초
+
+		String dateStr = bookBoard.getCreated_day();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd- HH:mm:ss");
+
+		log.debug("현재날짜:{}", now);
+		log.debug("날짜:{}", dateStr);
+//		log.debug("변환한 날짜:{}", boardDate);
 		model.addAttribute("board", bookBoard);
-		if(user!= null) {
+		if (user != null) {
 			likes.setBno(boardnum);
 			likes.setId(user.getUsername());
 			likes.setPrefix("sell");
 			int check = service.checkLike(likes);
-			model.addAttribute("check" , check);
+			model.addAttribute("check", check);
 			log.info("check {}", check);
 		}
-		
+
 		return "bookBoard/detailBoard";
 	}
 
@@ -127,9 +167,9 @@ public class BookBoardController {
 	}
 
 	@GetMapping("delete")
-	public String delete(int boardnum) {
+	public String delete(@RequestParam(name = "boardnum", defaultValue = "0") int boardnum) {
 		int result = service.deleteBoard(boardnum);
-		return "redirect:/bookBoard/bookBoardList";
+		return "redirect:/bookBoard/myShop";
 	}
 
 	@ResponseBody
@@ -137,7 +177,7 @@ public class BookBoardController {
 	public int recommend(int boardnum, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		// 현재 로그인한 유저의 id를 세팅
 		String id = user.getUsername();
-		
+
 		likes.setBno(boardnum);
 		likes.setId(id);
 		likes.setPrefix("sell");
@@ -168,7 +208,7 @@ public class BookBoardController {
 	public int likeCnt(int boardnum, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		// 현재 로그인한 유저의 id를 세팅
 		String id = user.getUsername();
-		
+
 		likes.setBno(boardnum);
 		likes.setId(id);
 		likes.setPrefix("sell");
@@ -179,5 +219,5 @@ public class BookBoardController {
 		return check;
 
 	}
-	
+
 }
