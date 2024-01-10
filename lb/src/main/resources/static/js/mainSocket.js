@@ -23,13 +23,13 @@ str = ''
 
 console.log("username :", username);
 
-/*
+
 setInterval(function() {
 	//stomp.send를 이용하여 메시지 전송
 	stomp.send('/pub/alarm/showAlarm', {}, String(username));
 	stomp.send('/pub/alarm/alarmNum', {}, String(username));
 }, 500); // 1000 밀리초(1초) 간격으로 실행
-*/
+
 
 
 var alarmList = []; // 알람 리스트를 저장할 배열

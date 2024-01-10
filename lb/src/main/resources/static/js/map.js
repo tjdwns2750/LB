@@ -153,8 +153,8 @@ function addMarkerToMap(latlng, board) {
 			'<div style="text-align: center;">' +
 			'<img id="bookBoardImg" src="' + board.thumbnail + '" style="display: block; margin: 0 auto; margin-top: 10px; max-width: 100%;">' +
 			'<a id="boardtitle" style="font-size: 20px; margin-bottom: 10px; color: #3498db; text-decoration: none; display: block;" href="./bookBoard/read?boardnum=' + board.bbno + '">' + board.title + '</a>' +
-			'<h3 id="boardcontent">'  + board.content + '</h3>' +
-			'<p id="boardprice">'  + board.price + '원' + '</p>' +
+			'<h3 id="boardcontent">' + board.content + '</h3>' +
+			'<p id="boardprice">' + board.price + '원' + '</p>' +
 			'<form action="./chat/chatRoom" method="post">' +
 			'<input type="hidden" name="bbno" value=' + board.bbno + '>' +
 			'<input type="hidden" name="boardId" value=' + board.id.toString() + '>' +
@@ -290,6 +290,13 @@ function initGeocoder() {
 		searchAddressToCoordinate($('#address').val());
 	});
 
+	$('#address').on('keydown', function(event) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+
+			searchAddressToCoordinate($('#address').val());
+		}
+	})
 }
 
 function makeAddress(item) {
