@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookBoard {
+public class TradeBoard {
 	private int bbno;
 	private String id;
 	private String name;
@@ -27,5 +27,4 @@ public class BookBoard {
 	private String publisher;
 	private int price;
 	private int amount;
-	private String enabled;
 }

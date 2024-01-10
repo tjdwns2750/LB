@@ -10,12 +10,6 @@
 			<meta charset="UTF-8">
 			<title>Read Form</title>
 
-			<style>
-				table td,
-				th {
-					text-align: center;
-				}
-			</style>
 			<script>
 				function deleteFunc(bno) {
 					if (confirm('삭제하시겠습니까?')) {
@@ -95,9 +89,9 @@
 				});
 			</script>
 		</head>
-		<div class="container mt-4">
+		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col">
 					<div class="product-details">
 						<table class="table">
 							<tr>
@@ -140,89 +134,34 @@
 					</div>
 				</div>
 			</div>
-			<!--
-			<header>
-				<h1>글 읽기</h1>
-			</header>
-
-			<table>
-				<tr>
-					<th>글번호</th>
-					<td style="width: 80px;" th:text="${board.bno}"></td>
-					<th>조회수</th>
-					<td style="width: 50px;" th:text="${board.hits}"></td>
-					<th>작성일</th>
-					<td style="width: 150px;" th:text="${board.created_day}"></td>
-				</tr>
-				<tr>
-					<th>제목</th>
-					<td colspan="3" th:text="${board.title}"></td>
-					<th>작성자</th>
-					<td th:text="${board.id}"></td>
-				</tr>
-				<tr>
-					<th colspan="6">내용</th>
-					<th> <img id="likeBt" th:src="@{/image/unlike.png}" th:bno="${board.bno}"
-							style="width: 30px; height: 30px;">
-						<p id="cnt" th:text="${board.recommend}"></p>
-					</th>
-				</tr>
-				<tr>
-					<td colspan="6" style="height: 250px;">
-						<pre th:utext="${board.content}"></pre>
-					</td>
-				</tr>
-
-				<div th:if="${#authentication.name == board.id}" style="text-align: center;">
-					<a th:href="@{/board/update(bno=${board.bno})}">수정</a>
-					<a th:href="|javascript:deleteFunc(${board.bno})|">삭제</a>
-				</div>
-			</table>
-			-->
-
-			<section>
-				<!-- 리플 작성 폼 -->
-				<form th:action="@{/reply/writeReply}" method="post">
-					리플내용
-					<input type="hidden" name="bno" th:value="${board.bno}">
-					<input type="text" name="replytext" style="width: 500px;">
-					<input type="submit" value="확인">
-				</form>
-
-				<!-- 리플 목록 출력 -->
-				<div class="card mb-4">
-					<div class="card-body" th:each="reply : ${replyList}">
-						<p>Type your note, and hit enter to add it</p>
+			<!-- 리플 목록 출력 -->
+			<div class="row">
+				<div class="card mb-4" th:each="reply : ${replyList}">
+					<div class="card-body">
+						<p th:text="${reply.replytext}"></p>
 
 						<div class="d-flex justify-content-between">
 							<div class="d-flex flex-row align-items-center">
-								<p class="small mb-0 ms-2" th:text="${reply.id}">Martha</p>
+								<p class="small mb-0 ms-2" th:text="${reply.id}"></p>
 							</div>
 							<div class="d-flex flex-row align-items-center">
-								<p class="small text-muted mb-0" th:text="${reply.replytext}"></p>
-								<i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
-								<p class="small text-muted mb-0">3</p>
+								<p class="small text-muted mb-0" th:text="${reply.inputdate}"></p>
 							</div>
 						</div>
 					</div>
 				</div>
-
-
-				<table class="reply">
-					<tr th:each="reply : ${replyList}">
-						<td class="replyid" th:text="${reply.id}"></td>
-						<td class="replytext" th:text="${reply.replytext}"></td>
-						<td class="replydate" th:text="${reply.inputdate}"></td>
-						<td class="white">
-							<th:block th:if="${#authentication.name} == ${reply.id}">
-								<a th:href="|javascript:deleteReply(${reply.replynum}, ${reply.bno})|">
-									<img th:src="@{/image/icon_delete_24.png}">
-								</a>
-							</th:block>
-						</td>
-					</tr>
-				</table>
-			</section>
+				<form th:action="@{/reply/writeReply}" method="post">
+					<div class="form-outline w-100">
+						<textarea class="form-control" name="replytext" id="textArea" rows="4"
+							style="background: #fff;"></textarea>
+					</div>
+					<div class="float-end mt-2 pt-1">
+						<input type="hidden" name="bno" th:value="${board.bno}">
+						<input type="submit" name="replyext" class="btn btn-primary btn-sm" value="작성"></input>
+					</div>
+				</form>
+			</div>
+		</div>
 	</th:block>
 </th:block>
 

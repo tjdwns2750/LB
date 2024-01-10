@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.team2.lb.util.PageNavigator;
 import com.team2.lb.vo.BookBoard;
+import com.team2.lb.vo.LikeBoard;
 
 public interface BookBoardService {
 
@@ -31,27 +32,30 @@ public interface BookBoardService {
 
 	ArrayList<BookBoard> showBoardAll();
 
-	int checkLike(int boardnum, String id);
+	int checkLike(LikeBoard like);
 
 	// like 테이블에 정보 추가
-	void addLike(int boardnum, String id);
+	void addLike(LikeBoard like);
 
 	// bookBoard 테이블에 recommend +1
-	void upLike(int boardnum);
+	void upLike(LikeBoard like);
 	
 	// like 테이블에 정보 삭제
-	void deleteLike(int boardnum, String id);
+	void deleteLike(LikeBoard like);
 
 	// bookBoard 테이블에 recommend -1
-	void downLike(int boardnum);
+	void downLike(LikeBoard like);
 
 	// 추천수 조회
-	int selectCnt(int boardnum);
+	int selectCnt(LikeBoard like);
 
 
 	ArrayList<BookBoard> myShop(String id);
 
 	ArrayList<BookBoard> bestBoardList();
 
+	void sellComplete(int boardnum);
+
+	void resellComplete(int boardnum);
 
 }
