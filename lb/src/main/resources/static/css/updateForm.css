@@ -1,0 +1,81 @@
+body{
+	text-align: center;
+}
+
+h1 {
+        padding-top: 40px;
+        padding-bottom: 55px;
+        color: #CF6706;
+        font-family: 'Orbit', Orbit;
+        font-weight: bolder;
+        font-size: 23px;
+        text-align: center;
+    }
+    
+th {
+	padding-left: 600px;
+	font-family: 'Orbit', Orbit;
+	font-size: 18px;
+}
+td {
+	padding: 7px;
+	font-family: 'Orbit', Orbit;
+	font-size: 18px;
+}
+
+   	.un {
+    width: 120%;
+    color: rgb(38, 50, 56);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    margin-bottom: 50px;
+    margin-left: 46px;
+    text-align: center;
+    margin-bottom: 27px;
+    font-family: 'Ubuntu', sans-serif;
+    }
+    
+    .pass {
+    width: 120%;
+    color: rgb(38, 50, 56);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: rgba(136, 126, 126, 0.04);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+    border: 2px solid rgba(0, 0, 0, 0.02);
+    margin-bottom: 30px;
+    margin-left: 46px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: 'Ubuntu', sans-serif;
+    }
+    
+    .submit {
+		text-align: center;
+      cursor: pointer;
+        border-radius: 5em;
+        color: #fff;
+        background: linear-gradient(to right, #FFA508, #FFD100);
+        border: 0;
+        padding-left: 40px;
+        padding-right: 40px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        font-family: 'Orbit', Orbit;
+        margin-left: 80%;
+        font-size: 16px;
+        box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+    }
