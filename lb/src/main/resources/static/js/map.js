@@ -148,24 +148,21 @@ function addMarkerToMap(latlng, board) {
 
 
 
-	var infoWindow = new naver.maps.InfoWindow({
-		content: '<div style="padding:10px;min-width:200px;line-height:150%;">' +
-			'<h3>' + '판매' + '</h3>' +
-			'<h3>' + board.name + '</h3>' +
-			'<a id="boardtitle" style="font-size:20px" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
-			'<img id="bookBoardImg" src="' + board.thumbnail + '">' +
-			'<p id="boardcontent">' + '내용 : ' + board.content + '</p>' +
-			'<p id="boardprice">' + '가격 : ' + board.price + '</p>' +
-			'<p id="boardaddress">' + '거래 주소 :' + board.address + '</p>' +
-			'<p id createdDay>' + '작성일 :' + board.created_day + '</p>' +
-
-			'<form action="./chat/chatRoom" method="post">' +
-			'<input type="hidden" name="bbno" value=' + board.bbno + '>' +
-			'<input type="hidden" name="boardId" value=' + board.id.toString() + '>' +
-			'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
-			'</form>' +
-			'</div>'
-	});
+var infoWindow = new naver.maps.InfoWindow({
+    content: '<div class="info-window" style="padding: 10px; min-width: 200px; line-height: 150%; background-color: #fff; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">' +
+        '<div style="text-align: center;">' +
+        '<img id="bookBoardImg" src="' + board.thumbnail + '" style="display: block; margin: 0 auto; margin-top: 10px; max-width: 100%;">' +
+        '<a id="boardtitle" style="font-size: 20px; margin-bottom: 10px; color: #3498db; text-decoration: none; display: block;" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
+        '<h3 id="boardcontent">' + '내용 : ' + board.content + '</h3>' +
+        '<p id="boardprice">' + '가격 : ' + board.price + '원' + '</p>' +
+        '<form action="./chat/chatRoom" method="post">' +
+        '<input type="hidden" name="bbno" value=' + board.bbno + '>' +
+        '<input type="hidden" name="boardId" value=' + board.id.toString() + '>' +
+        '<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
+        '</form>' +
+        '</div>',
+    anchorSkew: true
+});
 
 
 
