@@ -135,7 +135,7 @@ function addMarkerToMap(latlng, board) {
 		title: '게시글 ' + board.bno,
 		// 여기에 추가적인 마커 설정을 할 수 있습니다.
 		icon: {
-			url: HOME_PATH + '/img/books.ico',
+			url: HOME_PATH + '/img/mapBookicos.ico',
 			size: new naver.maps.Size(24, 37),
 			anchor: new naver.maps.Point(12, 37)
 		}
@@ -149,22 +149,19 @@ function addMarkerToMap(latlng, board) {
 
 
 	var infoWindow = new naver.maps.InfoWindow({
-		content: '<div style="padding:10px;min-width:200px;line-height:150%;">' +
-			'<h3>' + '판매' + '</h3>' +
-			'<h3>' + board.name + '</h3>' +
-			'<a id="boardtitle" style="font-size:20px" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
-			'<img id="bookBoardImg" src="' + board.thumbnail + '">' +
-			'<p id="boardcontent">' + '내용 : ' + board.content + '</p>' +
-			'<p id="boardprice">' + '가격 : ' + board.price + '</p>' +
-			'<p id="boardaddress">' + '거래 주소 :' + board.address + '</p>' +
-			'<p id createdDay>' + '작성일 :' + board.created_day + '</p>' +
-
+		content: '<div class="info-window" style="padding: 10px; min-width: 200px; line-height: 150%; background-color: #fff; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">' +
+			'<div style="text-align: center;">' +
+			'<img id="bookBoardImg" src="' + board.thumbnail + '" style="display: block; margin: 0 auto; margin-top: 10px; max-width: 100%;">' +
+			'<a id="boardtitle" style="font-size: 20px; margin-bottom: 10px; color: #3498db; text-decoration: none; display: block;" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
+			'<h3 id="boardcontent">' + '내용 : ' + board.content + '</h3>' +
+			'<p id="boardprice">' + '가격 : ' + board.price + '원' + '</p>' +
 			'<form action="./chat/chatRoom" method="post">' +
 			'<input type="hidden" name="bbno" value=' + board.bbno + '>' +
 			'<input type="hidden" name="boardId" value=' + board.id.toString() + '>' +
 			'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
 			'</form>' +
-			'</div>'
+			'</div>',
+		anchorSkew: true
 	});
 
 
@@ -232,7 +229,7 @@ function searchAddressToCoordinate(address) {
 			map: map,
 			icon: {
 				url: HOME_PATH + '/img/marker.ico',
-				size: new naver.maps.Size(48, 48),
+				size: new naver.maps.Size(42, 48),
 				anchor: new naver.maps.Point(12, 37)
 			}
 
@@ -247,11 +244,22 @@ function searchAddressToCoordinate(address) {
 var infowindow = new naver.maps.InfoWindow();
 
 function onSuccessGeolocation(position) {
-	var location = new naver.maps.LatLng(position.coords.latitude,
-		position.coords.longitude);
+	var location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
 	map.setZoom(15);
 	map.setCenter(location);
+
+	var marker = new naver.maps.Marker({
+		position: location,
+		map: map,
+		icon: {
+			url: HOME_PATH + '/img/marker.ico',
+			size: new naver.maps.Size(42, 48),
+			anchor: new naver.maps.Point(12, 37)
+		}
+	});
+
+	console.log(marker);
 
 	console.log('Coordinates: ' + location.toString());
 }
@@ -267,20 +275,8 @@ function onErrorGeolocation() {
 
 function initGeocoder() {
 
-	/*
-			'<h2 id="boardtitle">' + '제목 :' + board.title + '</h2>' +
-			'<p id="boardcontent">' + '내용 :' + board.content + '</p>' +
-			'<p id="boardaddress">' + '거래 주소 :' + board.address + '</p>' +
-			'<p id createdDay>' + '작성일 :' + board.created_day + '</p>' +
-	*/
-
-
 	if (navigator.geolocation) {
-		/**
-		 * navigator.geolocation 은 Chrome 50 버젼 이후로 HTTP 환경에서 사용이 Deprecate 되어 HTTPS 환경에서만 사용 가능 합니다.
-		 * http://localhost 에서는 사용이 가능하며, 테스트 목적으로, Chrome 의 바로가기를 만들어서 아래와 같이 설정하면 접속은 가능합니다.
-		 * chrome.exe --unsafely-treat-insecure-origin-as-secure="http://example.com"
-		 */
+
 		navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
 	} else {
 		var center = map.getCenter();
@@ -295,97 +291,6 @@ function initGeocoder() {
 	});
 
 }
-
-/*
-var bounds = map.getBounds(),
-	southWest = bounds.getSW(),
-	northEast = bounds.getNE(),
-	lngSpan = northEast.lng() - southWest.lng(),
-	latSpan = northEast.lat() - southWest.lat();
-
-var markers = [],
-	infoWindows = [];
-
-for (var key in MARKER_SPRITE_POSITION) {
-
-	var position = new naver.maps.LatLng(
-		southWest.lat() + latSpan * Math.random(),
-		southWest.lng() + lngSpan * Math.random());
-
-	var marker = new naver.maps.Marker({
-		map: map,
-		position: position,
-		title: key,
-		icon: {
-			 url: HOME_PATH + '/img/about.jpg',
-			//url: image,
-			size: new naver.maps.Size(24, 37),
-			anchor: new naver.maps.Point(12, 37),
-			origin: new naver.maps.Point(MARKER_SPRITE_POSITION[key][0], MARKER_SPRITE_POSITION[key][1])
-		},
-		zIndex: 100
-	});
-
-	var infoWindow = new naver.maps.InfoWindow({
-		content: '<div style="width:150px;text-align:center;padding:10px;">The Letter is <b>"' + key.substr(0, 1) + '"</b>.</div>'
-	});
-
-	markers.push(marker);
-	infoWindows.push(infoWindow);
-};
-
-naver.maps.Event.addListener(map, 'idle', function() {
-	updateMarkers(map, markers);
-});
-
-function updateMarkers(map, markers) {
-
-	var mapBounds = map.getBounds();
-	var marker, position;
-
-	for (var i = 0; i < markers.length; i++) {
-
-		marker = markers[i]
-		position = marker.getPosition();
-
-		if (mapBounds.hasLatLng(position)) {
-			showMarker(map, marker);
-		} else {
-			hideMarker(map, marker);
-		}
-	}
-}
-
-function showMarker(map, marker) {
-
-	if (marker.setMap()) return;
-	marker.setMap(map);
-}
-
-function hideMarker(map, marker) {
-
-	if (!marker.setMap()) return;
-	marker.setMap(null);
-
-
-// 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
-function getClickHandler(seq) {
-	return function(e) {
-		var marker = markers[seq],
-			infoWindow = infoWindows[seq];
-
-		if (infoWindow.getMap()) {
-			infoWindow.close();
-		} else {
-			infoWindow.open(map, marker);
-		}
-	}
-}
-
-for (var i = 0, ii = markers.length; i < ii; i++) {
-	naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
-}
-}*/
 
 function makeAddress(item) {
 	if (!item) {
