@@ -275,6 +275,31 @@
 	transition: .5s;
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-btn {
+    margin-right: 10px; /* 필요에 따라 조절 */
+    position: relative;
+}
+
+.note-num {
+    position: absolute;
+    top: -5px; /* 필요에 따라 조절 */
+    right: -5px; /* 필요에 따라 조절 */
+    z-index: 3;
+    height: 20px;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+    color: white; /* 텍스트 색상 추가 */
+}
+
 .service-item:hover * {
 	color: var(--light) !important;
 }

@@ -1,131 +1,137 @@
 <!DOCTYPE html>
-<html xmlns:th="thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>회원정보수정</title>
-<link rel="stylesheet" th:href="@{/css/updateForm.css}">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css2?family=Orbit&display=swap" rel="stylesheet">
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<script>
-	window.onload = function(){
-	    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
-	        //카카오 지도 발생
-	        new daum.Postcode({
-	            oncomplete: function(data) { //선택시 입력값 세팅
-	                document.getElementById("address_kakao").value = data.address; // 주소 넣기
-	                document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
-	            }
-	        }).open();
-	    });
-	}
-	
-	function uploadAndPreview() {
-            var fileInput = document.getElementById('fileInput');
-            var preview = document.getElementById('preview');
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
+		
+		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
 
-            var file = fileInput.files[0];
-            var reader = new FileReader();
+		<head>
+			<meta charset="UTF-8">
+			<title>회원정보수정</title>
+			<link rel="stylesheet" th:href="@{/css/updateForm.css}">
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+				integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+				crossorigin="anonymous">
+			<link href="https://fonts.googleapis.com/css2?family=Orbit&display=swap" rel="stylesheet">
+			<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-            reader.onloadend = function () {
-                preview.src = reader.result;
-            };
+			<script>
+				window.onload = function () {
+					document.getElementById("address_kakao").addEventListener("click", function () { //주소입력칸을 클릭하면
+						//카카오 지도 발생
+						new daum.Postcode({
+							oncomplete: function (data) { //선택시 입력값 세팅
+								document.getElementById("address_kakao").value = data.address; // 주소 넣기
+								document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
+							}
+						}).open();
+					});
+				}
 
-            if (file) {
-                reader.readAsDataURL(file);
+				function uploadAndPreview() {
+					var fileInput = document.getElementById('fileInput');
+					var preview = document.getElementById('preview');
 
-                // 파일을 서버에 업로드
-                uploadFile(file);
-            } else {
-                preview.src = "#";
-            }
-        }
+					var file = fileInput.files[0];
+					var reader = new FileReader();
+
+					reader.onloadend = function () {
+						preview.src = reader.result;
+					};
+
+					if (file) {
+						reader.readAsDataURL(file);
+
+						// 파일을 서버에 업로드
+						uploadFile(file);
+					} else {
+						preview.src = "#";
+					}
+				}
 
 
-function uploadFile(file) {
-            var formData = new FormData();
-            formData.append('file', file);
+				function uploadFile(file) {
+					var formData = new FormData();
+					formData.append('file', file);
 
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('File uploaded:', data.imageUrl);
-                // 여기에서 서버에서 전달한 이미지 URL을 사용하여 추가적인 작업을 수행할 수 있습니다.
-            })
-            .catch(error => {
-                console.error('Error uploading file:', error);
-            });
-        }
-        
-        // Example of setting the image source with an external URL
-        function setExternalImage() {
-            var imageUrl = 'https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=w240-h480-rw'; // Replace with the actual URL of your external image
-            var preview = document.getElementById('preview');
-            preview.src = imageUrl;
-        }
-        
-</script>
-</head>
-<body>
+					fetch('/upload', {
+						method: 'POST',
+						body: formData
+					})
+						.then(response => response.json())
+						.then(data => {
+							console.log('File uploaded:', data.imageUrl);
+							// 여기에서 서버에서 전달한 이미지 URL을 사용하여 추가적인 작업을 수행할 수 있습니다.
+						})
+						.catch(error => {
+							console.error('Error uploading file:', error);
+						});
+				}
 
-	<h1>회원정보수정</h1>
+				// Example of setting the image source with an external URL
+				function setExternalImage() {
+					var imageUrl = 'https://play-lh.googleusercontent.com/38AGKCqmbjZ9OuWx4YjssAz3Y0DTWbiM5HB0ove1pNBq_o9mtWfGszjZNxZdwt_vgHo=w240-h480-rw'; // Replace with the actual URL of your external image
+					var preview = document.getElementById('preview');
+					preview.src = imageUrl;
+				}
 
-	<form th:action="@{/member/update}"  style="text-align: center;"method="post" enctype="multipart/form-data">
-		<table>
-			<tr>
-				<th>아이디</th>
-				<td>
-					<input type="text" class="un" name="id" id="id" th:value="${member.id}"
-					placeholder="아이디">
-				<!--	<input type="button" value="ID중복검사" onclick="idCheck();">	-->
-				</td>
-			</tr>
-			<tr>
-				<th>비밀번호</th>
-				<td>
-					<input type="password" class="pass" name="pw" id="pw"
-					placeholder="비밀번호"><br>
-					<input type="password" class="pass" id="pw2"
-					placeholder="비밀번호 재입력">
-				</td>
-			</tr>
-			<tr>
-				<th>이름</th>
-				<td>
-					<input type="text" class="un" name="name" id="name" th:value="${member.name}"
-					placeholder="이름">
-				</td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td>
-					<input type="email" class="un" name="email" placeholder="이메일" th:value="${member.email}">
-				</td>
-			</tr>
-			<tr>
-				<th>전화번호</th>
-				<td>
-					<input type="text" class="un" name="phone" placeholder="전화번호" th:value="${member.phone}">
-				</td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td>
-					<input type="text" class="un" id="address_kakao" name="address" placeholder="주소"
-					readonly="readonly"  th:value="${member.address}">
-				</td>
-			</tr>
-			<tr>
-	            <th>상세 주소</th>
-	            <td><input type="text" class="un" name="address_detail" th:value="${member.address_detail}"></td>
-          <!--	</tr>
+			</script>
+		</head>
+
+		<body>
+
+			<h1>회원정보수정</h1>
+
+			<form th:action="@{/member/update}" style="text-align: center;" method="post" enctype="multipart/form-data">
+				<table>
+					<tr>
+						<th>아이디</th>
+						<td>
+							<input type="text" class="un" name="id" id="id" th:value="${member.id}" placeholder="아이디">
+							<!--	<input type="button" value="ID중복검사" onclick="idCheck();">	-->
+						</td>
+					</tr>
+					<tr>
+						<th>비밀번호</th>
+						<td>
+							<input type="password" class="pass" name="pw" id="pw" placeholder="비밀번호"><br>
+							<input type="password" class="pass" id="pw2" placeholder="비밀번호 재입력">
+						</td>
+					</tr>
+					<tr>
+						<th>이름</th>
+						<td>
+							<input type="text" class="un" name="name" id="name" th:value="${member.name}"
+								placeholder="이름">
+						</td>
+					</tr>
+					<tr>
+						<th>이메일</th>
+						<td>
+							<input type="email" class="un" name="email" placeholder="이메일" th:value="${member.email}">
+						</td>
+					</tr>
+					<tr>
+						<th>전화번호</th>
+						<td>
+							<input type="text" class="un" name="phone" placeholder="전화번호" th:value="${member.phone}">
+						</td>
+					</tr>
+					<tr>
+						<th>주소</th>
+						<td>
+							<input type="text" class="un" id="address_kakao" name="address" placeholder="주소"
+								readonly="readonly" th:value="${member.address}">
+						</td>
+					</tr>
+					<tr>
+						<th>상세 주소</th>
+						<td><input type="text" class="un" name="address_detail" th:value="${member.address_detail}">
+						</td>
+						<!--	</tr>
 		      <th>프로필 사진</th> 
 				<td>
 					<input type="file" name="upload" id="fileInput" onchange="uploadAndPreview()" accept="image/*">
@@ -133,12 +139,15 @@ function uploadFile(file) {
     				<img id="preview" th:src="@{'/image/' + ${member.savedfile}}" alt="Preview" style="max-width: 200px; max-height: 300px;">
 				</td>
 			</tr> -->
-			<tr>
-				<td colspan="2">
-					<input type="submit" class="submit" value="수정">
-				</td>
-			</tr>
-		</table>
-	</form>
-</body>
+					<tr>
+						<td colspan="2">
+							<input type="submit" class="submit" value="수정">
+						</td>
+					</tr>
+				</table>
+			</form>
+	</th:block>
+</th:block>
+
+
 </html>

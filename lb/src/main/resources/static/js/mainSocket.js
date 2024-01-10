@@ -1,12 +1,6 @@
 var username = $('#memberId').val();
 
 $(document).ready(function() {
-	function errorAlarm() {
-		stomp.send('/pub/alarm/updateCheck', {}, String(username));
-	}
-
-	// 클릭 이벤트 리스너 등록
-	document.getElementById('clearAlarmButton').addEventListener('click', errorAlarm);
 	var alarmDropdown = $('#alarm');
 
 	alarmDropdown.hover(
@@ -74,38 +68,38 @@ function displayAlarms() {
 	// 기존 알람 목록을 비우고 새로운 알람으로 업데이트
 	$('#alarm').empty();
 
+	$('#alarm').append('<input type="button" id="clearAlarmButton" class="btn btn-warning rounded-pill py-2 px-4 my-2 mx-2" value="알림 지우기">');
 	alarmList.forEach(function(alarm) {
-
-		console.log("alarm : ", alarm.prefix);
-		console.log(alarm.bbno)
-		console.log(alarm.bno)
-
 		if (alarm.prefix == 'chat') {
-
-			// <p> 태그에서는 href 속성이 지원되지 않으므로 수정
-			$('#alarm').append('<p class="dropdown-item">' + alarm.message +
-				'<form action="/lb/chat/chatRoom" method="post">' +
+			$('#alarm').append(
+				'<div class="dropdown-item d-flex justify-content-between align-items-center">' +
+				'<p>' + alarm.message + '</p>' +
+				'<form action="/lb/chat/chatRoom" method="post" class="ml-auto">' +
 				'<input type="hidden" name="bbno" value="' + alarm.bbno + '">' +
 				'<input type="hidden" name="boardId" value="' + alarm.id + '">' +
-				'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
+				'<button class="btn btn-secondary" type="submit">채팅하기</button>' +
 				'</form>' +
-				'</p>');
-
+				'</div>'
+			);
 		} else if (alarm.prefix == 'review') {
-			console.log("bno도착", alarm.bno)
-
-			$('#alarm').append('<p class="dropdown-item">' + alarm.message +
-				'<form action="/lb/board/read" method="get">' +
+			$('#alarm').append(
+				'<div class="dropdown-item d-flex justify-content-between align-items-center">' +
+				'<p>' + alarm.message + '</p>' +
+				'<form action="/lb/board/read" method="get" class="ml-auto">' +
 				'<input type="hidden" name="bno" value="' + alarm.bno + '">' +
-				'<input class="btn btn-secondary" type="submit" value="글 보러가기"></input>' +
+				'<button class="btn btn-secondary" type="submit">글 보러가기</button>' +
 				'</form>' +
-				'</p>');
-			console.log('<a href="./board/read?bno="' + alarm.bno + '"class="btn btn-secondary" > 글보러가기' +
-				'</a>');
-
+				'</div>'
+			);
 		}
-
 	});
+
+	function errorAlarm() {
+		stomp.send('/pub/alarm/updateCheck', {}, String(username));
+	}
+
+	// 클릭 이벤트 리스너 등록
+	document.getElementById('clearAlarmButton').addEventListener('click', errorAlarm);
 }
 
 stomp.connect({}, function() {
@@ -118,7 +112,7 @@ stomp.connect({}, function() {
 			if (alarmItem.prefix == 'chat') {
 				var createdDate = new Date(alarmItem.created_day);
 				var timeDiff = calculateTimeDifference(createdDate);
-				alarmList.push({ message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.', bbno: Number(alarmItem.bbno), id: alarmItem.member_id , prefix: alarmItem.prefix });
+				alarmList.push({ message: timeDiff + ' 전에 새로운 채팅이 도착했습니다.', bbno: Number(alarmItem.bbno), id: alarmItem.member_id, prefix: alarmItem.prefix });
 				console.log("채팅완료");
 			} else if (alarmItem.prefix == 'review') {
 				var createdDate = new Date(alarmItem.created_day);
