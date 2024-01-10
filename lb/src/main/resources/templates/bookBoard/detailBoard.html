@@ -155,8 +155,14 @@
 		<table class="table">
 			<tr>
 				<td rowspan="6">
-					<img th:src="${board.thumbnail}" alt="Product Image" class="img-fluid"
-						style="width: 200px; height: auto;">
+					<div th:if="${board.enabled} eq 'N'">
+						<h2 class="sale-overlay" th:text="판매완료"></h2>
+						<!-- 흑백 처리된 이미지 -->
+						<img class="img-fluid grayscale" th:src="${board.thumbnail}" alt="">
+					</div>
+					<div th:if="${board.enabled} eq 'Y'">
+						<img class="img-fluid" th:src="${board.thumbnail}" alt="">
+					</div>
 				</td>
 				<td id="title" th:text="${board.title}"></td>
 			</tr>
