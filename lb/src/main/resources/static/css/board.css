@@ -1,0 +1,14 @@
+.sign {
+        padding-top: 40px;
+        color: rgb(0, 0, 0);
+        font-family: 'Orbit', Orbit;
+        font-weight: bold;
+        font-size: 35px;
+        text-align: center;
+    }
+
+th {
+	padding-left: 600px;
+	font-family: 'Orbit', Orbit;
+	font-size: 18px;
+}
