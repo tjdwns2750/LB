@@ -203,6 +203,15 @@
       where
       bbno = #{boardnum}
    </update>
+   
+   	<update id="resellComplete" parameterType="int">
+      update BookBoard
+      set
+      enabled
+      = 'Y'
+      where
+      bbno = #{boardnum}
+   </update>
 
 	<select id="selectCnt" parameterType="LikeBoard" resultType="int">
 		select

@@ -54,6 +54,8 @@ public interface BookBoardService {
 
 	ArrayList<BookBoard> bestBoardList();
 
-	 void sellComplete(int boardnum);
+	void sellComplete(int boardnum);
+
+	void resellComplete(int boardnum);
 
 }

@@ -15,7 +15,6 @@
 			text-decoration: none;
 		}
 	</style>
-
 	<style>
 		body {
 			font-family: 'Arial', sans-serif;
@@ -31,7 +30,6 @@
 			color: #ffffff;
 			/* 배경 색상이 primary일 때 텍스트 색상을 밝게 설정 */
 		}
-
 
 		.hero-header {
 			text-align: center;
@@ -139,6 +137,8 @@
 			filter: grayscale(100%);
 		}
 	</style>
+
+
 	<script>
 		function deleteFunc(bbno) {
 			if (confirm('삭제하시겠습니까?')) {
@@ -170,6 +170,7 @@
 				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
 					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5">판매</h1>
 				</div>
+				<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
 				<div class="position-relative w-75 mx-auto animated slideInDown"
 					style="padding: 5%; display: flex; align-items: center; justify-content: space-between;">
 					<form id="pagingForm" th:action="@{/bookBoard/bookBoardList}" method="get"
@@ -188,7 +189,7 @@
 							value="검색">
 					</form>
 				</div>
-				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
+				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s" >
 					<div class="package-item">
 						<div
 							class="position-relative overflow-hidden d-flex justify-content-center align-items-center mb-5">
@@ -213,8 +214,6 @@
 							<div class="btn-group">
 								<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
 									class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
-								<a th:href="@{/bookBoard/sale(boardnum=${board.bbno})}"
-									class="btn btn-outline-primary btn-sm mx-1">판매완료</a>
 
 								<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
 									method="post">
@@ -229,7 +228,7 @@
 				<!-- Add more items as needed -->
 			</div>
 		</div>
-		<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
+
 
 
 
