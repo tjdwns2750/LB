@@ -27,7 +27,7 @@ form {
             display: flex;
             height: auto; /* 100% 뷰포트 높이 설정 */
             margin: 0px 20px;
-            background-color: #F3EBF6;
+            background-color: #FFFDC8;
             text-align: center;
         }
 
@@ -72,6 +72,7 @@ form {
         border: 2px solid rgba(0, 0, 0, 0.18) !important;
         
    		}
+   		
    	.un {
     width: 76%;
     color: rgb(38, 50, 56);
@@ -111,14 +112,15 @@ form {
     
     .forgot {
         text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-        color: #E1BEE7;
+        color: #FFD164;
         padding-top: 15px;
         text-align: center;
     }
     
     a {
         text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
-        color: #E1BEE7;
+        color: #FFD164;
+        font-weight: bold;
         text-align: center;
         text-decoration: none
     }
@@ -128,7 +130,7 @@ form {
       cursor: pointer;
         border-radius: 5em;
         color: #fff;
-        background: linear-gradient(to right, #9C27B0, #E040FB);
+        background: linear-gradient(to right, #FFA508, #FFD100);
         border: 0;
         padding-left: 40px;
         padding-right: 40px;
@@ -144,7 +146,7 @@ form {
       cursor: pointer;
         border-radius: 5em;
         color: #fff;
-        background: linear-gradient(to right, #9C27B0, #E040FB);
+        background: linear-gradient(to right, #FFA508, #FFD100);
         border: 0;
         padding-left: 30px;
         padding-right: 30px;
@@ -158,13 +160,21 @@ form {
     
     .sign {
         padding-top: 40px;
-        color: #8C55AA;
+        color: #CF6706;
         font-family: 'Orbit', Orbit;
         font-weight: bold;
         font-size: 23px;
         text-align: center;
     }
     
+    .sign2 {
+        padding-top: 20px;
+        color: #CF6706;
+        font-family: 'Orbit', Orbit;
+        font-weight: bold;
+        font-size: 15px;
+        text-align: center;
+    }
     
     .main2 {
         background-color: #FFFFFF;
@@ -174,4 +184,13 @@ form {
         border-radius: 1.5em;
         box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
        /* margin-bottom: 100px; */
+    }
+        
+    .main3 {
+        background-color: #FFFFFF;
+        width: 400px;
+        height: 330px;
+        margin: 3em auto;
+        border-radius: 1.5em;
+        box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
     }
