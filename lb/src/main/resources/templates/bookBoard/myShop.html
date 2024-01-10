@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--
+<html xmlns:th="thymeleaf.org">
+-->
+<style>
+	.img-fluid {
+		height: 20px;
+		width: 20px;
+	}
+</style>
+
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
+
+			$('select[name="state"]').change(function () {
+				// 선택된 옵션의 값을 가져옵니다.
+				var selectedValue = $(this).val();
+				// 해당 셀렉트 박스의 데이터 속성에서 boardnum 값을 가져옵니다.
+				var boardnum = $(this).find(':selected').data('boardnum');
+				// 선택된 값에 따라 적절한 AJAX 함수 호출
+				if (selectedValue === 'sale') {
+					ajaxSaleFunction(boardnum);
+				} else if (selectedValue === 'sold') {
+					ajaxSoldFunction(boardnum);
+				} else if (selectedValue === 'delete') {
+					ajaxDeleteFunction(boardnum);
+				}
+			});
+
+
+			function ajaxSaleFunction(boardnum) {
+				console.log(boardnum);
+				$.ajax({
+					url: 'sale',
+					type: 'GET',
+					data: {boardnum: boardnum},
+					success: function (response) {
+						alert('상품 상태가 변경 되었습니다.');
+					},
+					error: function (error) {
+					}
+				});
+			}
+
+			function ajaxSoldFunction(boardnum) {
+				$.ajax({
+					url: 'sold',
+					type: 'GET',
+					data: {boardnum: boardnum},
+					success: function (response) {
+						alert('상품 상태가 변경 되었습니다.');
+					},
+					error: function (error) {
+					}
+				});
+			}
+
+
+			function ajaxDeleteFunction(boardnum) {
+				$.ajax({
+					url: 'delete',
+					type: 'GET',
+					data: {boardnum: boardnum},
+					success: function (response) {
+						alert('상품이 삭제 되었습니다.');
+					},
+					error: function (error) {
+					}
+				});
+
+			}
+
+			// 게시글 삭제 함수
+			function deleteFunc(bbno) {
+				if (confirm('삭제하시겠습니까?')) {
+					location.href = 'delete?boardnum=' + bbno;
+				}
+			}
+
+			// 페이징 폼 제출 함수
+			function pagingFormSubmit(currentPage) {
+				var form = document.getElementById('pagingForm');
+				let page = document.querySelector('#page');
+				page.value = currentPage;
+				form.submit();
+			}
+		});
+	</script>
+	<style>
+		/* 기본 스타일 */
+		body {
+			font-family: 'Arial', sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+		}
+
+		.container-xxl {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		h1 {
+			margin-top: 40px;
+			margin-bottom: 20px;
+			font-size: 24px;
+			color: #333;
+		}
+
+		a {
+			text-decoration: none;
+			color: #007bff;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		/* 테이블 스타일 */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+
+		th,
+		td {
+			border: 1px solid #ccc;
+			padding: 10px 15px;
+			text-align: center;
+		}
+
+		th {
+			background-color: #f4f4f4;
+			text-align: center;
+		}
+
+		.img-fluid {
+			height: 40px;
+			width: 40px;
+			object-fit: cover;
+			/* 이미지 비율 유지 */
+		}
+
+		.btn {
+			padding: 5px 15px;
+			border-radius: 5px;
+			text-align: center;
+			margin: 5px;
+		}
+
+		.btn-outline-primary {
+			color: #007bff;
+			border: 1px solid #007bff;
+		}
+
+		.btn-outline-warning {
+			color: #ffc107;
+			border: 1px solid #ffc107;
+		}
+	</style>
+
+
+</head>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
+	<th:block th:fragment="content">
+
+		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
+
+		<div class="container-xxl">
+			<div class="row">
+				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
+					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5">내 상품</h1>
+				</div>
+
+				<h1 th:text="${member.id} + '님의 상점'"></h1>
+				<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
+				<table>
+					<tr>
+						<th>사진</th>
+						<th>상품상태</th>
+						<th>상품명</th>
+						<th>가격</th>
+						<th>날짜</th>
+					</tr>
+					<tr th:each="board : ${boardList}">
+						<td>
+							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
+						</td>
+						<td>
+							<select name="state" class="btn btn-dark rounded-pill py-2 px-4 me-2">
+								<option value="sale" id="sale" th:selected="${state} == 'sale'"
+									th:data-boardnum="${board.bbno}">
+									판매중</option>
+								<option value="sold" id="sold" th:selected="${state} == 'sold'"
+									th:data-boardnum="${board.bbno}">
+									판매완료</option>
+								<option value="delete" id="delete" th:selected="${state} == 'delete'"
+									th:data-boardnum="${board.bbno}">삭제</option>
+							</select>
+						</td>
+						<td>
+							<a th:text="${board.bookTitle}" th:href="@{/bookBoard/read(boardnum=${board.bbno})}"></a>
+						</td>
+						<td th:text="${board.price}+'원'"></td>
+						<td th:text="${board.created_day}"></td>
+						<!--
+						<div th:if="${board.enabled} eq 'Y'">
+							<td> <a th:href="@{/bookBoard/sale(boardnum=${board.bbno})}"
+									class="btn btn-outline-primary btn-sm mx-1">판매완료</a></td>
+						</div>
+						<div th:if="${board.enabled} eq 'N'">
+							<td> <a th:href="@{/bookBoard/resale(boardnum=${board.bbno})}"
+									class="btn btn-outline-warning btn-sm mx-1">되돌리기</a></td>
+						</div>
+						-->
+					</tr>
+
+
+				</table>
+
+				<!--
+            <div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
+               <div class="package-item">
+                  <div class="overflow-hidden d-flex justify-content-center align-items-center mb-5">
+                     <img class="img-fluid" th:src="${board.thumbnail}" alt="">
+                  </div>
+                  <div class="text-center">
+                     <h3 class="mb-0" th:text="${board.price}"></h3>
+                     <h6 th:text="${board.id}"></h6>
+                     <p th:text="${board.content}"></p>
+                     <div class="btn-group">
+                        <a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
+                           class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+                        <form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
+                           method="post">
+                           <input type="hidden" name="bbno" th:value="${board.bbno}">
+                           <input type="hidden" name="boardId" th:value="${board.id}">
+                           <input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            -->
+				<!-- Add more items as needed -->
+			</div>
+		</div>
+
+
+
+
+
+
+	</th:block>
+</th:block>
+
+
+
+</html>

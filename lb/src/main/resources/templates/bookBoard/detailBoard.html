@@ -50,6 +50,7 @@
 							data: {boardnum: boardnum},
 							success: function (n) {
 								$('#cnt').html(n);
+								$('#cnt2').html(n);
 							},
 							error: function () {
 								alert('Error recommending.');
@@ -67,8 +68,147 @@
 					});
 				});
 			</script>
+
+			<style>
+				/* 전체적인 레이아웃 및 디자인 */
+				body {
+					font-family: 'Arial', sans-serif;
+					margin: 0;
+					padding: 0;
+					background-color: #f4f4f4;
+				}
+
+				.container-fluid {
+					padding: 20px 0;
+				}
+
+				/* 상품 이미지 */
+				.product-image {
+					text-align: center;
+					margin-bottom: 20px;
+				}
+
+				.product-image img {
+					max-width: 100%;
+					height: auto;
+					border: 1px solid #ddd;
+					padding: 5px;
+					background-color: #fff;
+					box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+				}
+
+				/* 테이블 스타일링 */
+				.table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-bottom: 20px;
+					background-color: #fff;
+					box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+				}
+
+				.table th,
+				.table td {
+					padding: 10px;
+					border-bottom: 1px solid #ddd;
+					text-align: left;
+				}
+
+				.table th {
+					background-color: #f7f7f7;
+				}
+
+				/* 좋아요, 조회수, 작성일 아이콘과 텍스트 스타일 */
+				.span {
+					vertical-align: middle;
+					margin-left: 10px;
+				}
+
+				/* 버튼 스타일 */
+				.btn {
+					padding: 10px 20px;
+					background-color: #007bff;
+					border: none;
+					border-radius: 5px;
+					color: #fff;
+					cursor: pointer;
+					transition: background-color 0.3s ease;
+				}
+
+				.btn:hover {
+					background-color: #0056b3;
+				}
+
+				/* 하트 아이콘 크기 조절 */
+				#bt {
+					width: 30px;
+					height: 30px;
+					vertical-align: middle;
+				}
+
+				.img-fluid {
+					width: 250px !important;
+					height: auto !important;
+				}
+			</style>
 		</head>
 
+		<table class="table">
+			<tr>
+				<td rowspan="6">
+					<img th:src="${board.thumbnail}" alt="Product Image" class="img-fluid"
+						style="width: 200px; height: auto;">
+				</td>
+				<td id="title" th:text="${board.title}"></td>
+			</tr>
+			<tr>
+				<td id="price" th:text="${board.price} + '원'"></td>
+			</tr>
+			<td>
+				<img th:src="@{/image/grayheart.png}" style="width: 20px; height: 20px;">
+				<span class="span" id="cnt2" th:text="${board.recommend}" style="margin-right: 20px;"></span>
+
+
+				<img th:src="@{/image/grayeye.png}" style="width: 20px; height: 20px;">
+				<span class="span" th:text="${board.hits}"></span>
+
+
+				<img th:src="@{/image/grayclock.png}" style="width: 15px; height: 15px;">
+				<span class="span" th:text="${board.created_day}"></span>
+			</td>
+			</tr>
+			<td>판매자</td>
+			<td th:text="${board.id}"></td>
+			</tr>
+			<tr>
+				<td>수량</td>
+				<td th:text="${board.amount}+'권'"></td>
+			</tr>
+			<tr>
+				<td>
+					<div th:if="${#authentication.name != board.id}">
+
+						<img id="bt" th:src="@{/image/unlike.png}" th:boardnum="${board.bbno}"
+							style="width: 30px; height: 30px;">
+						<span id="cnt" th:text="${board.recommend}"></span>
+					</div>
+
+					<a th:if="${#authentication.name == board.id}" id="my" th:href="@{/bookBoard/myShop}">내상점</a>
+
+					<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom" method="post">
+						<input type="hidden" name="bbno" th:value="${board.bbno}">
+						<input type="hidden" name="boardId" th:value="${board.id}">
+						<input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5">
+					<p>상품정보</p>
+					<pre th:utext="${board.content}"></pre>
+				</td>
+			</tr>
+		</table>
+		<!--
 		<div class="container mt-4">
 			<div class="row">
 				<div class="col-md-6">
@@ -111,7 +251,7 @@
 							</tr>
 						</table>
 					</div>
-
+				
 					<div class="action-links mt-3 d-flex">
 						<a th:href="@{/bookBoard/bookBoardList}" class="btn btn-primary me-2">목록으로</a>
 
@@ -136,5 +276,6 @@
 				</div>
 			</div>
 		</div>
+		-->
 	</th:block>
 </th:block>

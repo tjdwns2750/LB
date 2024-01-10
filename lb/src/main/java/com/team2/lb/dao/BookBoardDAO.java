@@ -49,6 +49,8 @@ public interface BookBoardDAO {
 
 	void sellComplete(int boardnum);
 
+	void resellComplete(int boardnum);
+
 
 	
 }

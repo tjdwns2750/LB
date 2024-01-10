@@ -99,6 +99,7 @@ public class TradeBoardController {
 		return "redirect:/tradeBoard/tradeBoardList";
 	}
 	
+	@ResponseBody
 	@PostMapping("recommend")
 	public int recommend(int boardnum, @AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		// 현재 로그인한 유저의 id를 세팅

@@ -20,7 +20,7 @@
 
 			/**
 			if(event.key === 'Enter') {
-				event.preventDefault();
+			   event.preventDefault();
 			}
 			*/
 			$('#bookName').on('keydown', function (event) {
@@ -299,45 +299,39 @@
 		function openUrlInNewTab(url) {
 			window.open(url, '_blank');
 		}
-		/**
 		function joinCheck() {
-			let title = document.querySelector('#title');
-			let selectedIsbn = document.querySelector('#selectedIsbn');
-			let address_kakao = document.querySelector('#address_kakao');
-			let price = document.querySelector('#price');
-			let content = document.querySelector('#content');
-			let amount = document.querySelector('#amount');
-			alert("aa");
-
-			if (title.value.length < 2 || title.value.length > 40) {
-				alert("상품명을 입력하세요");
-				return false;
-			}
-			if (selectedIsbn.value == '') {
-				alert('책을 등록하세요');
-				return false;
-			}
-			if (address_kakao.value == '') {
-				alert('주소을 입력하세요');
-				return false;
-			}
-			if (price.value == '') {
-				alert('가격을 입력하세요');
-				return false;
-			}
-			if (content.value == '') {
-				alert('상품 설명을 입력하세요');
-				return false;
-			}
-			if (amount.value == '') {
-				alert('수량을 입력하세요');
-				return false;
-			}
-			return true;
+		   let title = document.querySelector('#title');
+		   let selectedIsbn = document.querySelector('#selectedIsbn');
+		   let address_kakao = document.querySelector('#address_kakao');
+		   let price = document.querySelector('#price');
+		   let content = document.querySelector('#content');
+  
+		   if (title.value.length < 2 || title.value.length > 40) {
+			  alert("상품명을 입력하세요");
+			  return false;
+		   }
+		   if (selectedIsbn.value == '') {
+			  alert('책을 등록하세요');
+			  return false;
+		   }
+		   if (address_kakao.value == '') {
+			  alert('주소을 입력하세요');
+			  return false;
+		   }
+		   if (price.value == '') {
+			  alert('가격을 입력하세요');
+			  return false;
+		   }
+		   if (content.value == '') {
+			  alert('상품 설명을 입력하세요');
+			  return false;
+		   }
+		   return true;
 		}
-		*/
 	</script>
 	<style>
+		
+		
 		body {
 			font-family: 'Arial', sans-serif;
 			background-color: #f4f4f4;
@@ -357,6 +351,8 @@
 			border-radius: 8px;
 			overflow: hidden;
 			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			padding-left: 200px;
+			padding-right: 200px;
 		}
 
 		table th,
@@ -427,6 +423,11 @@
 		.btn-primary:hover {
 			background-color: #0056b3;
 		}
+		
+		.container-xxl{
+			width: 50%;
+		}
+		
 	</style>
 </head>
 
@@ -437,8 +438,10 @@
 	<th:block th:fragment="content">
 		<div class="container-fluid bg-light py-0 mb-5 hero-header"></div>
 
+		<div class="container-xxl">
+			
+		
 		<h1>판매 등록</h1>
-
 		<form th:action="@{/bookBoard/registSell}" method="post" onsubmit="return joinCheck()">
 			<table>
 				<tr>
@@ -447,7 +450,7 @@
 				</tr>
 				<tr>
 					<th>판매글 제목</th>
-					<td><input type="text" name="title" placeholder="상품명을 입력해주세요."></td>
+					<td><input type="text" name="title" id="title" placeholder="상품명을 입력해주세요."></td>
 				</tr>
 				<tr>
 					<th>책 등록</th>
@@ -481,7 +484,6 @@
 					<td>
 						<button type="button" id="myLocation">내 위치</button>
 						<button type="button" id="addressSearchBtn" class="btn btn-primary">주소 검색</button>
-						<button type="button">최근 지역</button>
 						<div>
 							<input type="text" id="address_kakao" name="address" placeholder="주소" readonly="readonly">
 						</div>
@@ -523,6 +525,7 @@
 				</tr>
 			</table>
 		</form>
+		</div>
 
 		<!-- 모달 시작 -->
 		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

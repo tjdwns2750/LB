@@ -101,6 +101,10 @@
 								<td th:text="${board.hits}"></td>
 								<th>작성일</th>
 								<td th:text="${board.created_day}"></td>
+								<th> <img id="likeBt" th:src="@{/image/unlike.png}" th:bno="${board.bno}"
+										style="width: 30px; height: 30px;">
+									<p id="cnt" th:text="${board.recommend}"></p>
+								</th>
 							</tr>
 							<tr>
 
@@ -124,11 +128,6 @@
 								<td colspan="5">
 									<pre th:utext="${board.content}"></pre>
 								</td>
-
-								<th> <img id="likeBt" th:src="@{/image/unlike.png}" th:bno="${board.bno}"
-										style="width: 30px; height: 30px;">
-									<p id="cnt" th:text="${board.recommend}"></p>
-								</th>
 							</tr>
 						</table>
 					</div>
