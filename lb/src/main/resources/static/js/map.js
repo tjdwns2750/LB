@@ -149,16 +149,16 @@ function addMarkerToMap(latlng, board) {
 
 
 	var infoWindow = new naver.maps.InfoWindow({
-		content: '<div class="info-window" style="padding: 10px; min-width: 200px; line-height: 150%; background-color: #fff; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">' +
+		content: '<div class="info-window" style="padding: 10px; width: 300px; line-height: 150%; background-color: #fff; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">' +
 			'<div style="text-align: center;">' +
 			'<img id="bookBoardImg" src="' + board.thumbnail + '" style="display: block; margin: 0 auto; margin-top: 10px; max-width: 100%;">' +
-			'<a id="boardtitle" style="font-size: 20px; margin-bottom: 10px; color: #3498db; text-decoration: none; display: block;" href="./bookBoard/read?boardnum=' + board.bbno + '">' + '제목 :' + board.title + '</a>' +
-			'<h3 id="boardcontent">' + '내용 : ' + board.content + '</h3>' +
-			'<p id="boardprice">' + '가격 : ' + board.price + '원' + '</p>' +
+			'<a id="boardtitle" style="font-size: 20px; margin-bottom: 10px; color: #3498db; text-decoration: none; display: block;" href="./bookBoard/read?boardnum=' + board.bbno + '">' + board.title + '</a>' +
+			'<h3 id="boardcontent">'  + board.content + '</h3>' +
+			'<p id="boardprice">'  + board.price + '원' + '</p>' +
 			'<form action="./chat/chatRoom" method="post">' +
 			'<input type="hidden" name="bbno" value=' + board.bbno + '>' +
 			'<input type="hidden" name="boardId" value=' + board.id.toString() + '>' +
-			'<input class="btn btn-secondary" type="submit" value="채팅하기"></input>' +
+			'<input class="btn btn-warning" type="submit" value="채팅하기"></input>' +
 			'</form>' +
 			'</div>',
 		anchorSkew: true
