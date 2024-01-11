@@ -14,19 +14,42 @@
 	<script>
 		$(document).ready(function () {
 
-			$('select[name="state"]').change(function () {
-				// 선택된 옵션의 값을 가져옵니다.
-				var selectedValue = $(this).val();
-				// 해당 셀렉트 박스의 데이터 속성에서 boardnum 값을 가져옵니다.
-				var boardnum = $(this).find(':selected').data('boardnum');
-				// 선택된 값에 따라 적절한 AJAX 함수 호출
-				if (selectedValue === 'sale') {
-					ajaxSaleFunction(boardnum);
-				} else if (selectedValue === 'sold') {
-					ajaxSoldFunction(boardnum);
-				} else if (selectedValue === 'delete') {
-					ajaxDeleteFunction(boardnum);
-				}
+			/**
+						$('select[name="state"]').change(function () {
+							// 선택된 옵션의 값을 가져옵니다.
+							var selectedValue = $(this).val();
+							// 해당 셀렉트 박스의 데이터 속성에서 boardnum 값을 가져옵니다.
+							var boardnum = $(this).find(':selected').data('boardnum');
+							// 선택된 값에 따라 적절한 AJAX 함수 호출
+							if (selectedValue === 'sale') {
+								ajaxSaleFunction(boardnum);
+							} else if (selectedValue === 'sold') {
+								ajaxSoldFunction(boardnum);
+							} else if (selectedValue === 'delete') {
+								ajaxDeleteFunction(boardnum);
+							}
+						});
+			
+			*/
+
+			// 페이지 로딩 시, localStorage에서 선택된 값을 가져와 설정합니다.
+			// 각 셀렉트 박스에 대해 이벤트 핸들러를 바인딩합니다.
+			$('select[name="state"]').each(function () {
+				$(this).change(function () {
+					// 선택된 옵션의 값을 가져옵니다.
+					var selectedValue = $(this).val();
+					// 해당 셀렉트 박스의 데이터 속성에서 boardnum 값을 가져옵니다.
+					var boardnum = $(this).find(':selected').data('boardnum');
+
+					// 선택된 값에 따라 적절한 AJAX 함수 호출
+					if (selectedValue === 'sale') {
+						ajaxSaleFunction(boardnum);
+					} else if (selectedValue === 'sold') {
+						ajaxSoldFunction(boardnum);
+					} else if (selectedValue === 'delete') {
+						ajaxDeleteFunction(boardnum);
+					}
+				});
 			});
 
 
@@ -91,7 +114,6 @@
 	<style>
 		/* 기본 스타일 */
 		body {
-			font-family: 'Arial', sans-serif;
 			margin: 0;
 			padding: 0;
 			background-color: #f4f4f4;
@@ -112,17 +134,21 @@
 
 		a {
 			text-decoration: none;
-			color: #007bff;
+			text-decoration-line: none;
 		}
 
 		a:hover {
-			text-decoration: underline;
+			text-decoration: none;
+			color: #007bff;
+			text-decoration-line: none;
+			cursor: pointer;
 		}
 
 		/* 테이블 스타일 */
 		table {
 			width: 100%;
 			border-collapse: collapse;
+			text-align: center;
 			margin-top: 20px;
 		}
 
@@ -161,6 +187,22 @@
 			color: #ffc107;
 			border: 1px solid #ffc107;
 		}
+
+		#thumbnail {
+			width: 100px;
+		}
+
+		.page-container {
+			text-align: right;
+			max-width: 200px;
+			/* 예시 너비, 필요에 따라 조절 */
+			margin: 0 auto;
+			/* 가운데 정렬을 위한 여백 설정 */
+			padding: 0 20px;
+			/* 양쪽 여백 설정 */
+			box-sizing: border-box;
+			/* 패딩과 테두리를 포함한 전체 너비로 계산 */
+		}
 	</style>
 
 
@@ -176,11 +218,14 @@
 		<div class="container-xxl">
 			<div class="row">
 				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
-					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5">내 상품</h1>
+					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5"
+						th:text="${member.id} + '님의 상점'"></h1>
 				</div>
-
-				<h1 th:text="${member.id} + '님의 상점'"></h1>
-				<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
+				<div class="page-container">
+					<a th:href="@{./sellBoard}" class="btn btn-warning rounded-pill py-2 px-4" data-wow-delay="0.5s"
+						style="margin-left: 1%; background-color: rgba(255, 165, 0, 0.5);">판매
+						등록하기</a>
+				</div>
 				<table>
 					<tr>
 						<th>사진</th>
@@ -191,7 +236,7 @@
 					</tr>
 					<tr th:each="board : ${boardList}">
 						<td>
-							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
+							<img id="thumbnail" class="img-fluid" th:src="${board.thumbnail}" alt="">
 						</td>
 						<td>
 							<select name="state" class="btn btn-dark rounded-pill py-2 px-4 me-2">
@@ -206,7 +251,8 @@
 							</select>
 						</td>
 						<td>
-							<a th:text="${board.bookTitle}" th:href="@{/bookBoard/read(boardnum=${board.bbno})}"></a>
+							<a th:text="${board.bookTitle}" th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
+								style="text-decoration: none; font-size: 30px; color: black;"></a>
 						</td>
 						<td th:text="${board.price}+'원'"></td>
 						<td th:text="${board.created_day}"></td>

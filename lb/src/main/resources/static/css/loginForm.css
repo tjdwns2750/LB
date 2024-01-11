@@ -130,8 +130,15 @@ form {
 		text-align: center;
       cursor: pointer;
         border-radius: 5em;
+        /*
         color: #fff;
+		*/
+        color: rgb(0, 0, 0);
+        background-color: rgba(255, 165, 0, 0.5);
+        font-weight: bold;
+        /*
         background: linear-gradient(to right, #FFA508, #FFD100);
+        */
         border: 0;
         padding-left: 40px;
         padding-right: 40px;
