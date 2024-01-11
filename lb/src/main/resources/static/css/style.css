@@ -8,6 +8,10 @@
 	--beige: #f5f5dc;
 }
 
+body {
+	font-family: 'Orbit', Orbit;
+}
+
 .package-item {
 	display: none;
 }
