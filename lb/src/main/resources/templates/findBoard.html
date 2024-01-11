@@ -4,31 +4,7 @@
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
 	<th:block th:fragment="content">
 
-		<input sec:authorize="isAuthenticated()" id="getImage" type="hidden" th:value="${member.originalfile}">
-
-		<style>
-			@media (min-width: 576px) {
-				.hero-header {
-					height: 60vh;
-					/* 80% of the viewport height */
-					position: relative;
-				}
-
-				.hero-header::before {
-					content: "";
-					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					bottom: 0;
-					background-image: url(./img/search.jpg);
-					background-size: cover;
-					z-index: -1; /* 배경 이미지가 내부 요소들 뒤에 오도록 설정 */
-				}
-			}
-
-		</style>
-
+		<!--책 검색 부분-->
 		<div class="py-5 mb-5 hero-header"
 			style="background-image: url(./img/search.jpg); background-size: cover;">
 			<div class="container py-5">
@@ -47,8 +23,8 @@
 				</div>
 			</div>
 		</div>
+		<!--책 검색 부분-->
 		
-
 		<!-- About Start -->
 		<div class="container-xxl py-5">
 			<div class="container">
@@ -65,9 +41,7 @@
 
 		<script th:inline="javascript">
 			var boardList = /*[[${boardListJson}]]*/ '[]';
-			// boardList를 JavaScript에서 사용할 수 있도록 파싱
 			boardList = JSON.parse(boardList);
-			console.log('Board List from server:', boardList);
 		</script>
 
 	</th:block>
