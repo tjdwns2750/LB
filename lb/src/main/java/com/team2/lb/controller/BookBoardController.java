@@ -51,7 +51,7 @@ public class BookBoardController {
 
 	@GetMapping("sellBoard")
 	public String sellBoard() {
-		return "bookBoard/sellBoard2";
+		return "bookBoard/sellBoard";
 	}
 
 	@ResponseBody

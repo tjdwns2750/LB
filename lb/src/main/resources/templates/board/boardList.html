@@ -12,8 +12,8 @@
 			<script>
 				$(document).ready(function () {
 					$('.card').click(function () {
-						var bno = $(this).atrr(bno);
-						location.href = "./read?=bno" + bno;
+						var bno = $(this).attr('bno');
+						location.href = "./read?bno=" + bno;
 					});
 				});
 			</script>
@@ -36,18 +36,14 @@
 
 		<div class="container">
 			<div class="row g-4">
-				<div id="cardFirst" class="col-lg-3 col-sm-3 wow fadeInUp" data-wow-delay="0.1s"
-					th:each="board : ${boardList}" bno="${board.bno}">
+				<div class="col-lg-3 col-sm-3 wow fadeInUp" data-wow-delay="0.1s" th:each="board : ${boardList}"
+					bno="${board.bno}">
 					<!-- 첫 번째 서비스 카드 -->
-					<div class="service-item rounded pt-3">
+					<div class="card service-item rounded pt-3" th:bno="${board.bno}">
 						<div class="p-4">
 							<h4 th:text="${board.title}"></h4>
 							<p th:text="${board.id}"></p>
 							<div class="card-title" th:text="${board.title}"></div>
-							<div class="btn-group">
-								<a th:href="@{/board/read(bno=${board.bno})}"
-									class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
-							</div>
 						</div>
 					</div>
 					<!-- ... -->
