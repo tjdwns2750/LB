@@ -125,7 +125,7 @@
 						<h5 class="mb-0" th:text="${board.title}"></h5>
 						<p th:text="${board.bookTitle}"></p>
 						<p th:text="${board.price}"></p>
-						<p th:text="${board.content}"></p>
+						<p th:utext="${board.content}"></p>
 						<div class="btn-group">
 							<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
 								class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
