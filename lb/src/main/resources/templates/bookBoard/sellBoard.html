@@ -275,7 +275,7 @@
 								'<td>' + title + '</td>' +
 								'<td>' + authors + '</td>' +
 								'<td>' + publisher + '</td>' +
-								'<td><input type="button" value="책 정보" onclick="openUrlInNewTab(\'' + url + '\')"></td></label>' +
+								'<td><input type="button" class="btn btn-warning" value="책 정보" onclick="openUrlInNewTab(\'' + url + '\')"></td></label>' +
 								'</tr>');
 						}
 
@@ -300,38 +300,36 @@
 			window.open(url, '_blank');
 		}
 		function joinCheck() {
-		   let title = document.querySelector('#title');
-		   let selectedIsbn = document.querySelector('#selectedIsbn');
-		   let address_kakao = document.querySelector('#address_kakao');
-		   let price = document.querySelector('#price');
-		   let content = document.querySelector('#content');
-  
-		   if (title.value.length < 2 || title.value.length > 40) {
-			  alert("상품명을 입력하세요");
-			  return false;
-		   }
-		   if (selectedIsbn.value == '') {
-			  alert('책을 등록하세요');
-			  return false;
-		   }
-		   if (address_kakao.value == '') {
-			  alert('주소을 입력하세요');
-			  return false;
-		   }
-		   if (price.value == '') {
-			  alert('가격을 입력하세요');
-			  return false;
-		   }
-		   if (content.value == '') {
-			  alert('상품 설명을 입력하세요');
-			  return false;
-		   }
-		   return true;
+			let title = document.querySelector('#title');
+			let selectedIsbn = document.querySelector('#selectedIsbn');
+			let address_kakao = document.querySelector('#address_kakao');
+			let price = document.querySelector('#price');
+			let content = document.querySelector('#content');
+
+			if (title.value.length < 2 || title.value.length > 40) {
+				alert("상품명을 입력하세요");
+				return false;
+			}
+			if (selectedIsbn.value == '') {
+				alert('책을 등록하세요');
+				return false;
+			}
+			if (address_kakao.value == '') {
+				alert('주소을 입력하세요');
+				return false;
+			}
+			if (price.value == '') {
+				alert('가격을 입력하세요');
+				return false;
+			}
+			if (content.value == '') {
+				alert('상품 설명을 입력하세요');
+				return false;
+			}
+			return true;
 		}
 	</script>
 	<style>
-		
-		
 		body {
 			font-family: 'Arial', sans-serif;
 			background-color: #f4f4f4;
@@ -346,6 +344,7 @@
 		/* 테이블 스타일링 */
 		table {
 			width: 100%;
+			margin-top: 30px;
 			margin-bottom: 20px;
 			background-color: #ffffff;
 			border-radius: 8px;
@@ -423,11 +422,17 @@
 		.btn-primary:hover {
 			background-color: #0056b3;
 		}
-		
-		.container-xxl{
-			width: 50%;
+
+		.page-container {
+			max-width: 1000px;
+			/* 예시 너비, 필요에 따라 조절 */
+			margin: 0 auto;
+			/* 가운데 정렬을 위한 여백 설정 */
+			padding: 0 20px;
+			/* 양쪽 여백 설정 */
+			box-sizing: border-box;
+			/* 패딩과 테두리를 포함한 전체 너비로 계산 */
 		}
-		
 	</style>
 </head>
 
@@ -438,93 +443,89 @@
 	<th:block th:fragment="content">
 		<div class="container-fluid bg-light py-0 mb-5 hero-header"></div>
 
-		<div class="container-xxl">
-			
-		
-		<h1>판매 등록</h1>
-		<form th:action="@{/bookBoard/registSell}" method="post" onsubmit="return joinCheck()">
-			<table>
-				<tr>
-					<th>상품 이미지</th>
-					<td><img src="">이미지 자리</td>
-				</tr>
-				<tr>
-					<th>판매글 제목</th>
-					<td><input type="text" name="title" id="title" placeholder="상품명을 입력해주세요."></td>
-				</tr>
-				<tr>
-					<th>책 등록</th>
-					<td>
-						<input type="text" id="bookName" placeholder="책 제목이나 ISBN을 입력해주세요.">
-						<button type="button" id="searchBook" class="btn btn-primary" data-bs-toggle="modal"
-							data-bs-target="searchBookAndOpenModal()">
-							책 검색
-						</button>
+		<div class="page-container">
 
-					</td>
-				</tr>
-				<tr>
-					<th>선택된 책</th>
-					<td>
-						<div id="selectedBookThumbnail">
-							<img src="">
-						</div>
-						<p id="selectedBook" name="selectedBook"></p>
+			<h1>판매 등록</h1>
+			<form th:action="@{/bookBoard/registSell}" method="post" onsubmit="return joinCheck()">
+				<table>
+					<tr>
+						<th>판매글 제목</th>
+						<td><input type="text" name="title" id="title" placeholder="상품명을 입력해주세요."></td>
+					</tr>
+					<tr>
+						<th>책 등록</th>
+						<td>
+							<input type="text" id="bookName" placeholder="책 제목이나 ISBN을 입력해주세요.">
+							<button type="button" id="searchBook"  class="btn btn-warning"  data-bs-toggle="modal"
+								data-bs-target="searchBookAndOpenModal()">
+								책 검색
+							</button>
 
-						<input type="hidden" id="selectedIsbn" name="isbn">
-						<input type="hidden" id="selectedThumbnail" name="thumbnail">
-						<input type="hidden" id="selectedTitle" name="bookTitle">
-						<input type="hidden" id="selectedAuthor" name="author">
-						<input type="hidden" id="selectedPublisher" name="publisher">
+						</td>
+					</tr>
+					<tr>
+						<th>선택된 책</th>
+						<td>
+							<div id="selectedBookThumbnail">
+								<img src="">
+							</div>
+							<p id="selectedBook" name="selectedBook"></p>
 
-					</td>
-				</tr>
-				<tr>
-					<th>거래지역</th>
-					<td>
-						<button type="button" id="myLocation">내 위치</button>
-						<button type="button" id="addressSearchBtn" class="btn btn-primary">주소 검색</button>
-						<div>
-							<input type="text" id="address_kakao" name="address" placeholder="주소" readonly="readonly">
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<th>교환</th>
-					<td id="ch">
-						<label>
-							<input type="radio" name="s" value="change" checked>불가
-						</label>
-						<label>
-							<input type="radio" name="s" value="change">가능
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th>가격</th>
-					<td>
-						<input type="text" name="price" id="price" placeholder="가격을 입력해주세요.">
-					</td>
-				</tr>
-				<tr>
-					<th>설명</th>
-					<td>
-						<input type="textarea" name="content" id="content" placeholder="상품설명을 입력해주세요.">
-					</td>
-				</tr>
-				<tr>
-					<th>수량</th>
-					<td>
-						<input type="number" name="amount" id="amount" value="1">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<input type="submit" value="등록">
-					</td>
-				</tr>
-			</table>
-		</form>
+							<input type="hidden" id="selectedIsbn" name="isbn">
+							<input type="hidden" id="selectedThumbnail" name="thumbnail">
+							<input type="hidden" id="selectedTitle" name="bookTitle">
+							<input type="hidden" id="selectedAuthor" name="author">
+							<input type="hidden" id="selectedPublisher" name="publisher">
+
+						</td>
+					</tr>
+					<tr>
+						<th>거래지역</th>
+						<td>
+							<button type="button" id="myLocation"  class="btn btn-warning" >내 위치</button>
+							<button type="button" id="addressSearchBtn"  class="btn btn-warning" >주소 검색</button>
+							<div>
+								<input type="text" id="address_kakao" name="address" placeholder="주소"
+									readonly="readonly">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>교환</th>
+						<td id="ch">
+							<label>
+								<input type="radio" name="s" value="change" checked>불가
+							</label>
+							<label>
+								<input type="radio" name="s" value="change">가능
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th>가격</th>
+						<td>
+							<input type="text" name="price" id="price" placeholder="가격을 입력해주세요.">
+						</td>
+					</tr>
+					<tr>
+						<th>설명</th>
+						<td>
+							<input type="textarea" name="content" id="content" placeholder="상품설명을 입력해주세요.">
+						</td>
+					</tr>
+					<tr>
+						<th>수량</th>
+						<td>
+							<input type="number" name="amount" id="amount" value="1">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="submit" class="btn btn-warning" value="등록">
+						</td>
+					</tr>
+				</table>
+			</form>
 		</div>
 
 		<!-- 모달 시작 -->
@@ -555,7 +556,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="button" id="choice" class="btn btn-primary">선택하기</button>
+						<button type="button" id="choice" class="btn btn-warning">선택하기</button>
 					</div>
 				</div>
 			</div>
