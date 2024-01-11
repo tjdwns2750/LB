@@ -1,0 +1,13 @@
+@charset "EUC-KR";
+
+@media (min-width: 576px) {
+	.hero-header {
+		height: 100vh;
+		/* 100% of the viewport height */
+	}
+
+	.container-xxl py-5 {
+		height: 100vh;
+		/* 100% of the viewport height */
+	}
+}

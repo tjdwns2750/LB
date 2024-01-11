@@ -32,12 +32,11 @@ public class ChatHandler extends TextWebSocketHandler{
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 
         list.add(session);
-
         log.info(session + " 클라이언트 접속");
     }
 
-    /* Client가 접속 해제 시 호출되는 메서드드 */
-
+    
+    // Client가 접속 해제 시 호출되는 메서드 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 

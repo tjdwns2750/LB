@@ -1,8 +1,8 @@
 @charset "UTF-8";
 
 body {
-    max-height: 1800px;
-    overflow-y: auto;
+	max-height: 1800px;
+	overflow-y: auto;
 }
 
 .chat-room {
@@ -59,6 +59,37 @@ body {
 	margin-top: 7px;
 	font-size: 13px;
 	border-radius: 10px;
+}
+
+.chat-room {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+.chat-room img.thumbnail {
+	width: 50px;
+	height: 50px;
+	object-fit: cover;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.chat-room .chat-info {
+	width: 100%;
+}
+
+.chat-room h6 {
+	margin: 0;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.chat-room p {
+	margin: 0;
+	font-size: 14px;
+	color: #555;
 }
 
 .wrap .chat .textbox::before {
