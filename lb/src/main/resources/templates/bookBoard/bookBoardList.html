@@ -4,6 +4,8 @@
 -->
 
 <head>
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	<style>
 		.sell-link {
 			display: block;
@@ -136,23 +138,88 @@
 		.grayscale {
 			filter: grayscale(100%);
 		}
+
+		#paging a {
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			line-height: 40px;
+			text-align: center;
+			margin: 0 5px;
+			border-radius: 50%;
+			/* 동그란 모양 */
+			background-color: #f8f8f8;
+			transition: background-color 0.3s ease;
+			color: #333;
+			text-decoration-line: none;
+		}
+
+		#paging a:hover {
+			background-color: #e0e0e0;
+		}
+
+		#paging a.active {
+			background-color: #3498db;
+			/* 활성화된 페이지의 배경색 변경 */
+			color: #ffffff;
+			/* 텍스트 색상 변경 */
+			font-weight: bold;
+			/* 글꼴 굵게 설정 */
+		}
+
+		#paging a:not(.active):not(:hover) {
+			font-size: 20px;
+			color: rgb(240, 223, 15);
+			/* 노란색 */
+		}
+
+		.btn.btn-warning.rounded-pill.py-2.px-4 {
+			padding-top: 8px;
+			/* 기본값은 16px, 길이를 8px로 줄입니다. */
+			padding-bottom: 8px;
+			font-size: 14px;
+			/* 버튼의 글자 크기를 조절하여 버튼의 전체적인 높이를 줄입니다. */
+		}
+
+		.page-container {
+			text-align: right;
+			max-width: 200px;
+			/* 예시 너비, 필요에 따라 조절 */
+			margin: 0 auto;
+			/* 가운데 정렬을 위한 여백 설정 */
+			padding: 0 20px;
+			/* 양쪽 여백 설정 */
+			box-sizing: border-box;
+			/* 패딩과 테두리를 포함한 전체 너비로 계산 */
+		}
 	</style>
+	<script th:inline="javascript">
 
+		$(document).ready(function () {
+			$('.package-item').click(function () {
+				var bno = $(this).attr('bbno');
+				location.href = "./read?boardnum=" + bno;
+			});
 
-	<script>
-		function deleteFunc(bbno) {
-			if (confirm('삭제하시겠습니까?')) {
-				location.href = 'delete?boardnum=' + bbno;
-			}
-
-		}
-
-		function pagingFormSubmit(currentPage) {
-			var form = document.getElementById('pagingForm');
-			let page = document.querySelector('#page');
-			page.value = currentPage;
-			form.submit();
-		}
+			$('.item').click(function () {
+				var boardnum = $(this).attr('data-boardnum');
+				alert(boardnum);
+				// Ajax 요청 보내기
+				$.ajax({
+					url: '/your-ajax-endpoint', // 실제로 사용하려는 서버 엔드포인트로 변경하세요.
+					type: 'post',
+					data: {boardId: boardId},
+					success: function (response) {
+						// Ajax 성공 시 수행할 동작
+						console.log('Ajax 성공:', response);
+					},
+					error: function () {
+						// Ajax 실패 시 수행할 동작
+						console.log('Ajax 실패');
+					}
+				});
+			});
+		});
 	</script>
 
 </head>
@@ -170,9 +237,13 @@
 				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
 					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5">판매</h1>
 				</div>
-				<a th:href="@{./sellBoard}" class="sell-link wow fadeInUp" data-wow-delay="0.5s">판매 등록하기</a>
+				<div class="page-container">
+					<a th:href="@{./sellBoard}" class="btn btn-warning rounded-pill py-2 px-4" data-wow-delay="0.5s"
+						style="margin-left: 1%; background-color: rgba(255, 165, 0, 0.5);">판매
+						등록하기</a>
+				</div>
 				<div class="position-relative w-75 mx-auto animated slideInDown"
-					style="padding: 5%; display: flex; align-items: center; justify-content: space-between;">
+					style="padding-left: 20%; padding-bottom: 5%; display: flex; align-items: center; justify-content: space-between;">
 					<form id="pagingForm" th:action="@{/bookBoard/bookBoardList}" method="get"
 						style="width: 70%; display: flex;">
 						<input type="hidden" name="page" id="page">
@@ -184,49 +255,46 @@
 						</select>
 						<input type="text" name="searchWord" th:value="${searchWord}"
 							class="form-control border-0 rounded-pill py-3 ps-4 pe-5" style="background-color: #e0e0e0;"
-							placeholder="책, 본문, 작성자를 입력해주세요">
+							placeholder="검색어를 입력해주세요.">
 						<input type="button" class="btn btn-dark rounded-pill py-2 px-4" onclick="pagingFormSubmit(1)"
 							value="검색">
 					</form>
 				</div>
-				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s" >
-					<div class="package-item">
+				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
+					<div class="package-item" style="height: 480px;" th:bbno="${board.bbno}">
 						<div
 							class="position-relative overflow-hidden d-flex justify-content-center align-items-center mb-5">
 							<!--
 							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
 							-->
 							<!-- 판매완료 이미지 -->
+							<!--
+							<div class="item" th:data-boardnum="${board.bbno}">
+							-->
 							<div th:if="${board.enabled} eq 'N'">
 								<h2 class="sale-overlay" th:text="판매완료"></h2>
 								<!-- 흑백 처리된 이미지 -->
-								<img class="img-fluid grayscale" th:src="${board.thumbnail}" alt="">
+								<img class="img-fluid grayscale " th:src="${board.thumbnail}" style="padding-top: 30px;"
+									alt="">
 							</div>
 							<div th:if="${board.enabled} eq 'Y'">
-								<img class="img-fluid" th:src="${board.thumbnail}" alt="">
+								<img class="img-fluid" th:src="${board.thumbnail}" style="padding-top: 30px;" alt="">
 							</div>
 						</div>
 						<div class="text-center">
-							<h2 class="mb-0" th:text="${board.bookTitle}"></h2>
-							<h3 class="mb-0" th:text="${board.price}"></h3>
-							<h6 th:text="${board.id}"></h6>
-							<p th:text="${board.content}"></p>
-							<div class="btn-group">
-								<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
-									class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
+							<p style="font-size: 30px;" class="mb-0" th:text="${board.bookTitle}"></p>
+							<p style="font-size: 20px; margin-top: 20px;" th:text="${board.content}"></p>
+							<p style="font-size: 30px;" class="mb-0" th:text="${board.price}">
+								</h3>
 
-								<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom"
-									method="post">
-									<input type="hidden" name="bbno" th:value="${board.bbno}">
-									<input type="hidden" name="boardId" th:value="${board.id}">
-									<input type="submit" class="btn btn-outline-warning btn-sm mx-1" value="채팅하기">
-								</form>
-							</div>
 						</div>
+
+
 					</div>
 				</div>
-				<!-- Add more items as needed -->
 			</div>
+			<!-- Add more items as needed -->
+		</div>
 		</div>
 
 
