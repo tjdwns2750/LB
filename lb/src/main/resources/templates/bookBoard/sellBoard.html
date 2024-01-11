@@ -310,7 +310,6 @@
          let selectedIsbn = document.querySelector('#selectedIsbn');
          let address_kakao = document.querySelector('#address_kakao');
          let price = document.querySelector('#price');
-         let content = document.querySelector('#content');
 
          if (title.value.length < 2 || title.value.length > 40) {
             alert("상품명을 입력하세요");
@@ -326,10 +325,6 @@
          }
          if (price.value == '') {
             alert('가격을 입력하세요');
-            return false;
-         }
-         if (content.value == '') {
-            alert('상품 설명을 입력하세요');
             return false;
          }
          return true;
@@ -525,8 +520,7 @@
                   <tr>
                      <th>설명</th>
                      <td>
-                        <input class="summernote" type="textarea" name="content" id="content"
-                           placeholder="상품설명을 입력해주세요.">
+               <textarea class="summernote" name="content" id="summernote" placeholder="상품설명을 입력해주세요."></textarea>
                      </td>
                   </tr>
                   <tr>

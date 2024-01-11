@@ -73,11 +73,6 @@ public class MemberController {
 	public String join(Member member, MultipartFile upload) {
 		log.debug("join_param: {}", member);
 
-		if (!upload.isEmpty()) {
-			String savedfile = FileService.saveFile(upload, uploadPath);
-			member.setOriginalfile(upload.getOriginalFilename());
-			member.setSavedfile(savedfile);
-		}
 		service.joinMember(member);
 		return "redirect:/";
 	}
