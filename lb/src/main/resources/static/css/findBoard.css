@@ -1,0 +1,22 @@
+@charset "EUC-KR";
+
+@media (min-width: 576px) {
+	.hero-header {
+		height: 60vh;
+		/* 80% of the viewport height */
+		position: relative;
+	}
+
+	.hero-header::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-image: url(./img/search.jpg);
+		background-size: cover;
+		z-index: -1;
+		/* 배경 이미지가 내부 요소들 뒤에 오도록 설정 */
+	}
+}

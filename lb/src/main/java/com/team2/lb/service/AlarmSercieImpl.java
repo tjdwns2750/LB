@@ -4,14 +4,10 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.team2.lb.dao.AlarmDAO;
 import com.team2.lb.vo.Alarm;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class AlarmSercieImpl implements AlarmService {
 	
 	@Autowired

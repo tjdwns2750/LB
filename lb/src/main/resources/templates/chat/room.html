@@ -1,64 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <script th:src="@{/js/jquery-3.6.0.js}"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.js"></script>
-
-<style>
-	.chat-room {
-		display: flex;
-		align-items: center;
-		padding: 10px;
-		border-bottom: 1px solid #ddd;
-	}
-
-	.chat-room img.thumbnail {
-		width: 50px;
-		height: 50px;
-		object-fit: cover;
-		border-radius: 50%;
-		margin-right: 10px;
-	}
-
-	.chat-room .chat-info {
-		width: 100%;
-	}
-
-	.chat-room h6 {
-		margin: 0;
-		font-size: 16px;
-		font-weight: bold;
-	}
-
-	.chat-room p {
-		margin: 0;
-		font-size: 14px;
-		color: #555;
-	}
-</style>
-
-
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
 
-	<link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
-	<div th:fragment="content">
-		<link th:href="@{/css/chat.css}" rel="stylesheet">
+	<th:block th:fragment="content">
 
+		<link th:href="@{/css/chat.css}" rel="stylesheet">
+		<link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
 
 		<div class="container-fluid bg-light py-3 mb-5 hero-header"></div>
-
 		<div class="container-xxl" style="padding-left: 10%; padding-right: 10%;">
 
 			<div class="d-flex" id="wrapper">
-
 				<!-- Sidebar -->
 				<div class="bg-light border-right" id="sidebar-wrapper" style="width: 30%;">
 					<div class="sidebar-heading" style="text-align: center;">채팅목록</div>
 					<div class="list-group list-group-flush" id="list"></div>
 				</div>
 				<!-- /#sidebar-wrapper -->
-
 				<div class="container-fluid" style="width: 70%;">
 					<div class="container">
 						<div id="beforeArea" class="col" th:each="chatMessage : ${chatMessage}"
@@ -84,19 +44,18 @@
 			</div>
 		</div>
 
-
-
 		<script th:inline="javascript">
+
 			var sockJs = new SockJS("/lb/stomp/chat");
 			var stomp = Stomp.over(sockJs);
 
 			$(document).ready(function () {
+
 				var chatMessage = /*[[${chatMessage}]]*/[];
 				var bbno = /*[[${room?.bbno}]]*/ '';
 				var roomId = /*[[${room?.roomId}]]*/ '';
 				var name = /*[[${member?.name}]]*/ '';
 				var username = /*[[${#authentication.principal.username}]]*/ '';
-
 
 				stomp.connect({}, function () {
 					console.log("STOMP Connection");
@@ -123,23 +82,16 @@
 						} else {
 							$('#alarmArea').show();
 						}
-						console.log("number : ", num);
 						$('#alarmNum').text(num);
 					});
 
-
-
 					stomp.subscribe("/sub/chat/room/" + roomId, function (chat, chatmessage) {
 						var content = JSON.parse(chat.body);
-						console.log("이름", name);
-						console.log(content);
-						console.log(content.writer)
 
 						var writer = content.writer;
 						var realwriter = name;
 						var message = content.message;
 
-						// Move this line inside the subscribe callback to get the current time when a new message arrives
 						var today = new Date();
 
 						var formattedTime = ('0' + today.getHours()).slice(-2) + ':' + ('0' + today.getMinutes()).slice(-2);
@@ -165,9 +117,8 @@
 				});
 
 				$("#button-send").off("click").on("click", function (e) {
-					var msg = document.getElementById("msg");
 
-					console.log(username + ":" + msg.value);
+					var msg = document.getElementById("msg");
 					stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username}));
 					msg.value = '';
 				});
@@ -175,8 +126,6 @@
 				$('#msg').on('keydown', function (event) {
 					if (event.key === 'Enter') {
 						var msg = document.getElementById("msg");
-
-						console.log(username + ":" + msg.value);
 						stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg.value, writer: username}));
 						msg.value = '';
 					}
@@ -189,11 +138,10 @@
 					var date = new Date(created_day);
 					var formattedTime = date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 					var bubbleClass = (writer === username) ? 'ch2' : 'ch1';
-
 					var messageContainer = $("#messageContainer");
 					var iconClass = (bubbleClass === 'ch1') ? 'fas fa-user' : 'fas fa-user'; // Change this to the appropriate icon class.
-
 					var str = "<div class='chat " + bubbleClass + "'>";
+
 					str += "<h6>" + writer + "</h6>"
 					str += "<div class='icon'><i class='fa-solid " + iconClass + "'></i></div>";
 					str += "<div class='textbox'>";
@@ -204,34 +152,17 @@
 
 					messageContainer.append(str);
 				}
-
-
-
 			});
-		</script>
-
-		<!-- ... 이후 코드 ... -->
-
-		<script th:inline="javascript">
 
 			var roomList = /*[[${roomList}]]*/[];
-
-			console.log("roomList :", roomList);
-
 			var username = /*[[${#authentication.principal.username}]]*/ '';
 
 			var str = '';
 
-
 			if (roomList) {
 				roomList.forEach(function (room) {
 					str += '<div class="chat-room d-flex align-items-center" id="chatroomList">';
-					/*
-					str += '<form action="../chat/BoardchatRoom" method="post" class="chat-info">';
-					str += '<input type="hidden" name="bbno" value=' + room.bbno + '>';
-					str += '<input type="hidden" name="roomId" value=' + room.roomId + '>';
-					*/
-					// roomList에서 가져온 사용자 아이디를 기반으로 버튼 텍스트 생성
+
 					if (room.id == username) {
 						var buttonText = room.board_id;
 					} else {
@@ -250,15 +181,6 @@
 					str += '</form>';
 					str += '</div>';
 					str += '</div>';
-					/*
-					str += '<input type="submit" class="list-group-item list-group-item-action bg-light" value="' + buttonText + '">';
-					*/
-					/*
-					str += '</input>';
-					*/
-					/*
-					str += '</form>';
-					*/
 					str += '</div>';
 				});
 			}
@@ -269,9 +191,7 @@
 			});
 			$("#list").append(str);
 		</script>
-
-
-</th:block>
+	</th:block>
 </th:block>
 
 </html>

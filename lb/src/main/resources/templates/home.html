@@ -5,19 +5,7 @@
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
 	<th:block th:fragment="content">
 
-		<style>
-			@media (min-width: 576px) {
-				.hero-header {
-					height: 100vh;
-					/* 100% of the viewport height */
-				}
-
-				.container-xxl py-5 {
-					height: 100vh;
-					/* 100% of the viewport height */
-				}
-			}
-		</style>
+		<link th:href="@{/css/home.css}" rel="stylesheet">
 
 		<div class="py-5 mb-5 hero-header" style="background-image: url(./img/homeImg2.jpg); background-size: cover; display: flex; align-items: center; justify-content: center; text-align: center;
             background-color: rgba(255, 255, 255, 0.3);">
@@ -34,24 +22,13 @@
 							책과 책을 연결하다</h1>
 						<h4 id="hiddenText" class="display-3 mb-3"
 							style="color: rgb(255, 255, 255); font-weight: bold; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); display: none;">
-
 							당신의 책을 만나보세요!</h4>
 						<p class="fs-4 text-white mb-4 animated slideInDown"></p>
 						<div class="position-relative w-75 mx-auto animated slideInDown">
-							<!--
-                    <input id="address" class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5"
-                        type="text" placeholder="Eg: Thailand">
-                    -->
-							<!--
-                    <button id="submit" type="button"
-                        class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2"
-                        style="margin-top: 7px;">Search</button>
-                    -->
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 		<!-- Service Start -->
 		<div class="container-xxl py-5"
@@ -104,7 +81,6 @@
 								<p>도서 거래 하는 사람을 위한 채팅 시스템 제공</p>
 							</div>
 						</div>
-						<!-- ... -->
 					</div>
 				</div>
 			</div>
@@ -129,8 +105,6 @@
 						<div class="btn-group">
 							<a th:href="@{/bookBoard/read(boardnum=${board.bbno})}"
 								class="btn btn-outline-danger btn-sm mx-1">내용 더 보기</a>
-							<a th:if="${#authentication.name != board.id}" th:href="@{/payment/toss}"
-								class="btn btn-outline-dark btn-sm mx-1">구매하기</a>
 							<form th:if="${#authentication.name != board.id}" action="../chat/chatRoom" method="post">
 								<input type="hidden" name="bbno" th:value="${board.bbno}">
 								<input type="hidden" name="boardId" th:value="${board.id}">
@@ -155,9 +129,8 @@
 						<h5 class="mb-0" th:text="${board.id}"></h5>
 						<p th:text="${board.title}"></p>
 						<pre th:utext="${board.content}"></pre>
-						<a th:href="@{/board/read(bno=${board.bno})}" class="btn btn-outline-danger btn-sm mx-1">내용
-							더
-							보기</a>
+						<a th:href="@{/board/read(bno=${board.bno})}"
+							class="btn btn-outline-danger btn-sm mx-1">내용더보기</a>
 					</div>
 				</div>
 			</div>
