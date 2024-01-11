@@ -26,15 +26,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HomeController {
 
+	// memberService에 의존성 주입
 	@Autowired
 	MemberService service;
 
+	// bookboardService에 의존성 주입
 	@Autowired
 	BookBoardService bookboardservice;
 
+	// chatService에 의존성 주입
 	@Autowired
 	ChatService chatservice;
 	
+	// boardService에 의존성 주입
 	@Autowired
 	BoardService boardservice;
 
@@ -42,43 +46,54 @@ public class HomeController {
 	// 메인 페이지
 	@GetMapping("/")
 	public String home(Model model, @AuthenticationPrincipal UserDetails user, ChatRoom chatRoom) {
+		
+		// 로그인 했을 때
 		if (user != null) {
-			log.info(user.getUsername());
+			
+			// member 값을 member에 저장
+			// member 값을 받을 것을 model에 전달
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
 		}
+		
 		ArrayList<BookBoard> bookList = bookboardservice.bestBoardList();
 		ArrayList<Board> board = boardservice.bestBoardList();
 		model.addAttribute("reviewList", board);
 		model.addAttribute("bookList", bookList);
 		return "home";
-
 	}
 
+	// 내 주변 페이지
 	@GetMapping("findBoard")
 	public String hometest(Model model, @AuthenticationPrincipal UserDetails user) {
+		
+		// 사용자가 로그인 했을 때
 		if (user != null) {
-			log.info(user.getUsername());
+			
+			// member 값을 member에 저장
+			// member 값을 받을 것을 model에 전달
 			Member member = service.selectUser(user.getUsername());
 			model.addAttribute("member", member);
-			log.error("member : {}", member.getAddress());
 		}
+		
 		// 계시판 전체 조회
 		ArrayList<BookBoard> boardList = bookboardservice.showBoardAll();
-		log.info("boardlist {}", boardList);
 
 		// 지도에 계시판을 출력하기 위해 json형식으로 파싱
 		ObjectMapper objectMapper = new ObjectMapper();
 		String boardListJson = "[]"; // 기본값으로 빈 배열을 설정
-
+			
+		// 예외 처리
 		try {
+			// 자바스크립트 형태를 전달
 			boardListJson = objectMapper.writeValueAsString(boardList);
 		} catch (JsonProcessingException e) {
 			log.error("Error converting boardList to JSON", e);
 		}
-
+		
+		// boardListJson 형태를 findBoard html에 전달
+		// findBoard에 boardList를 전달
 		model.addAttribute("boardListJson", boardListJson);
-		log.info("boardListJSON {}", boardListJson);
 		model.addAttribute("boardlist", boardList);
 		return "findBoard";
 	}
