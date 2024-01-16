@@ -29,9 +29,23 @@ public class MailService {
 			message.setRecipients(MimeMessage.RecipientType.TO, mail);
 			message.setSubject("이메일 인증");
 			String body = "";
-			body += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
-			body += "<h1>" + number + "</h1>";
-			body += "<h3>" + "감사합니다." + "</h3>";
+			body += "<div style=\"border: 3px solid black; padding: 50px; width: 600px;\">";
+			body += "<div style=\"text-align: center; font-weight: bold;\">";
+			body += "<div style=\"margin-bottom: 20px;\">";
+			body += "<img src=\"https://cdn2.iconfinder.com/data/icons/marketing-and-seo-48/512/02_E-mail_Marketing-256.png\" style=\"width:100px;\">";
+			body += "</div>";
+			body += "<div style=\"font-size: 30px;\">";
+			body += "<span>환영합니다! </span><span style=\"color:red;\">인증번호</span><span>를 입력해 주세요.</span>";
+			body += "</div></br>";
+			body += "<div style=\"font-size:20px;\">";
+			body += "<p>이메일 인증을 위한 메일이 발송되었습니다.</p>";
+			body += "<p>회원가입 완료를 위한 이메일 인증을 진행해주세요.</p></br>";
+			body += "</div>";
+			body += "<div style=\"font-size:25px;\">";
+			body += "<span>인증번호 : </span>" + number;
+			body += "</div>";
+			body += "</div></div>";
+			
 			message.setText(body, "UTF-8", "html");
 		} catch (MessagingException e) {
 			e.printStackTrace();

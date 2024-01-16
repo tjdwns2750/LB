@@ -36,17 +36,6 @@ public class MemberController {
 		return "member/joinForm";
 	}
 
-	@ResponseBody
-	@PostMapping("mail")
-	public String MailSend(String mail) {
-		log.debug("mail:{}", mail);
-
-		int number = mailService.sendMail(mail);
-
-		String num = "" + number;
-
-		return num;
-	}
 
 	@GetMapping("idCheck")
 	public String idCheckForm() {
@@ -73,11 +62,6 @@ public class MemberController {
 	public String join(Member member, MultipartFile upload) {
 		log.debug("join_param: {}", member);
 
-		if (!upload.isEmpty()) {
-			String savedfile = FileService.saveFile(upload, uploadPath);
-			member.setOriginalfile(upload.getOriginalFilename());
-			member.setSavedfile(savedfile);
-		}
 		service.joinMember(member);
 		return "redirect:/";
 	}
@@ -85,6 +69,7 @@ public class MemberController {
 	@GetMapping("loginForm")
 	public String loginForm() {
 		return "member/loginForm";
+//		return "member/login";
 	}
 
 	@GetMapping("update")

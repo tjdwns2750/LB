@@ -2,567 +2,629 @@
 <html xmlns:th="thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 부트스트랩 CSS 파일 포함 -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<title>판매등록</title>
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script th:src="@{/js/jquery-3.6.0.js}"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.js"
-		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-	<script>
-		$(document).ready(function () {
-
-
-			$('#myLocation').on('click', myLocationFunction);
-
-			/**
-			if(event.key === 'Enter') {
-			   event.preventDefault();
-			}
-			*/
-			$('#bookName').on('keydown', function (event) {
-				if (event.key === 'Enter') {
-					event.preventDefault();  // 엔터키 누를시 submit 되는것을 방지
-					searchBookAndOpenModal(); // 엔터 키가 눌리면 검색 및 모달 열기 함수 호출
-				}
-			});
-
-			// 책 검색 버튼을 눌렀을때 searchBookAndOpenModal() 실행됨
-			$('#searchBook').on('click', searchBookAndOpenModal);
-
-			// 모달이 열릴 때 이벤트 핸들러 등록
-			$('#exampleModal').on('show.bs.modal', function () {
-				searchBook(); // 모달이 열리면서 searchBook() 함수 실행
-			});
-
-			$('#choice').on('click', function () {
-				let selectedBookInfo = $('input[name="selectBook"]:checked').closest('tr').find('td:not(:first-child)');
-				let selectedBookText = "";
-				selectedBookInfo.each(function () {
-					selectedBookText += $(this).text() + " ";
-					console.log(selectedBookText);
-				});
-				// 썸네일과 제목 추출
-				let selectedBookThumbnail = selectedBookInfo.eq(1).find('img').attr('src'); // 썸네일이 두 번째 열에 있다고 가정
-				let selectedBookTitle = selectedBookInfo.eq(2).text(); // 제목이 네 번째 열에 있다고 가정
-
-				// hidden으로 전송할 나머지 정보들 
-				let selectedIsbn = selectedBookInfo.eq(0).text(); // ISBN이 첫 번째 열에 있다고 가정
-				let selectedAuthor = selectedBookInfo.eq(4).text(); // 저자가 다섯 번째 열에 있다고 가정
-				let selectedPublisher = selectedBookInfo.eq(5).text(); // 출판사가 여섯 번째 열에 있다고 가정
-
-				// 썸네일과 제목 표시
-				$('#selectedBookThumbnail img').attr('src', selectedBookThumbnail);
-				$('#selectedBook').html(selectedBookTitle);
-
-				// hidden으로 전송할 나머지 정보 값 설정
-				$('#selectedIsbn').val(selectedIsbn);
-				$('#selectedThumbnail').val(selectedBookThumbnail);
-				$('#selectedTitle').val(selectedBookTitle);
-				$('#selectedAuthor').val(selectedAuthor);
-				$('#selectedPublisher').val(selectedPublisher);
-
-				// 모달 닫기
-				$('#exampleModal').modal('hide');
-			});
-
-			// 주소 검색 기능
-			$('#addressSearchBtn').on('click', function () {
-				// Open Daum Postcode API when the button is clicked
-				new daum.Postcode({
-					oncomplete: function (data) {
-						document.getElementById("address_kakao").value = data.address;
-						document.querySelector('#choice').focus();
-					}
-				}).open();
-			});
-		});
-
-		function myLocationFunction() {
-			console.log('myLocatio 시작')
-			naver.maps.onJSContentLoaded = initGeocoder;
-			initGeocoder();
-		}
-
-		function hasData(data) {
-			return data !== undefined && data !== null && data !== '';
-		}
-
-		function makeAddress(item) {
-			if (!item) {
-				return;
-			}
-
-			var name = item.name,
-				region = item.region,
-				land = item.land,
-				isRoadAddress = name === 'roadaddr';
-
-			var sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
-
-			if (hasData(region?.area1?.name)) {
-				sido = region.area1.name;
-			}
-
-			if (hasData(region?.area2?.name)) {
-				sigugun = region.area2.name;
-			}
-
-			if (hasData(region?.area3?.name)) {
-				dongmyun = region.area3.name;
-			}
-
-			if (hasData(region?.area4?.name)) {
-				ri = region.area4.name;
-			}
-
-			// 세부 주소 정보 추가
-			if (land) {
-				if (hasData(land?.area1?.name)) {
-					sido = land.area1.name;
-				}
-
-				if (hasData(land?.area2?.name)) {
-					sigugun = land.area2.name;
-				}
-
-				if (hasData(land?.area3?.name)) {
-					dongmyun = land.area3.name;
-				}
-
-				if (hasData(land?.area4?.name)) {
-					ri = land.area4.name;
-				}
-
-				if (hasData(land?.number1)) {
-					if (hasData(land?.type) && land.type === '2') {
-						rest += '산';
-					}
-
-					rest += land.number1;
-
-					if (hasData(land?.number2)) {
-						rest += ('-' + land.number2);
-					}
-				}
-
-				if (isRoadAddress === true) {
-					if (checkLastString(dongmyun, '면')) {
-						ri = land.name;
-					} else {
-						dongmyun = land.name;
-						ri = '';
-					}
-
-					if (hasData(land?.addition0?.value)) {
-						rest += ' ' + land.addition0.value;
-					}
-				}
-			}
-
-			return [sido, sigugun, dongmyun, ri, rest].join(' ');
-		}
-
-		function checkLastString(word, lastString) {
-			return word.endsWith(lastString);
-		}
-
-
-		function initGeocoder() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(
-					function (position) {
-						var latitude = position.coords.latitude;
-						var longitude = position.coords.longitude;
-
-						naver.maps.Service.reverseGeocode({
-							coords: new naver.maps.LatLng(latitude, longitude),
-							orders: [
-								naver.maps.Service.OrderType.ROAD_ADDR,
-								naver.maps.Service.OrderType.ADDR
-							].join(',')
-						}, function (status, response) {
-							if (status === naver.maps.Service.Status.ERROR) {
-								return alert('오류가 발생했습니다!');
-							}
-
-							var items = response.v2.results,
-								address = '',
-								htmlAddresses = [];
-
-							for (var i = 0, ii = items.length, item, addrType; i < ii; i++) {
-								item = items[i];
-								address = makeAddress(item) || '';
-								addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
-
-								htmlAddresses.push(address);
-							}
-
-							// 여기서 주소 정보를 사용하거나 표시할 수 있습니다.
-							console.log(htmlAddresses[0])
-							$("#address_kakao").val(htmlAddresses[0]);
-						});
-					},
-					function (error) {
-						console.error('Error getting geolocation:', error);
-					}
-				);
-			} else {
-				alert('Geolocation is not supported by this browser.');
-			}
-		}
-
-
-		function onSuccessGeolocation(position) {
-			var location = new naver.maps.LatLng(position.coords.latitude,
-				position.coords.longitude);
-			console.log(location);
-			console.log(geolocation.getCurrentPosition());
-
-			console.log('Coordinates: ' + location.toString());
-		}
-
-		function onErrorGeolocation() {
-			var center = map.getCenter();
-
-			infowindow.setContent('<div style="padding:20px;">' +
-				'<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>' + "latitude: " + center.lat() + "<br />longitude: " + center.lng() + '</div>');
-
-			infowindow.open(map, center);
-		}
-
-
-		// 검색 기능과 모달 열기를 동시에 실행하기 위한 함수
-		function searchBookAndOpenModal() {
-			searchBook(); // 검색 함수 실행
-			openModal(); // 모달 열기
-		}
-
-		function searchBook() {
-			let bookName = $('#bookName').val();
-
-			$.ajax({
-				method: "GET",
-				url: "https://dapi.kakao.com/v3/search/book?target=title",
-				data: {query: bookName},
-				headers: {Authorization: "KakaoAK 0e4539a7d8a447b33267208c32b4b39f"}
-			})
-				.done(function (msg) { // 검색 결과를 msg로 받아옴
-					let tableBody = $('#bookTable tbody'); // 테이블의 tbody를 가져옴
-
-					tableBody.empty(); // 테이블의 tbody를 비움
-
-					if (msg.documents.length > 0) {
-						for (let i = 0; i < msg.documents.length; i++) {
-
-							let isbn = msg.documents[i].isbn.split(' ').pop();
-							// isbn이 10자리, 13자리 짜리가 공백을 사이에 두고 동시에 나오므로
-							// 뒷 부분인 13자리만 출력함
-							let thumbnail = msg.documents[i].thumbnail;
-							let title = msg.documents[i].title;
-							let authors = msg.documents[i].authors;
-							let publisher = msg.documents[i].publisher;
-							let url = msg.documents[i].url;
-
-							// 새로운 행을 생성하여 테이블에 추가
-							tableBody.append('<tr class="bookRow">' +
-								'<td><label><input type="radio" class="bookInfo" name="selectBook" id="bookInfo' + i + '"></label></td>' +
-								'<td>' + isbn + '</td>' +
-								'<td><img src="' + thumbnail + '" alt="Thumbnail"></td>' +
-								'<td>' + title + '</td>' +
-								'<td>' + authors + '</td>' +
-								'<td>' + publisher + '</td>' +
-								'<td><input type="button" class="btn btn-warning" value="책 정보" onclick="openUrlInNewTab(\'' + url + '\')"></td></label>' +
-								'</tr>');
-						}
-
-						// 행 아무곳을 눌러도 그 행이 체크됨
-						$('.bookRow').click(function () {
-							$(this).find('.bookInfo').prop('checked', true);
-						});
-
-					} else {
-						// 검색된 책이 없는 경우에 대한 처리
-						tableBody.append('<tr><td colspan="3">검색된 책이 없습니다.</td></tr>');
-					}
-				});
-		};
-
-		// 모달을 열기 위한 함수
-		function openModal() {
-			$('#exampleModal').modal('show');
-		}
-		// 책 정보 보러가기 버튼 눌렀을때 실행하는 함수
-		function openUrlInNewTab(url) {
-			window.open(url, '_blank');
-		}
-		function joinCheck() {
-			let title = document.querySelector('#title');
-			let selectedIsbn = document.querySelector('#selectedIsbn');
-			let address_kakao = document.querySelector('#address_kakao');
-			let price = document.querySelector('#price');
-			let content = document.querySelector('#content');
-
-			if (title.value.length < 2 || title.value.length > 40) {
-				alert("상품명을 입력하세요");
-				return false;
-			}
-			if (selectedIsbn.value == '') {
-				alert('책을 등록하세요');
-				return false;
-			}
-			if (address_kakao.value == '') {
-				alert('주소을 입력하세요');
-				return false;
-			}
-			if (price.value == '') {
-				alert('가격을 입력하세요');
-				return false;
-			}
-			if (content.value == '') {
-				alert('상품 설명을 입력하세요');
-				return false;
-			}
-			return true;
-		}
-	</script>
-	<style>
-		body {
-			font-family: 'Arial', sans-serif;
-			background-color: #f4f4f4;
-			padding: 50px;
-		}
-
-		h1 {
-			text-align: center;
-			margin-bottom: 40px;
-		}
-
-		/* 테이블 스타일링 */
-		table {
-			width: 100%;
-			margin-top: 30px;
-			margin-bottom: 20px;
-			background-color: #ffffff;
-			border-radius: 8px;
-			overflow: hidden;
-			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-			padding-left: 200px;
-			padding-right: 200px;
-		}
-
-		table th,
-		table td {
-			padding: 15px;
-			border-bottom: 1px solid #e0e0e0;
-		}
-
-		table th {
-			background-color: #f8f8f8;
-		}
-
-		table tbody tr:hover {
-			background-color: #f9f9f9;
-		}
-
-		/* 입력 요소 스타일링 */
-		input[type="text"],
-		input[type="number"],
-		input[type="textarea"] {
-			width: 100%;
-			padding: 10px;
-			border-radius: 4px;
-			border: 1px solid #ddd;
-			box-sizing: border-box;
-			transition: border-color 0.3s ease;
-		}
-
-		input[type="text"]:focus,
-		input[type="number"]:focus,
-		input[type="textarea"]:focus {
-			outline: none;
-			border-color: #007bff;
-		}
-
-		/* 모달 스타일링 */
-		.modal-content {
-			border-radius: 8px;
-			box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-		}
-
-		.modal-header {
-			background-color: #007bff;
-			color: #ffffff;
-			border-bottom: none;
-		}
-
-		.modal-footer {
-			border-top: none;
-		}
-
-		.modal-footer button {
-			padding: 10px 20px;
-			border-radius: 4px;
-		}
-
-		.modal-footer .btn-primary {
-			background-color: #007bff;
-			border: none;
-		}
-
-		/* 기타 스타일링 */
-		.btn {
-			cursor: pointer;
-			transition: background-color 0.3s ease;
-		}
-
-		.btn-primary:hover {
-			background-color: #0056b3;
-		}
-
-		.page-container {
-			max-width: 1000px;
-			/* 예시 너비, 필요에 따라 조절 */
-			margin: 0 auto;
-			/* 가운데 정렬을 위한 여백 설정 */
-			padding: 0 20px;
-			/* 양쪽 여백 설정 */
-			box-sizing: border-box;
-			/* 패딩과 테두리를 포함한 전체 너비로 계산 */
-		}
-	</style>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- 부트스트랩 CSS 파일 포함 -->
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" th:href="@{/css/board.css}">
+
+   <title>판매등록</title>
+   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+   <script th:src="@{/js/jquery-3.6.0.js}"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   <!-- 서머노트를 위해 추가해야할 부분 -->
+   <script th:src="@{/summernote/summernote-lite.js}"></script>
+   <script th:src="@{/summernote/summernote-ko-KR.js}"></script>
+   <link rel="stylesheet" th:href="@{/summernote/summernote-lite.css}">
+   <script>
+      $(document).ready(function () {
+
+
+         $('#myLocation').on('click', myLocationFunction);
+
+         /**
+         if(event.key === 'Enter') {
+            event.preventDefault();
+         }
+         */
+         $('#bookName').on('keydown', function (event) {
+            if (event.key === 'Enter') {
+               event.preventDefault();  // 엔터키 누를시 submit 되는것을 방지
+               searchBookAndOpenModal(); // 엔터 키가 눌리면 검색 및 모달 열기 함수 호출
+            }
+         });
+
+         // 책 검색 버튼을 눌렀을때 searchBookAndOpenModal() 실행됨
+         $('#searchBook').on('click', searchBookAndOpenModal);
+
+         // 모달이 열릴 때 이벤트 핸들러 등록
+         $('#exampleModal').on('show.bs.modal', function () {
+            searchBook(); // 모달이 열리면서 searchBook() 함수 실행
+         });
+
+         $('#choice').on('click', function () {
+            let selectedBookInfo = $('input[name="selectBook"]:checked').closest('tr').find('td:not(:first-child)');
+            let selectedBookText = "";
+            selectedBookInfo.each(function () {
+               selectedBookText += $(this).text() + " ";
+               console.log(selectedBookText);
+            });
+            // 썸네일과 제목 추출
+            let selectedBookThumbnail = selectedBookInfo.eq(1).find('img').attr('src'); // 썸네일이 두 번째 열에 있다고 가정
+            let selectedBookTitle = selectedBookInfo.eq(2).text(); // 제목이 네 번째 열에 있다고 가정
+
+            // hidden으로 전송할 나머지 정보들 
+            let selectedIsbn = selectedBookInfo.eq(0).text(); // ISBN이 첫 번째 열에 있다고 가정
+            let selectedAuthor = selectedBookInfo.eq(4).text(); // 저자가 다섯 번째 열에 있다고 가정
+            let selectedPublisher = selectedBookInfo.eq(5).text(); // 출판사가 여섯 번째 열에 있다고 가정
+
+            // 썸네일과 제목 표시
+            $('#selectedBookThumbnail img').attr('src', selectedBookThumbnail);
+            $('#selectedBook').html(selectedBookTitle);
+
+            // hidden으로 전송할 나머지 정보 값 설정
+            $('#selectedIsbn').val(selectedIsbn);
+            $('#selectedThumbnail').val(selectedBookThumbnail);
+            $('#selectedTitle').val(selectedBookTitle);
+            $('#selectedAuthor').val(selectedAuthor);
+            $('#selectedPublisher').val(selectedPublisher);
+
+            // 모달 닫기
+            $('#exampleModal').modal('hide');
+         });
+
+         // 주소 검색 기능
+         $('#addressSearchBtn').on('click', function () {
+            // Open Daum Postcode API when the button is clicked
+            new daum.Postcode({
+               oncomplete: function (data) {
+                  document.getElementById("address_kakao").value = data.address;
+                  document.querySelector('#choice').focus();
+               }
+            }).open();
+         });
+      });
+
+      function myLocationFunction() {
+         console.log('myLocatio 시작')
+         naver.maps.onJSContentLoaded = initGeocoder;
+         initGeocoder();
+      }
+
+      function hasData(data) {
+         return data !== undefined && data !== null && data !== '';
+      }
+
+      function makeAddress(item) {
+         if (!item) {
+            return;
+         }
+
+         var name = item.name,
+            region = item.region,
+            land = item.land,
+            isRoadAddress = name === 'roadaddr';
+
+         var sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
+
+         if (hasData(region?.area1?.name)) {
+            sido = region.area1.name;
+         }
+
+         if (hasData(region?.area2?.name)) {
+            sigugun = region.area2.name;
+         }
+
+         if (hasData(region?.area3?.name)) {
+            dongmyun = region.area3.name;
+         }
+
+         if (hasData(region?.area4?.name)) {
+            ri = region.area4.name;
+         }
+
+         // 세부 주소 정보 추가
+         if (land) {
+            if (hasData(land?.area1?.name)) {
+               sido = land.area1.name;
+            }
+
+            if (hasData(land?.area2?.name)) {
+               sigugun = land.area2.name;
+            }
+
+            if (hasData(land?.area3?.name)) {
+               dongmyun = land.area3.name;
+            }
+
+            if (hasData(land?.area4?.name)) {
+               ri = land.area4.name;
+            }
+
+            if (hasData(land?.number1)) {
+               if (hasData(land?.type) && land.type === '2') {
+                  rest += '산';
+               }
+
+               rest += land.number1;
+
+               if (hasData(land?.number2)) {
+                  rest += ('-' + land.number2);
+               }
+            }
+
+            if (isRoadAddress === true) {
+               if (checkLastString(dongmyun, '면')) {
+                  ri = land.name;
+               } else {
+                  dongmyun = land.name;
+                  ri = '';
+               }
+
+               if (hasData(land?.addition0?.value)) {
+                  rest += ' ' + land.addition0.value;
+               }
+            }
+         }
+
+         return [sido, sigugun, dongmyun, ri, rest].join(' ');
+      }
+
+      function checkLastString(word, lastString) {
+         return word.endsWith(lastString);
+      }
+
+
+      function initGeocoder() {
+         if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+               function (position) {
+                  var latitude = position.coords.latitude;
+                  var longitude = position.coords.longitude;
+
+                  naver.maps.Service.reverseGeocode({
+                     coords: new naver.maps.LatLng(latitude, longitude),
+                     orders: [
+                        naver.maps.Service.OrderType.ROAD_ADDR,
+                        naver.maps.Service.OrderType.ADDR
+                     ].join(',')
+                  }, function (status, response) {
+                     if (status === naver.maps.Service.Status.ERROR) {
+                        return alert('오류가 발생했습니다!');
+                     }
+
+                     var items = response.v2.results,
+                        address = '',
+                        htmlAddresses = [];
+
+                     for (var i = 0, ii = items.length, item, addrType; i < ii; i++) {
+                        item = items[i];
+                        address = makeAddress(item) || '';
+                        addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
+
+                        htmlAddresses.push(address);
+                     }
+
+                     // 여기서 주소 정보를 사용하거나 표시할 수 있습니다.
+                     console.log(htmlAddresses[0])
+                     $("#address_kakao").val(htmlAddresses[0]);
+                  });
+               },
+               function (error) {
+                  console.error('Error getting geolocation:', error);
+               }
+            );
+         } else {
+            alert('Geolocation is not supported by this browser.');
+         }
+      }
+
+
+      function onSuccessGeolocation(position) {
+         var location = new naver.maps.LatLng(position.coords.latitude,
+            position.coords.longitude);
+         console.log(location);
+         console.log(geolocation.getCurrentPosition());
+
+         console.log('Coordinates: ' + location.toString());
+      }
+
+      function onErrorGeolocation() {
+         var center = map.getCenter();
+
+         infowindow.setContent('<div style="padding:20px;">' +
+            '<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>' + "latitude: " + center.lat() + "<br />longitude: " + center.lng() + '</div>');
+
+         infowindow.open(map, center);
+      }
+
+
+      // 검색 기능과 모달 열기를 동시에 실행하기 위한 함수
+      function searchBookAndOpenModal() {
+         searchBook(); // 검색 함수 실행
+         openModal(); // 모달 열기
+      }
+
+      function searchBook() {
+         let bookName = $('#bookName').val();
+
+         $.ajax({
+            method: "GET",
+            url: "https://dapi.kakao.com/v3/search/book?target=title",
+            data: {query: bookName},
+            headers: {Authorization: "KakaoAK 0e4539a7d8a447b33267208c32b4b39f"}
+         })
+            .done(function (msg) { // 검색 결과를 msg로 받아옴
+               let tableBody = $('#bookTable tbody'); // 테이블의 tbody를 가져옴
+
+               tableBody.empty(); // 테이블의 tbody를 비움
+
+               if (msg.documents.length > 0) {
+                  for (let i = 0; i < msg.documents.length; i++) {
+
+                     let isbn = msg.documents[i].isbn.split(' ').pop();
+                     // isbn이 10자리, 13자리 짜리가 공백을 사이에 두고 동시에 나오므로
+                     // 뒷 부분인 13자리만 출력함
+                     let thumbnail = msg.documents[i].thumbnail;
+                     let title = msg.documents[i].title;
+                     let authors = msg.documents[i].authors;
+                     let publisher = msg.documents[i].publisher;
+                     let url = msg.documents[i].url;
+
+                     // 새로운 행을 생성하여 테이블에 추가
+                     tableBody.append('<tr class="bookRow">' +
+                        '<td><label><input type="radio" class="bookInfo" name="selectBook" id="bookInfo' + i + '"></label></td>' +
+                        '<td>' + isbn + '</td>' +
+                        '<td><img src="' + thumbnail + '" alt="Thumbnail"></td>' +
+                        '<td>' + title + '</td>' +
+                        '<td>' + authors + '</td>' +
+                        '<td>' + publisher + '</td>' +
+                        '<td><input type="button" class="btn btn-warning" value="책 정보" onclick="openUrlInNewTab(\'' + url + '\')"></td></label>' +
+                        '</tr>');
+                  }
+
+                  // 행 아무곳을 눌러도 그 행이 체크됨
+                  $('.bookRow').click(function () {
+                     $(this).find('.bookInfo').prop('checked', true);
+                  });
+
+               } else {
+                  // 검색된 책이 없는 경우에 대한 처리
+                  tableBody.append('<tr><td colspan="3">검색된 책이 없습니다.</td></tr>');
+               }
+            });
+      };
+
+      // 모달을 열기 위한 함수
+      function openModal() {
+         $('#exampleModal').modal('show');
+      }
+      // 책 정보 보러가기 버튼 눌렀을때 실행하는 함수
+      function openUrlInNewTab(url) {
+         window.open(url, '_blank');
+      }
+      function joinCheck() {
+         let title = document.querySelector('#title');
+         let selectedIsbn = document.querySelector('#selectedIsbn');
+         let address_kakao = document.querySelector('#address_kakao');
+         let price = document.querySelector('#price');
+
+         if (title.value.length < 2 || title.value.length > 40) {
+            alert("상품명을 입력하세요");
+            return false;
+         }
+         if (selectedIsbn.value == '') {
+            alert('책을 등록하세요');
+            return false;
+         }
+         if (address_kakao.value == '') {
+            alert('주소을 입력하세요');
+            return false;
+         }
+         if (price.value == '') {
+            alert('가격을 입력하세요');
+            return false;
+         }
+         return true;
+      }
+   </script>
+   <style>
+      body {
+         font-family: 'Arial', sans-serif;
+         background-color: #f4f4f4;
+         padding: 50px;
+      }
+
+      h1 {
+         text-align: center;
+         margin-bottom: 40px;
+      }
+
+      /* 테이블 스타일링 */
+      table {
+         width: 100%;
+         margin-bottom: 20px;
+         background-color: #ffffff;
+         border-radius: 8px;
+         overflow: hidden;
+         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+         padding-left: 200px;
+         padding-right: 200px;
+      }
+
+      table th,
+      table td {
+         padding: 15px;
+         border-bottom: 1px solid #e0e0e0;
+      }
+
+      table th {
+         width: 200px;
+         text-align: center;
+         background-color: #f8f8f8;
+      }
+
+      table tbody tr:hover {
+         background-color: #f9f9f9;
+      }
+
+      /* 입력 요소 스타일링 */
+      input[type="text"],
+      input[type="number"],
+      input[type="textarea"] {
+         width: 100%;
+         padding: 10px;
+         border-radius: 4px;
+         border: 1px solid #ddd;
+         box-sizing: border-box;
+         transition: border-color 0.3s ease;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="textarea"]:focus {
+         outline: none;
+         border-color: #007bff;
+      }
+
+      /* 모달 스타일링 */
+      .modal-content {
+         border-radius: 8px;
+         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-header {
+         background-color: #007bff;
+         color: #ffffff;
+         border-bottom: none;
+      }
+
+      .modal-footer {
+         border-top: none;
+      }
+
+      .modal-footer button {
+         padding: 10px 20px;
+         border-radius: 4px;
+      }
+
+      .modal-footer .btn-primary {
+         background-color: #007bff;
+         border: none;
+      }
+
+      /* 기타 스타일링 */
+      .btn {
+         cursor: pointer;
+         transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+         background-color: #0056b3;
+      }
+
+      .container-xxl {
+         width: 50%;
+      }
+
+      .page-container {
+         
+         max-width: 1000px;
+         /* 예시 너비, 필요에 따라 조절 */
+         margin: 0 auto;
+         /* 가운데 정렬을 위한 여백 설정 */
+         padding: 0 20px;
+         /* 양쪽 여백 설정 */
+         box-sizing: border-box;
+         /* 패딩과 테두리를 포함한 전체 너비로 계산 */
+      }
+      
+   
+   </style>
 </head>
 
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:replace="~{/layout/main :: setContent(~{this :: content})}">
-	<th:block th:fragment="content">
-		<div class="container-fluid bg-light py-0 mb-5 hero-header"></div>
+   <th:block th:fragment="content">
+      <div class="container-fluid bg-light py-0 mb-5 hero-header"></div>
 
-		<div class="page-container">
+      <div class="container-xxl">
 
-			<h1>판매 등록</h1>
-			<form th:action="@{/bookBoard/registSell}" method="post" onsubmit="return joinCheck()">
-				<table>
-					<tr>
-						<th>판매글 제목</th>
-						<td><input type="text" name="title" id="title" placeholder="상품명을 입력해주세요."></td>
-					</tr>
-					<tr>
-						<th>책 등록</th>
-						<td>
-							<input type="text" id="bookName" placeholder="책 제목이나 ISBN을 입력해주세요.">
-							<button type="button" id="searchBook"  class="btn btn-warning"  data-bs-toggle="modal"
-								data-bs-target="searchBookAndOpenModal()">
-								책 검색
-							</button>
+            <h1>판매 등록</h1>
+         <div class="page-container">
+            <form th:action="@{/bookBoard/registSell}" method="post" onsubmit="return joinCheck()">
+               <table style="margin-top: 30px;">
+                  <tr>
+                     <th>제목</th>
+                     <td><input type="text" name="title" id="title" placeholder="상품명을 입력해주세요."></td>
+                  </tr>
+                  <tr>
+                     <th>책 등록</th>
+                     <td>
+                        <input type="text" id="bookName" placeholder="책 제목이나 ISBN을 입력해주세요.">
+                        <button type="button" id="searchBook" class="btn btn-warning" style="margin-top:20px ;" data-bs-toggle="modal"
+                           data-bs-target="searchBookAndOpenModal()">
+                           책 검색
+                        </button>
 
-						</td>
-					</tr>
-					<tr>
-						<th>선택된 책</th>
-						<td>
-							<div id="selectedBookThumbnail">
-								<img src="">
-							</div>
-							<p id="selectedBook" name="selectedBook"></p>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>선택 책</th>
+                     <td>
+                        <div id="selectedBookThumbnail">
+                           <img src="">
+                        </div>
+                        <p id="selectedBook" name="selectedBook"></p>
 
-							<input type="hidden" id="selectedIsbn" name="isbn">
-							<input type="hidden" id="selectedThumbnail" name="thumbnail">
-							<input type="hidden" id="selectedTitle" name="bookTitle">
-							<input type="hidden" id="selectedAuthor" name="author">
-							<input type="hidden" id="selectedPublisher" name="publisher">
+                        <input type="hidden" id="selectedIsbn" name="isbn">
+                        <input type="hidden" id="selectedThumbnail" name="thumbnail">
+                        <input type="hidden" id="selectedTitle" name="bookTitle">
+                        <input type="hidden" id="selectedAuthor" name="author">
+                        <input type="hidden" id="selectedPublisher" name="publisher">
 
-						</td>
-					</tr>
-					<tr>
-						<th>거래지역</th>
-						<td>
-							<button type="button" id="myLocation"  class="btn btn-warning" >내 위치</button>
-							<button type="button" id="addressSearchBtn"  class="btn btn-warning" >주소 검색</button>
-							<div>
-								<input type="text" id="address_kakao" name="address" placeholder="주소"
-									readonly="readonly">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<th>교환</th>
-						<td id="ch">
-							<label>
-								<input type="radio" name="s" value="change" checked>불가
-							</label>
-							<label>
-								<input type="radio" name="s" value="change">가능
-							</label>
-						</td>
-					</tr>
-					<tr>
-						<th>가격</th>
-						<td>
-							<input type="text" name="price" id="price" placeholder="가격을 입력해주세요.">
-						</td>
-					</tr>
-					<tr>
-						<th>설명</th>
-						<td>
-							<input type="textarea" name="content" id="content" placeholder="상품설명을 입력해주세요.">
-						</td>
-					</tr>
-					<tr>
-						<th>수량</th>
-						<td>
-							<input type="number" name="amount" id="amount" value="1">
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input type="submit" class="btn btn-warning" value="등록">
-						</td>
-					</tr>
-				</table>
-			</form>
-		</div>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>거래지역</th>
+                     <td>
+                        <button type="button" class="btn btn-warning" id="myLocation" style="margin-bottom: 15px;">내 위치</button>
+                        <button type="button" id="addressSearchBtn" class="btn btn-warning" style="margin-bottom: 15px;">주소 검색</button>
+                        <div>
+                           <input type="text" id="address_kakao" name="address" placeholder="주소"
+                              readonly="readonly">
+                        </div>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>교환</th>
+                     <td id="ch">
+                        <label>
+                           <input type="radio" name="s" value="change" checked>불가
+                        </label>
+                        <label>
+                           <input type="radio" name="s" value="change">가능
+                        </label>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>가격</th>
+                     <td>
+                        <input type="text" name="price" id="price" placeholder="가격을 입력해주세요.">
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>설명</th>
+                     <td>
+               <textarea class="summernote" name="content" id="summernote" placeholder="상품설명을 입력해주세요."></textarea>
+                     </td>
+                  </tr>
+                  <tr>
+                     <th>수량</th>
+                     <td>
+                        <input type="number" name="amount" id="amount" value="1">
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2">
+                        <input type="submit" class="btn btn-warning" value="등록">
+                     </td>
+                  </tr>
+               </table>
+            </form>
+         </div>
+      </div>
 
-		<!-- 모달 시작 -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">도서 검색</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<table id="bookTable" class="table">
-							<thead>
-								<tr>
-									<th></th>
-									<th>ISBN</th>
-									<th>사진</th>
-									<th>제목</th>
-									<th>저자</th>
-									<th>출판사</th>
-									<th>책 정보</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- 여기에 검색 결과가 동적으로 추가될 것임 -->
-							</tbody>
-						</table>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="button" id="choice" class="btn btn-warning">선택하기</button>
-					</div>
-				</div>
-			</div>
-		</div>
+      <!-- 모달 시작 -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">도서 검색</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+                  <table id="bookTable" class="table">
+                     <thead>
+                        <tr>
+                           <th></th>
+                           <th>ISBN</th>
+                           <th>사진</th>
+                           <th>제목</th>
+                           <th>저자</th>
+                           <th>출판사</th>
+                           <th>책 정보</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <!-- 여기에 검색 결과가 동적으로 추가될 것임 -->
+                     </tbody>
+                  </table>
+               </div>
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                  <button type="button" id="choice" class="btn btn-warning">선택하기</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script>
+         $('.summernote').summernote({
+            // 에디터 높이
+            height: 150,
+            // 에디터 한글 설정
+            lang: "ko-KR",
+            // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
+            focus: true,
+            toolbar: [
+               // 글꼴 설정
+               ['fontname', ['fontname']],
+               // 글자 크기 설정
+               ['fontsize', ['fontsize']],
+               // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
+               ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+               // 글자색
+               ['color', ['forecolor', 'color']],
+               // 표만들기
+               ['table', ['table']],
+               // 글머리 기호, 번호매기기, 문단정렬
+               ['para', ['ul', 'ol', 'paragraph']],
+               // 줄간격
+               ['height', ['height']],
+               // 그림첨부, 링크만들기, 동영상첨부
+               ['insert', ['picture', 'link']],
+               // 코드보기, 확대해서보기, 도움말
+               ['view', ['codeview', 'fullscreen', 'help']]
+            ],
+            // 추가한 글꼴
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋음체', '바탕체'],
+            // 추가한 폰트사이즈
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72']
 
-	</th:block>
+         });
+
+         function uploadSummernoteImageFile(file, el) {
+            data = new FormData();
+            data.append("file", file);
+            $.ajax({
+               data: data,
+               type: "POST",
+               url: "uploadSummernoteImageFile",
+               contentType: false,
+               enctype: 'multipart/form-data',
+               processData: false,
+               success: function (data) {
+                  $(el).summernote('editor.insertImage', data.url);
+               }
+            });
+         }
+      </script>
+      </body>
+   </th:block>
 </th:block>
 
 

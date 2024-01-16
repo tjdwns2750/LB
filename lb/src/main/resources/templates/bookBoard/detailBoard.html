@@ -151,7 +151,7 @@
 				}
 
 				#contents {
-					
+
 					padding: 90px;
 					margin: 20px 0;
 					height: 300px;
@@ -204,89 +204,43 @@
 			</style>
 		</head>
 		<div class="page-container">
+
 			<table class="table">
 				<tr>
-					<td id="thumbnail" rowspan="6">
-
-						<div th:if="${board.enabled} eq 'N'" class="position-relative ">
+					<td rowspan="6">
+						<div th:if="${board.enabled} eq 'N'">
 							<h2 class="sale-overlay" th:text="판매완료"></h2>
 							<!-- 흑백 처리된 이미지 -->
-							<img class="img-fluid grayscale " th:src="${board.thumbnail}"
-								style="width: 200px; height: auto;">
+							<img class="img-fluid grayscale" th:src="${board.thumbnail}" alt="">
 						</div>
 						<div th:if="${board.enabled} eq 'Y'">
-							<img class="img-fluid" th:src="${board.thumbnail}" style="width: 200px; height: auto;">
+							<img class="img-fluid" th:src="${board.thumbnail}" alt="">
 						</div>
 					</td>
-					<!--
-					<td id="thumbnail" rowspan="6">
-						<img th:src="${board.thumbnail}" alt="Product Image" class="img-fluid"
-							style="width: 200px; height: auto;">
-					</td>
-					-->
-					<td id="title" th:text="${board.title}" style="font-size: 40px;"></td>
+					<td id="title" th:text="${board.title}">x` </td>
 				</tr>
 				<tr>
-					<td id="price" th:text="${board.price} + '원'" style="font-size: 30px;"></td>
+					<td id="price" th:text="${board.price} + '원'"></td>
 				</tr>
-
-		<table class="table">
-			<tr>
-				<td rowspan="6">
-					<div th:if="${board.enabled} eq 'N'">
-						<h2 class="sale-overlay" th:text="판매완료"></h2>
-						<!-- 흑백 처리된 이미지 -->
-						<img class="img-fluid grayscale" th:src="${board.thumbnail}" alt="">
-					</div>
-					<div th:if="${board.enabled} eq 'Y'">
-						<img class="img-fluid" th:src="${board.thumbnail}" alt="">
-					</div>
-				</td>
-				<td id="title" th:text="${board.title}">x`  </td>
-			</tr>
-			<tr>
-				<td id="price" th:text="${board.price} + '원'"></td>
-			</tr>
-			<td>
-				<img th:src="@{/image/grayheart.png}" style="width: 20px; height: 20px;">
-				<span class="span" id="cnt2" th:text="${board.recommend}" style="margin-right: 20px;"></span>
-
-
-				<img th:src="@{/image/grayeye.png}" style="width: 20px; height: 20px;">
-				<span class="span" th:text="${board.hits}"></span>
-
-
-				<img th:src="@{/image/grayclock.png}" style="width: 15px; height: 15px;">
-				<span class="span" th:text="${board.created_day}"></span>
-			</td>
-			</tr>
-			<td>판매자</td>
-			<td th:text="${board.id}"></td>
-			</tr>
-			<tr>
-				<td>수량</td>
-				<td th:text="${board.amount}+'권'"></td>
-			</tr>
-			<tr>
-
 				<td>
 					<img th:src="@{/image/grayheart.png}" style="width: 20px; height: 20px;">
 					<span class="span" id="cnt2" th:text="${board.recommend}" style="margin-right: 20px;"></span>
 
 
-					<img th:src="@{/image/grayeye.png}" style="width: 20px; height: 20px;">
-					<span class="span" th:text="${board.hits}" style="margin-right: 20px;"></span>
+					<img th:src="@{/image/grayeye.png}" style="width: 20px; height: 20px; ">
+					<span class="span" th:text="${board.hits}"></span>
 
 
-					<img th:src="@{/image/grayclock.png}" style="width: 15px; height: 15px;">
-					<span class="span" th:text="${board.created_day}"></span>
+					<img th:src="@{/image/grayclock.png}" style="width: 15px; height: 15px; margin-left: 20px;">
+					<span class="span" th:if="${secondsDifference != null}" th:text="${secondsDifference + str}"></span>
+					<span class="span" th:if="${minutesDifference != null}" th:text="${minutesDifference + str}"></span>
+					<span class="span" th:if="${hoursDifference != null}" th:text="${hoursDifference + str}"></span>
+					<span class="span" th:if="${daysDifference != null}" th:text="${daysDifference + str}"></span>
+
 				</td>
 				</tr>
-				<td>
-					<span style="font-size: 20px;">판매자</span>
-					<span th:text="${board.id}" style="font-size: 25px;"></span>
-				</td>
-				</tr>
+				<td>판매자</td>
+				<td th:text="${board.id}"></td>
 				<tr>
 					<td>
 						<span>수량</span>

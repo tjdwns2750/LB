@@ -1,10 +1,12 @@
 package com.team2.lb.controller;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +53,7 @@ public class BookBoardController {
 
 	@GetMapping("sellBoard")
 	public String sellBoard() {
-		return "bookBoard/sellBoard2";
+		return "bookBoard/sellBoard";
 	}
 
 	@ResponseBody
@@ -79,7 +81,11 @@ public class BookBoardController {
 	}
 
 	@GetMapping("myShop")
-	public String myShop(Model model, @AuthenticationPrincipal UserDetails user) {
+	public String myShop(Model model, 
+			//@RequestParam(name = "boardnum") int boardnum,
+			//@RequestParam(name = "selectedValue") String selectedValue, 
+			@AuthenticationPrincipal UserDetails user) {
+
 		
 		String id = user.getUsername();
 		Member member = memberService.selectUser(id);
@@ -87,6 +93,7 @@ public class BookBoardController {
 		ArrayList<BookBoard> boardList = service.myShop(id);
 		model.addAttribute("member", member);
 		model.addAttribute("boardList", boardList);
+		//model.addAttribute("selectedValue", selectedValue);
 
 		return "bookBoard/myShop";
 	}
@@ -112,34 +119,42 @@ public class BookBoardController {
 			@AuthenticationPrincipal UserDetails user, LikeBoard likes) {
 		BookBoard bookBoard = service.readBoard(boardnum);
 
-//		LocalDate now = LocalDate.now(); 
-		/**
-		 * // 연도, 월(문자열, 숫자), 일, 일(year 기준), 요일(문자열, 숫자) int year = now.getYear();
-		 * String month = now.getMonth().toString(); int monthValue =
-		 * now.getMonthValue(); int dayOfMonth = now.getDayOfMonth(); int dayOfYear =
-		 * now.getDayOfYear(); String dayOfWeek = now.getDayOfWeek().toString(); int
-		 * dayOfWeekValue = now.getDayOfWeek().getValue(); // 결과 출력
-		 * System.out.println(now); // 2021-06-17 System.out.println(year); // 2021
-		 * System.out.println(month + "(" + monthValue + ")"); // JUNE(6)
-		 * System.out.println(dayOfMonth); // 17 System.out.println(dayOfYear); // 168
-		 * System.out.println(dayOfWeek + "(" + dayOfWeekValue + ")"); // THURSDAY(4) }}
-		 * 
-		 */
-//		SimpleDateFormat formatter = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
-//		Date date = formatter.parse(bookBoard.getCreated_day());
-		LocalTime now = LocalTime.now(); // 현재시간 출력
-//	    System.out.println(now);  // 06:20:57.008731300         // 포맷 정의하기        
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분 ss초"); // 포맷 적용하기
-//	    String formatedNow = now.format(formatter);         // 포맷 적용된 현재 시간 출력        
-//	    System.out.println(formatedNow);  // 06시 20분 57초
+		LocalDateTime currentDateTime = LocalDateTime.now();
 
+		// 문자열을 LocalDateTime으로 변환
 		String dateStr = bookBoard.getCreated_day();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd- HH:mm:ss");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		LocalDateTime specificDateTime = LocalDateTime.parse(dateStr, formatter);
 
-		log.debug("현재날짜:{}", now);
-		log.debug("날짜:{}", dateStr);
-//		log.debug("변환한 날짜:{}", boardDate);
+		// 두 날짜 간의 차이 계산
+		long daysDifference = ChronoUnit.DAYS.between(specificDateTime, currentDateTime);
+		long hoursDifference = ChronoUnit.HOURS.between(specificDateTime, currentDateTime);
+		long minutesDifference = ChronoUnit.MINUTES.between(specificDateTime, currentDateTime);
+		long secondsDifference = ChronoUnit.SECONDS.between(specificDateTime, currentDateTime);
+
+		log.debug("두 날짜 간의 차이(일): {}", daysDifference);
+		log.debug("두 날짜와 시간 간의 차이(시간): {}", hoursDifference);
+		log.debug("두 날짜와 시간 간의 차이(분): {}", minutesDifference);
+		if (secondsDifference < 60) {
+			String str = "초전";
+			model.addAttribute("secondsDifference", secondsDifference);
+			model.addAttribute("str", str);
+		} else if (minutesDifference < 60) {
+			String str = "분전";
+			model.addAttribute("minutesDifference", minutesDifference);
+			model.addAttribute("str", str);
+		} else if (hoursDifference < 24) {
+			String str = "시간전";
+			model.addAttribute("hoursDifference", hoursDifference);
+			model.addAttribute("str", str);
+		} else {
+			String str = "일전";
+			model.addAttribute("daysDifference", daysDifference);
+			model.addAttribute("str", str);
+		}
+
 		model.addAttribute("board", bookBoard);
+
 		if (user != null) {
 			likes.setBno(boardnum);
 			likes.setId(user.getUsername());
