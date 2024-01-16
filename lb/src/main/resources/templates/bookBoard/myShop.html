@@ -13,7 +13,6 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function () {
-
 			/**
 						$('select[name="state"]').change(function () {
 							// 선택된 옵션의 값을 가져옵니다.
@@ -54,7 +53,7 @@
 
 
 			function ajaxSaleFunction(boardnum) {
-				console.log(boardnum);
+				 var selectedValue = $('select[name="state"]').val();
 				$.ajax({
 					url: 'sale',
 					type: 'GET',
@@ -256,6 +255,10 @@
 						</td>
 						<td th:text="${board.price}+'원'"></td>
 						<td th:text="${board.created_day}"></td>
+						<td th:if="${secondsDifference != null}" th:text="${secondsDifference + str}"></td>
+						<td th:if="${minutesDifference != null}" th:text="${minutesDifference + str}"></td>
+						<td th:if="${hoursDifference != null}" th:text="${hoursDifference + str}"></td>
+						<td th:if="${daysDifference != null}" th:text="${daysDifference + str}"></td>
 						<!--
 						<div th:if="${board.enabled} eq 'Y'">
 							<td> <a th:href="@{/bookBoard/sale(boardnum=${board.bbno})}"
