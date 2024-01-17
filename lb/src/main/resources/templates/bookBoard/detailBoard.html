@@ -227,12 +227,16 @@
 					<span class="span" id="cnt2" th:text="${board.recommend}" style="margin-right: 20px;"></span>
 
 
-					<img th:src="@{/image/grayeye.png}" style="width: 20px; height: 20px;">
+					<img th:src="@{/image/grayeye.png}" style="width: 20px; height: 20px; ">
 					<span class="span" th:text="${board.hits}"></span>
 
 
-					<img th:src="@{/image/grayclock.png}" style="width: 15px; height: 15px;">
-					<span class="span" th:text="${board.created_day}"></span>
+					<img th:src="@{/image/grayclock.png}" style="width: 15px; height: 15px; margin-left: 20px;">
+					<span class="span" th:if="${secondsDifference != null}" th:text="${secondsDifference + str}"></span>
+					<span class="span" th:if="${minutesDifference != null}" th:text="${minutesDifference + str}"></span>
+					<span class="span" th:if="${hoursDifference != null}" th:text="${hoursDifference + str}"></span>
+					<span class="span" th:if="${daysDifference != null}" th:text="${daysDifference + str}"></span>
+
 				</td>
 				</tr>
 				<td>판매자</td>
