@@ -36,17 +36,6 @@ public class MemberController {
 		return "member/joinForm";
 	}
 
-	@ResponseBody
-	@PostMapping("mail")
-	public String MailSend(String mail) {
-		log.debug("mail:{}", mail);
-
-		int number = mailService.sendMail(mail);
-
-		String num = "" + number;
-
-		return num;
-	}
 
 	@GetMapping("idCheck")
 	public String idCheckForm() {
@@ -80,6 +69,7 @@ public class MemberController {
 	@GetMapping("loginForm")
 	public String loginForm() {
 		return "member/loginForm";
+//		return "member/login";
 	}
 
 	@GetMapping("update")
