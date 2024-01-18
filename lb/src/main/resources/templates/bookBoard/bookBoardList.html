@@ -140,15 +140,21 @@
 		}
 
 		#paging a {
+			/*
 			display: inline-block;
+			*/
 			width: 40px;
 			height: 40px;
 			line-height: 40px;
 			text-align: center;
 			margin: 0 5px;
+			/*
 			border-radius: 50%;
+			*/
 			/* 동그란 모양 */
+			/*
 			background-color: #f8f8f8;
+			*/
 			transition: background-color 0.3s ease;
 			color: #333;
 			text-decoration-line: none;
@@ -159,9 +165,9 @@
 		}
 
 		#paging a.active {
-			background-color: #3498db;
+			background-color: rgb(128, 0, 64);
 			/* 활성화된 페이지의 배경색 변경 */
-			color: #ffffff;
+			color: rgb(240, 223, 15);
 			/* 텍스트 색상 변경 */
 			font-weight: bold;
 			/* 글꼴 굵게 설정 */
@@ -169,6 +175,8 @@
 
 		#paging a:not(.active):not(:hover) {
 			font-size: 20px;
+			color: rgb(128, 128, 128);
+			/*
 			color: rgb(240, 223, 15);
 			/* 노란색 */
 		}
@@ -177,7 +185,7 @@
 			padding-top: 8px;
 			/* 기본값은 16px, 길이를 8px로 줄입니다. */
 			padding-bottom: 8px;
-			font-size: 14px;
+			font-size: 18px;
 			/* 버튼의 글자 크기를 조절하여 버튼의 전체적인 높이를 줄입니다. */
 		}
 
@@ -220,6 +228,18 @@
 				});
 			});
 		});
+
+	</script>
+	<script>
+		function pagingFormSubmit(currentPage) {
+			var form = document.getElementById('pagingForm');
+			let page = document.querySelector('#page');
+			console.log(form);
+			console.log(page);
+			page.value = currentPage;
+			form.submit();
+		}
+
 	</script>
 
 </head>
@@ -234,7 +254,7 @@
 
 		<div class="container-xxl">
 			<div class="row">
-				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.1s">
+				<div class="text-center wow fadeInUp md-5" data-wow-delay="0.05s">
 					<h1 class=" section-title bg-white text-center text-dark px-3 mb-5">판매</h1>
 				</div>
 				<div class="page-container">
@@ -244,6 +264,7 @@
 				</div>
 				<div class="position-relative w-75 mx-auto animated slideInDown"
 					style="padding-left: 20%; padding-bottom: 5%; display: flex; align-items: center; justify-content: space-between;">
+
 					<form id="pagingForm" th:action="@{/bookBoard/bookBoardList}" method="get"
 						style="width: 70%; display: flex;">
 						<input type="hidden" name="page" id="page">
@@ -260,7 +281,7 @@
 							value="검색">
 					</form>
 				</div>
-				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.1s">
+				<div class="col-lg-4 col-md-6 wow fadeInUp mb-5" th:each="board : ${boardList}" data-wow-delay="0.05s">
 					<div class="package-item" style="height: 480px;" th:bbno="${board.bbno}">
 						<div
 							class="position-relative overflow-hidden d-flex justify-content-center align-items-center mb-5">
@@ -297,9 +318,6 @@
 		</div>
 		</div>
 
-
-
-
 		<section id="paging">
 			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage - navi.pagePerGroup})|">◁◁</a>
 			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage - 1})|">◀</a>
@@ -314,7 +332,10 @@
 			<a th:href="|javascript:pagingFormSubmit(${navi.currentPage + navi.pagePerGroup})|">▷▷</a>
 			<br><br>
 
+
+
 		</section>
+
 
 		<script th:src="@{/js/package.js}"></script>
 
