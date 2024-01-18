@@ -6,11 +6,11 @@
 <mapper namespace="com.team2.lb.dao.BoardDAO">
 
 	<select id="showBoardList" resultType="Board">
-		select * from board
+		select * from Review
 	</select>
 
 	<select id="countTotal" parameterType="map" resultType="int">
-		select count(*) from board
+		select count(*) from Review
 		<if test="type != null and searchWord != null">
 			<where>
 				<if test="type == 'title'">
@@ -34,7 +34,7 @@
 	</select>
 
 	<insert id="writeBoard" parameterType="Board">
-		insert into board
+		insert into Review
 		(
 		bno
 		, id
@@ -50,7 +50,7 @@
 	</insert>
 
 	<select id="selectList" parameterType="map" resultType="Board">
-		select * from board
+		select * from Review
 		<if test="type != null and searchWord != null">
 			<where>
 				<if test="type == 'title'">
@@ -76,12 +76,12 @@
 
 	<select id="readBoard" parameterType="int" resultType="Board">
 		select *
-		from board where bno=#{bno}
+		from Review where bno=#{bno}
 	</select>
 
 	<update id="updateHits" parameterType="int">
 		update
-		board
+		Review
 		set
 		hits = hits
 		+ 1
@@ -92,7 +92,7 @@
 	<!-- 글 수정 -->
 	<update id="updateBoard" parameterType="Board">
 		update
-		board
+		Review
 		set
 		title =
 		#{title}
@@ -104,7 +104,7 @@
 
 	<delete id="deleteBoard" parameterType="int">
 		delete
-		board
+		Review
 		where
 		id like
 		#{id}
@@ -114,7 +114,7 @@
 	<select id="bestBoardList" resultType="Board">
 		SELECT * FROM (
 		SELECT *
-		FROM board
+		FROM Review
 		WHERE ROWNUM &lt; 4
 		ORDER BY hits DESC
 		) WHERE ROWNUM &lt; 4
@@ -138,7 +138,7 @@
 
 	<update id="upBoardLike" parameterType="LikeBoard">
 		update
-		Board
+		Review
 		set
 		recommend =
 		recommend + 1
@@ -155,7 +155,7 @@
 
 	<update id="downBoardLike" parameterType="LikeBoard">
 		update
-		Board
+		Review
 		set
 		recommend
 		= recommend - 1
@@ -168,7 +168,7 @@
 		select
 		recommend
 		from
-		Board
+		Review
 		where
 		bno = #{bno}
 	</select>
