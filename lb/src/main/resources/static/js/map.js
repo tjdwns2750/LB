@@ -274,30 +274,41 @@ function onErrorGeolocation() {
 }
 
 function initGeocoder() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
+    } else {
+        var center = map.getCenter();
+        infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
+        infowindow.open(map, center);
+    }
 
-	if (navigator.geolocation) {
+    $('#submit').on('click', function(e) {
+        e.preventDefault();
+        var selectedOption = $('#book').val();
 
-		navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
-	} else {
-		var center = map.getCenter();
-		infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
-		infowindow.open(map, center);
-	}
+        if (selectedOption === 'address') {
+            searchAddressToCoordinate($('#address').val());
+        } else if (selectedOption === 'book') {
+           alert("책 검색");
+            // 책 검색을 처리하는 코드 추가
+        }
+    });
 
-	$('#submit').on('click', function(e) {
-		e.preventDefault();
+    $('#address').on('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            var selectedOption = $('#book').val();
 
-		searchAddressToCoordinate($('#address').val());
-	});
-
-	$('#address').on('keydown', function(event) {
-		if (event.key === 'Enter') {
-			event.preventDefault();
-
-			searchAddressToCoordinate($('#address').val());
-		}
-	})
+            if (selectedOption === 'address') {
+                searchAddressToCoordinate($('#address').val());
+            } else if (selectedOption === 'book') {
+                // 책 검색을 처리하는 코드 추가
+                alert("책 검색");
+            }
+        }
+    });
 }
+
 
 function makeAddress(item) {
 	if (!item) {
