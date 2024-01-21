@@ -53,7 +53,7 @@
 
 
 			function ajaxSaleFunction(boardnum) {
-				 var selectedValue = $('select[name="state"]').val();
+				var selectedValue = $('select[name="state"]').val();
 				$.ajax({
 					url: 'sale',
 					type: 'GET',
@@ -239,12 +239,22 @@
 						</td>
 						<td>
 							<select name="state" class="btn btn-dark rounded-pill py-2 px-4 me-2">
-								<option value="sale" id="sale" th:selected="${state} == 'sale'"
-									th:data-boardnum="${board.bbno}">
-									판매중</option>
-								<option value="sold" id="sold" th:selected="${state} == 'sold'"
-									th:data-boardnum="${board.bbno}">
-									판매완료</option>
+								<div th:if="${board.enabled} eq 'Y'">
+									<option value="sale" id="sale" th:selected="${state} == 'sale'"
+										th:data-boardnum="${board.bbno}">
+										판매중</option>
+									<option value="sold" id="sold" th:selected="${state} == 'sold'"
+										th:data-boardnum="${board.bbno}">
+										판매완료</option>
+								</div>
+								<div th:if="${board.enabled} eq 'N'">
+									<option value="sold" id="sold" th:selected="${state} == 'sold'"
+										th:data-boardnum="${board.bbno}">
+										판매완료</option>
+									<option value="sale" id="sale" th:selected="${state} == 'sale'"
+										th:data-boardnum="${board.bbno}">
+										판매중</option>
+								</div>
 								<option value="delete" id="delete" th:selected="${state} == 'delete'"
 									th:data-boardnum="${board.bbno}">삭제</option>
 							</select>
