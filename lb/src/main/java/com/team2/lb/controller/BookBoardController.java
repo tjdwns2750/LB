@@ -99,8 +99,9 @@ public class BookBoardController {
 	}
 
 	@GetMapping("bookBoardList")
-	public String boardList(Model model, @RequestParam(name = "page", defaultValue = "1") int page, String type,
-			String searchWord) {
+	public String boardList(Model model
+			, @RequestParam(name = "page", defaultValue = "1") int page
+			, String type ,String searchWord) {
 
 		PageNavigator navi = service.getPageNavigator(pagePerGroup, countPerPage, page, type, searchWord);
 
