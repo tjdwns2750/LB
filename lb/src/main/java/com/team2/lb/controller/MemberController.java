@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.team2.lb.service.MailService;
@@ -28,11 +29,11 @@ public class MemberController {
 
 	@Autowired
 	MemberService service;
+	MailService mailService;
 
 	@GetMapping("join")
 	public String joinForm() {
 		return "member/joinForm";
-//		return "member/join";
 	}
 
 
@@ -67,8 +68,8 @@ public class MemberController {
 
 	@GetMapping("loginForm")
 	public String loginForm() {
-//		return "member/loginForm";
-		return "member/login";
+		return "member/loginForm";
+//		return "member/login";
 	}
 
 	@GetMapping("update")
@@ -85,13 +86,6 @@ public class MemberController {
 	@PostMapping("update")
 	public String update(@AuthenticationPrincipal UserDetails user, Member member, MultipartFile upload) {
 		member.setId(user.getUsername());
-
-//		if (!upload.isEmpty()) {
-//			String savedfile = FileService.saveFile(upload, uploadPath);
-//			member.setOriginalfile(upload.getOriginalFilename());
-//			member.setSavedfile(savedfile);
-//			FileService.deleteFile(uploadPath + "/" + member.getSavedfile());
-//		}
 
 		int result = service.updateUser(member);
 		log.debug("update 결과: {}", result);
